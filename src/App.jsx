@@ -36,7 +36,7 @@ function App() {
   const handleLogin = async () => {
     // Perform login logic here
     try {
-      const response = await fetch(env.VITE_BASE_URL+"/auth/login", {
+      const response = await fetch(import.meta.env.VITE_BASE_URL+"/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
