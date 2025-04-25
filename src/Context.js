@@ -2,6 +2,8 @@ import { createContext } from "react";
 
 const Context = createContext(
     {
+        //app login
+        handleLogin: () => {},
         //login
         inEmail: "",
         setInEmail: () => {},
@@ -11,6 +13,8 @@ const Context = createContext(
         setInPassword: () => {},
         inPasswordError: "",
         setInPasswordError: () => {},
+        loginError: "",
+        setLoginError: () => {},
         //register
         upName: "",
         setUpName: () => {},

@@ -9,6 +9,9 @@ import { FaArrowLeft } from 'react-icons/fa6';
 
 const Login = () => {
     const {
+        //app login
+        handleLogin,
+        //login
         inEmail,
         setInEmail,
         inEmailError,
@@ -16,12 +19,16 @@ const Login = () => {
         inPassword,
         setInPassword,
         inPasswordError,
-        setInPasswordError, } = useContext(Context)
+        setInPasswordError,
+        loginError,
+        setLoginError,
+    } = useContext(Context)
 
     const navigate = useNavigate()
 
     const handleEmailChange = (e) => {
         setInEmail(e.target.value)
+        checkEmail(e)
     }
     const checkEmail = (e) => {
         const email = e.target.value
@@ -34,6 +41,7 @@ const Login = () => {
     }
     const handlePasswordChange = (e) => {
         setInPassword(e.target.value)
+        checkPassword(e)
     }
     const checkPassword = (e) => {
         const password = e.target.value
@@ -43,6 +51,8 @@ const Login = () => {
             setInPasswordError("")
         }
     }
+
+    const actButton = inEmailError == "" && inPasswordError == "" && inEmail != "" && inPassword != "" ? false : true
 
     return (
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>
@@ -68,17 +78,18 @@ const Login = () => {
                         <p className='font-extralight text-sm min-w-fit'>Or login with VocaNova account</p>
                         <hr className="border-vngrey3 border-1 w-full" />
                     </div>
+                    {loginError != "" && <p className='flex flex-row gap-2 justify-center items-center w-11/12 text-red-500 text-base'><MdError />{loginError}</p>}
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
                     {inEmailError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{inEmailError}</p>}
-                    <input onBlur={checkEmail} onChange={handleEmailChange} name='email' type="email" placeholder="xxx@gmail.com" autoComplete='email' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <input onChange={handleEmailChange} name='email' type="email" placeholder="xxx@gmail.com" autoComplete='email' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Password</p>
                     {inPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{inPasswordError}</p>}
-                    <input onBlur={checkPassword} onChange={handlePasswordChange} name='password' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <input onChange={handlePasswordChange} name='password' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     <div className='w-11/12 flex flex-row items-center justify-between'>
                         <Checkbox label={<p className='text-primary font-thin text-sm'>Remember me?</p>} color='blue' />
                         <Typography onClick={() => navigate("/recovery")} className='text-primary font-thin text-sm cursor-pointer hover:underline'>Forgot password?</Typography>
                     </div>
-                    <Button className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+                    <Button disabled={actButton} onClick={handleLogin} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
                         Login
                     </Button>
                     <p className='w-full text-center text-vngrey3 font-thin'>Join with us? <span onClick={() => navigate("/register")} className='text-primary cursor-pointer hover:underline'>Create account it’s free</span></p>

@@ -15,6 +15,7 @@ function App() {
   const [inEmailError, setInEmailError] = useState("")
   const [inPassword, setInPassword] = useState("")
   const [inPasswordError, setInPasswordError] = useState("")
+  const [loginError, setLoginError] = useState("")
 
   //register states
   const [upName, setUpName] = useState("")
@@ -30,9 +31,41 @@ function App() {
   const [inRecoveryEmail, setInRecoveryEmail] = useState("")
   const [inRecoveryEmailError, setInRecoveryEmailError] = useState("")
 
+  //login function
+  
+  const handleLogin = async () => {
+    // Perform login logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL+"/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: inEmail,
+          password: inPassword,
+        }),
+      })
+      if (response.status === 401) {
+        setLoginError("Invalid email or password")
+      } else if (response.status === 500) {
+        setLoginError("Server error, please try again later")
+      } else if (response.status === 200) {
+        setLoginError("")
+      }
+      return response.json()
+    }
+    catch (error) {
+      // Handle error here
+      console.error("Error during login:", error)
+    }
+  }
+
   return (
     <Context.Provider value={
       {
+        //app login
+        handleLogin,
         //login
         inEmail,
         setInEmail,
@@ -42,6 +75,8 @@ function App() {
         setInPassword,
         inPasswordError,
         setInPasswordError,
+        loginError,
+        setLoginError,
         //register
         upName,
         setUpName,
