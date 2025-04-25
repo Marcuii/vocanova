@@ -78,7 +78,7 @@ const Login = () => {
                 <p className='w-full text-center text-vngrey3 font-thin'>Join with us? <span onClick={() => navigate("/register")} className='text-primary cursor-pointer hover:underline'>Create account it’s free</span></p>
             </div>
 
-            <img className='hidden lg:block ' src="../src/assets/log.png" alt="login" />
+            <img className='hidden lg:block ' src={process.env.PUBLIC_URL+"/src/assets/log.png"} alt="login" />
         </div>
         <p className='mt-3 font-[10] text-sm text-vngrey4'>By continuing, you agree to VocaNova Term of Use and confirm that you have read Privacy Policy</p>
     </div>
