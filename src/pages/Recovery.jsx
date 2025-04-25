@@ -31,9 +31,11 @@ const Recovery = () => {
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>
             <div className="w-full flex flex-row items-center justify-around gap-4 p-4">
                 <div className='w-5/6 lg:w-1/3 flex flex-col items-center text-start gap-7'>
-                    <Button>
-                        <FaArrowLeft className="mr-2" onClick={() => navigate("/login")} />
-                    </Button>
+                    <div className='w-full flex flex-row items-center justify-start'>
+                        <Button onClick={() => navigate("/login")} className='bg-vnblack2 text-vnwhite hover:text-primary transition duration-300 ease-in-out' size="lg">
+                            <FaArrowLeft />
+                        </Button>
+                    </div>
                     <h1 className='w-full text-3xl'>Recovery Password</h1>
                     <p className='w-full text-vngrey3 font-thin'>We will send a new password to your account from email, to help recover your account.</p>
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
@@ -44,7 +46,7 @@ const Recovery = () => {
                     </Button>
                     <p className='w-full text-center text-vngrey3 font-thin'>Remember password? <span onClick={() => navigate("/login")} className='text-primary cursor-pointer hover:underline'>Login</span></p>
                 </div>
-                <img className='hidden lg:block ' src="../src/assets/reg.png" alt="recovery" />
+                <img className='hidden lg:block ' src="./assets/reg.png" alt="recovery" />
             </div>
             <p className='mt-3 font-[10] text-sm text-vngrey4'>By continuing, you agree to VocaNova Term of Use and confirm that you have read Privacy Policy</p>
         </div>
