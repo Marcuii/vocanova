@@ -2,6 +2,13 @@ import { createContext } from "react";
 
 const Context = createContext(
     {
+        //App states ----------------------------
+        loggedIn: false,
+        setLoggedIn: () => {},
+        firstLogin: false,
+        setFirstLogin: () => {},
+
+        //NotLogged Layout ----------------------------
         //app login
         handleLogin: () => {},
         //login
@@ -13,6 +20,8 @@ const Context = createContext(
         setInPassword: () => {},
         inPasswordError: "",
         setInPasswordError: () => {},
+        rememberMe: false,
+        setRememberMe: () => {},
         loginError: "",
         setLoginError: () => {},
         //register
@@ -20,6 +29,10 @@ const Context = createContext(
         setUpName: () => {},
         upNameError: "",
         setUpNameError: () => {},
+        upLastName: "",
+        setUpLastName: () => {},
+        upLastNameError: "",
+        setUpLastNameError: () => {},
         upEmail: "",
         setUpEmail: () => {},
         upEmailError: "",
@@ -37,6 +50,86 @@ const Context = createContext(
         setInRecoveryEmail: () => {},
         inRecoveryEmailError: "",
         setInRecoveryEmailError: () => {},
+
+        //FirstLogin Layout ----------------------------
+        //personal
+        upCode: "",
+        setUpCode: () => {},
+        upCodeError: "",
+        setUpCodeError: () => {},
+        upPhoneNumber: "",
+        setUpPhoneNumber: () => {},
+        upPhoneNumberError: "",
+        setUpPhoneNumberError: () => {},
+        upDOB: "",
+        setUpDOB: () => {},
+        upDOBError: "",
+        setUpDOBError: () => {},
+        upCountry: "",
+        setUpCountry: () => {},
+        upCountryError: "",
+        setUpCountryError: () => {},
+        upCity: "",
+        setUpCity: () => {},
+        upCityError: "",
+        setUpCityError: () => {},
+        personalDone: false,
+        setPersonalDone: () => {},
+        //education
+        upDegree: "",
+        setUpDegree: () => {},
+        upDegreeError: "",
+        setUpDegreeError: () => {},
+        upUniversity: "",
+        setUpUniversity: () => {},
+        upUniversityError: "",
+        setUpUniversityError: () => {},
+        upGraduationDate: "",
+        setUpGraduationDate: () => {},
+        upGraduationDateError: "",
+        setUpGraduationDateError: () => {},
+        //experience
+        upJobTitle: "",
+        setUpJobTitle: () => {},
+        upJobTitleError: "",
+        setUpJobTitleError: () => {},
+        upCompany: "",
+        setUpCompany: () => {},
+        upCompanyError: "",
+        setUpCompanyError: () => {},
+        upMinSalary: "",
+        setUpMinSalary: () => {},
+        upMinSalaryError: "",
+        setUpMinSalaryError: () => {},
+        upMaxSalary: "",
+        setUpMaxSalary: () => {},
+        upMaxSalaryError: "",
+        setUpMaxSalaryError: () => {}, 
+        experienceDone: false,
+        setExperienceDone: () => {},
+        //skills
+        hardSkills: [],
+        setHardSkills: () => {},
+        hardSkillsError: "",
+        setHardSkillsError: () => {},
+        softSkills: [],
+        setSoftSkills: () => {},
+        softSkillsError: "",
+        setSoftSkillsError: () => {},
+        skillsDone: false,
+        setSkillsDone: () => {},
+        //avatar
+        avatar: null,
+        setAvatar: () => {},
+        avatarDone: false,
+        setAvatarDone: () => {},
+        //resume
+        resume: null,
+        setResume: () => {},
+        resumeError: "",
+        setResumeError: () => {},
+        resumeDone: false,
+        setResumeDone: () => {},
     }
 );
 

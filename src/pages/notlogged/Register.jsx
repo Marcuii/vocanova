@@ -1,18 +1,29 @@
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router';
 import { Button } from '@material-tailwind/react'
 import { FcGoogle } from "react-icons/fc";
 import { SiLinkedin } from "react-icons/si";
 import { MdError } from "react-icons/md";
-import { useNavigate } from 'react-router';
-import { useContext } from 'react'
-import Context from '../Context';
 import { FaArrowLeft } from 'react-icons/fa6';
+import Context from '../../Context';
 
 const Register = () => {
+    const [actButton, setActButton] = useState(true)
+
     const {
+        //App states
+        loggedIn,
+        firstLogin,
+
+        //register
         upName,
         setUpName,
         upNameError,
         setUpNameError,
+        upLastName,
+        setUpLastName,
+        upLastNameError,
+        setUpLastNameError,
         upEmail,
         setUpEmail,
         upEmailError,
@@ -28,19 +39,42 @@ const Register = () => {
 
     const navigate = useNavigate()
 
+    // Redirect to home or profile-complete page if logged in
+    useEffect(() => {
+        if (loggedIn && !firstLogin) {
+            navigate("/")
+        } else if (loggedIn && firstLogin) {
+            navigate("/profile-complete")
+        }
+    }, [ loggedIn, firstLogin ])
+
     const handleNameChange = (e) => {
         setUpName(e.target.value)
+        checkName(e)
     }
     const checkName = (e) => {
         const name = e.target.value
         if (name.length < 3) {
-            setUpNameError("Name must be at least 3 characters long")
+            setUpNameError("First Name must be at least 3 characters long")
         } else {
             setUpNameError("")
         }
     }
+    const handleLastNameChange = (e) => {
+        setUpLastName(e.target.value)
+        checkLastName(e)
+    }
+    const checkLastName = (e) => {
+        const lastName = e.target.value
+        if (lastName.length < 3) {
+            setUpLastNameError("Last Name must be at least 3 characters long")
+        } else {
+            setUpLastNameError("")
+        }
+    }
     const handleEmailChange = (e) => {
         setUpEmail(e.target.value)
+        checkEmail(e)
     }
     const checkEmail = (e) => {
         const email = e.target.value
@@ -53,6 +87,7 @@ const Register = () => {
     }
     const handlePasswordChange = (e) => {
         setUpPassword(e.target.value)
+        checkPassword(e)
     }
     const checkPassword = (e) => {
         const password = e.target.value
@@ -64,6 +99,7 @@ const Register = () => {
     }
     const handleCPasswordChange = (e) => {
         setUpCPassword(e.target.value)
+        checkCPassword(e)
     }
     const checkCPassword = (e) => {
         const cpassword = e.target.value
@@ -73,6 +109,27 @@ const Register = () => {
             setUpConfirmPasswordError("")
         }
     }
+
+    useEffect(() => {
+        setActButton(true)
+        setUpName("")
+        setUpNameError("")
+        setUpLastName("")
+        setUpLastNameError("")
+        setUpEmail("")
+        setUpEmailError("")
+        setUpPassword("")
+        setUpPasswordError("")
+        setUpCPassword("")
+        setUpConfirmPasswordError("")
+    }, [])
+
+    useEffect(() => {
+        setActButton(true)
+        if (upNameError == "" && upLastNameError == "" && upEmailError == "" && upPasswordError == "" && upConfirmPasswordError == "" && upName != "" && upLastName != "" && upEmail != "" && upPassword != "" && upCPassword != "") {
+            setActButton(false)
+        }
+    }, [upNameError, upLastNameError, upEmailError, upPasswordError, upConfirmPasswordError, upName, upLastName, upEmail, upPassword, upCPassword])
 
     return (
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>
@@ -98,19 +155,22 @@ const Register = () => {
                         <p className='font-extralight text-sm min-w-fit'>Or sign up with email</p>
                         <hr className="border-vngrey3 border-1 w-full" />
                     </div>
-                    <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Full Name</p>
+                    <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>First Name</p>
                     {upNameError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upNameError}</p>}
-                    <input onBlur={checkName} onChange={handleNameChange} name='name' type="text" placeholder="Enter your full name" autoComplete='name' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <input onChange={handleNameChange} name='name' type="text" placeholder="Enter your first name" autoComplete='given-name' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Last Name</p>
+                    {upLastNameError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upLastNameError}</p>}
+                    <input onChange={handleLastNameChange} name='lastName' type="text" placeholder="Enter your last name" autoComplete='family-name' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
                     {upEmailError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upEmailError}</p>}
-                    <input onBlur={checkEmail} onChange={handleEmailChange} name='email' type="email" placeholder="xxx@gmail.com" autoComplete='email' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <input onChange={handleEmailChange} name='email' type="email" placeholder="xxx@gmail.com" autoComplete='email' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Password</p>
                     {upPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPasswordError}</p>}
-                    <input onBlur={checkPassword} onChange={handlePasswordChange} name='password' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <input onChange={handlePasswordChange} name='password' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Confirm Password</p>
                     {upConfirmPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upConfirmPasswordError}</p>}
-                    <input onBlur={checkCPassword} onChange={handleCPasswordChange} name='confirmPassword' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
-                    <Button className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+                    <input onChange={handleCPasswordChange} name='confirmPassword' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <Button disabled={actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
                         Sign Up
                     </Button>
                     <p className='w-full text-center text-vngrey3 font-thin'>Already a member? <span onClick={() => navigate("/login")} className='text-primary cursor-pointer hover:underline'>Login Now</span></p>

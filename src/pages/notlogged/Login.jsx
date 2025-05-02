@@ -1,14 +1,20 @@
+import { useContext, useEffect, useState } from 'react'
+import { useNavigate } from 'react-router';
 import { Button, Checkbox, Typography } from '@material-tailwind/react'
 import { FcGoogle } from "react-icons/fc";
 import { SiLinkedin } from "react-icons/si";
 import { MdError } from "react-icons/md";
-import { useNavigate } from 'react-router';
-import { useContext } from 'react'
-import Context from '../Context';
 import { FaArrowLeft } from 'react-icons/fa6';
+import Context from '../../Context';
 
 const Login = () => {
+    const [actButton, setActButton] = useState(true)
+
     const {
+        //App states
+        loggedIn,
+        firstLogin,
+
         //app login
         handleLogin,
         //login
@@ -20,11 +26,22 @@ const Login = () => {
         setInPassword,
         inPasswordError,
         setInPasswordError,
+        rememberMe,
+        setRememberMe,
         loginError,
         setLoginError,
     } = useContext(Context)
 
     const navigate = useNavigate()
+    
+    // Redirect to home or profile-complete page if logged in
+    useEffect(() => {
+        if (loggedIn && !firstLogin) {
+            navigate("/")
+        } else if (loggedIn && firstLogin) {
+            navigate("/profile-complete")
+        }
+    }, [ loggedIn, firstLogin ])
 
     const handleEmailChange = (e) => {
         setInEmail(e.target.value)
@@ -52,7 +69,26 @@ const Login = () => {
         }
     }
 
-    const actButton = inEmailError == "" && inPasswordError == "" && inEmail != "" && inPassword != "" ? false : true
+    const handleRememberMeChange = (e) => {
+        setRememberMe(e.target.checked)
+    }
+
+    useEffect(() => {
+        setActButton(true)
+        setInEmail("")
+        setInEmailError("")
+        setInPassword("")
+        setInPasswordError("")
+        setRememberMe(false)
+        setLoginError("")
+    }, [])
+
+    useEffect(() => {
+        setActButton(true)
+        if (inEmailError == "" && inPasswordError == "" && inEmail != "" && inPassword != "") {
+            setActButton(false)
+        }
+    }, [ inEmailError, inEmail, inPassword, inPasswordError ])
 
     return (
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>
@@ -86,7 +122,7 @@ const Login = () => {
                     {inPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{inPasswordError}</p>}
                     <input onChange={handlePasswordChange} name='password' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     <div className='w-11/12 flex flex-row items-center justify-between'>
-                        <Checkbox label={<p className='text-primary font-thin text-sm'>Remember me?</p>} color='blue' />
+                        <Checkbox onChange={handleRememberMeChange} label={<p className='text-primary font-thin text-sm'>Remember me?</p>} color='blue' />
                         <Typography onClick={() => navigate("/recovery")} className='text-primary font-thin text-sm cursor-pointer hover:underline'>Forgot password?</Typography>
                     </div>
                     <Button disabled={actButton} onClick={handleLogin} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
