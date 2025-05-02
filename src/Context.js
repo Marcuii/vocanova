@@ -24,6 +24,8 @@ const Context = createContext(
         setRememberMe: () => {},
         loginError: "",
         setLoginError: () => {},
+        //app register
+        handleRegister: () => {},
         //register
         upName: "",
         setUpName: () => {},
@@ -45,11 +47,19 @@ const Context = createContext(
         setUpCPassword: () => {},
         upConfirmPasswordError: "",
         setUpConfirmPasswordError: () => {},
+        registerError: "",
+        setRegisterError: () => {},
+        registerSuccess: false,
+        setRegisterSuccess: () => {},
+        //app recovery
+        handleRecovery: () => {},
         //recovery
         inRecoveryEmail: "",
         setInRecoveryEmail: () => {},
         inRecoveryEmailError: "",
         setInRecoveryEmailError: () => {},
+        inRecoveryEmailSuccess: false,
+        setInRecoveryEmailSuccess: () => {},
 
         //FirstLogin Layout ----------------------------
         //personal

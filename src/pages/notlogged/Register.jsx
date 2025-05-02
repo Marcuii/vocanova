@@ -1,20 +1,23 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
-import { Button } from '@material-tailwind/react'
+import { Button, Dialog, DialogBody, DialogHeader } from '@material-tailwind/react'
 import { FcGoogle } from "react-icons/fc";
 import { SiLinkedin } from "react-icons/si";
-import { MdError } from "react-icons/md";
+import { MdError, MdMarkEmailUnread } from "react-icons/md";
 import { FaArrowLeft } from 'react-icons/fa6';
 import Context from '../../Context';
 
 const Register = () => {
     const [actButton, setActButton] = useState(true)
+    const [popUp, setPopUp] = useState(false)
 
     const {
         //App states
         loggedIn,
         firstLogin,
 
+        //app register
+        handleRegister,
         //register
         upName,
         setUpName,
@@ -35,6 +38,11 @@ const Register = () => {
         upCPassword,
         setUpCPassword,
         upConfirmPasswordError,
+        registerError,
+        setRegisterError,
+        registerSuccess,
+        setRegisterSuccess,
+
         setUpConfirmPasswordError } = useContext(Context)
 
     const navigate = useNavigate()
@@ -46,7 +54,7 @@ const Register = () => {
         } else if (loggedIn && firstLogin) {
             navigate("/profile-complete")
         }
-    }, [ loggedIn, firstLogin ])
+    }, [loggedIn, firstLogin])
 
     const handleNameChange = (e) => {
         setUpName(e.target.value)
@@ -131,6 +139,10 @@ const Register = () => {
         }
     }, [upNameError, upLastNameError, upEmailError, upPasswordError, upConfirmPasswordError, upName, upLastName, upEmail, upPassword, upCPassword])
 
+    useEffect(() => {
+        setPopUp(registerSuccess)
+    }, [registerSuccess])
+
     return (
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>
             <div className="w-full flex flex-row items-center justify-around gap-4 p-4">
@@ -155,6 +167,7 @@ const Register = () => {
                         <p className='font-extralight text-sm min-w-fit'>Or sign up with email</p>
                         <hr className="border-vngrey3 border-1 w-full" />
                     </div>
+                    {registerError != "" && <p className='flex flex-row gap-2 justify-center items-center w-11/12 text-red-500 text-base'><MdError />{registerError}</p>}
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>First Name</p>
                     {upNameError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upNameError}</p>}
                     <input onChange={handleNameChange} name='name' type="text" placeholder="Enter your first name" autoComplete='given-name' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
@@ -170,7 +183,7 @@ const Register = () => {
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Confirm Password</p>
                     {upConfirmPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upConfirmPasswordError}</p>}
                     <input onChange={handleCPasswordChange} name='confirmPassword' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
-                    <Button disabled={actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+                    <Button onClick={handleRegister} disabled={actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
                         Sign Up
                     </Button>
                     <p className='w-full text-center text-vngrey3 font-thin'>Already a member? <span onClick={() => navigate("/login")} className='text-primary cursor-pointer hover:underline'>Login Now</span></p>
@@ -179,6 +192,16 @@ const Register = () => {
                 <img className='hidden lg:block ' src="./assets/reg.png" alt="register" />
             </div>
             <p className='mt-3 font-[10] text-sm text-vngrey4'>By continuing, you agree to VocaNova Term of Use and confirm that you have read Privacy Policy</p>
+
+            <Dialog open={popUp}>
+                <DialogHeader className='text-success'>Confirmation Mail has been sent successfully </DialogHeader>
+                <DialogBody className='text-center flex flex-col items-center justify-center gap-2'>
+                    <span className='text-2xl'> <MdMarkEmailUnread /></span>
+                    <p>
+                        We've sent a confirmation email to <span className='font-semibold'>{upEmail}</span>. Please check your inbox and click the link to confirm your email address.
+                    </p>
+                </DialogBody>
+            </Dialog>
         </div>
     )
 }

@@ -11,10 +11,12 @@ import ProfileSetup from './pages/firstlogged/ProfileSetup'
 import LoggedDB from './pages/logged/LoggedDB'
 
 import Context from './Context';
+import EmailConfirm from './pages/notlogged/EmailConfirm'
+import ResetPassword from './pages/notlogged/ResetPassword'
 
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") === true || sessionStorage.getItem("token") === true ? true : false)
   const [firstLogin, setFirstLogin] = useState(false)
 
   //login states
@@ -36,10 +38,13 @@ function App() {
   const [upPasswordError, setUpPasswordError] = useState("")
   const [upCPassword, setUpCPassword] = useState("")
   const [upConfirmPasswordError, setUpConfirmPasswordError] = useState("")
+  const [registerError, setRegisterError] = useState("")
+  const [registerSuccess, setRegisterSuccess] = useState(false)
 
   //recovery states
   const [inRecoveryEmail, setInRecoveryEmail] = useState("")
   const [inRecoveryEmailError, setInRecoveryEmailError] = useState("")
+  const [inRecoveryEmailSuccess, setInRecoveryEmailSuccess] = useState(false)
 
   //first login states
   const [upCode, setUpCode] = useState("");
@@ -103,6 +108,15 @@ function App() {
         setLoginError("Server error, please try again later")
       } else if (response.status === 200) {
         setLoginError("")
+        const data = await response.json()
+        setLoggedIn(true)
+        if (rememberMe) {
+          localStorage.setItem("token", data.token)
+          localStorage.setItem("loggedIn", true)
+        } else {
+          sessionStorage.setItem("token", data.token)
+          sessionStorage.setItem("loggedIn", true)
+        }
       }
       return response.json()
     }
@@ -111,6 +125,68 @@ function App() {
       console.error("Error during login:", error)
     }
   }
+
+  //register function
+  const handleRegister = async () => {
+    // Perform register logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: upEmail,
+          password: upPassword,
+          fullname: upName+ " " + upLastName,
+        }),
+      })
+      if (response.status === 401) {
+        setRegisterError("Email already exists")
+      } else if (response.status === 500) {
+        setRegisterError("Server error, please try again later")
+      } else if (response.status === 200) {
+        setRegisterError("")
+        setRegisterSuccess(true)
+      }
+      return response.json()
+    }
+    catch (error) {
+      // Handle error here
+      console.error("Error during register:", error)
+    }
+  }
+
+  //recovery function
+  const handleRecovery = async () => {
+    // Perform recovery logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/auth/forget-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: inRecoveryEmail,
+        }),
+      })
+      if (response.status === 401) {
+        setInRecoveryEmailError("Email not found")
+      } else if (response.status === 500) {
+        setInRecoveryEmailError("Server error, please try again later")
+      }
+      else if (response.status === 200) {
+        setInRecoveryEmailError("")
+        setInRecoveryEmailSuccess(true)
+      }
+      return response.json()
+    }
+    catch (error) {
+      // Handle error here
+      console.error("Error during recovery:", error)
+    }
+  }
+
 
   //profile setup function
   
@@ -140,6 +216,8 @@ function App() {
         setRememberMe,
         loginError,
         setLoginError,
+        //app register
+        handleRegister,
         //register
         upName,
         setUpName,
@@ -161,11 +239,19 @@ function App() {
         setUpCPassword,
         upConfirmPasswordError,
         setUpConfirmPasswordError,
+        registerError,
+        setRegisterError,
+        registerSuccess,
+        setRegisterSuccess,
+        //app recovery
+        handleRecovery,
         //recovery
         inRecoveryEmail,
         setInRecoveryEmail,
         inRecoveryEmailError,
         setInRecoveryEmailError,
+        inRecoveryEmailSuccess,
+        setInRecoveryEmailSuccess,
 
         //FirstLogin Layout ----------------------------
         //personal
@@ -256,6 +342,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/recovery" element={<Recovery />} />
+          <Route path="/auth/email-confirm" element={<EmailConfirm />} />
+          <Route path="/auth/reset-password" element={<ResetPassword />} />
           <Route path="/profile-complete" element={<ProfileSetup />} />
         </Routes>
       </div>

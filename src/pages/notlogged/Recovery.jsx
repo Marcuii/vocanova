@@ -1,23 +1,30 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router';
-import { Button } from '@material-tailwind/react'
-import { MdError } from "react-icons/md";
+import { Button, Dialog, DialogBody, DialogHeader } from '@material-tailwind/react'
+import { MdError, MdMarkEmailUnread } from "react-icons/md";
 import { FaArrowLeft } from "react-icons/fa6";
 import Context from '../../Context';
 
 const Recovery = () => {
     const [actButton, setActButton] = useState(true)
+    const [popUp, setPopUp] = useState(false)
 
     const { 
         //App states
         loggedIn,
         firstLogin,
 
+        //app recovery
+        handleRecovery,
         //recovery
         inRecoveryEmail,
         setInRecoveryEmail,
         inRecoveryEmailError,
-        setInRecoveryEmailError } = useContext(Context)
+        setInRecoveryEmailError,
+        inRecoveryEmailSuccess,
+        setInRecoveryEmailSuccess,
+
+    } = useContext(Context)
 
     const navigate = useNavigate()
 
@@ -51,6 +58,11 @@ const Recovery = () => {
     }, [])
 
     useEffect(() => {
+        setPopUp(inRecoveryEmailSuccess)
+    }
+    , [inRecoveryEmailSuccess])
+
+    useEffect(() => {
         setActButton(true)
         if (inRecoveryEmailError == "" && inRecoveryEmail != "") {
             setActButton(false)
@@ -71,7 +83,7 @@ const Recovery = () => {
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
                     {inRecoveryEmailError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{inRecoveryEmailError}</p>}
                     <input onChange={handleEmailChange} name='email' type="email" placeholder="xxx@gmail.com" autoComplete='email' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
-                    <Button disabled={actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+                    <Button onClick={handleRecovery} disabled={actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
                         Submit
                     </Button>
                     <p className='w-full text-center text-vngrey3 font-thin'>Remember password? <span onClick={() => navigate("/login")} className='text-primary cursor-pointer hover:underline'>Login</span></p>
@@ -79,6 +91,15 @@ const Recovery = () => {
                 <img className='hidden lg:block ' src="./assets/reg.png" alt="recovery" />
             </div>
             <p className='mt-3 font-[10] text-sm text-vngrey4'>By continuing, you agree to VocaNova Term of Use and confirm that you have read Privacy Policy</p>
+            <Dialog open={popUp}>
+                <DialogHeader className='text-success'>Password Reset Mail has been sent successfully </DialogHeader>
+                <DialogBody className='text-center flex flex-col items-center justify-center gap-2'>
+                    <span className='text-2xl'> <MdMarkEmailUnread /></span>
+                    <p>
+                        We've sent a confirmation email to <span className='font-semibold'>{inRecoveryEmail}</span>. Please check your inbox and click the link to confirm your email address.
+                    </p>
+                </DialogBody>
+            </Dialog>
         </div>
       )
     }
