@@ -17,7 +17,7 @@ const EmailConfirm = () => {
         if (!id && !code) {
             navigate("/")
         } else {
-            fetch(`${import.meta.env.VITE_API_URL}/auth/confirm-email`, {
+            fetch(`${import.meta.env.VITE_BASE_URL}/auth/confirm-email`, {
                 method: "post",
                 headers: {
                     "Content-Type": "application/json",

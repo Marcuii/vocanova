@@ -77,7 +77,7 @@ const ResetPassword = () => {
     }, [resetPassError, resetCPasswordError, resetPass, resetCPassword])
 
     const handleReset = () => {
-        fetch(`${import.meta.env.VITE_API_URL}/auth/forget-password`, {
+        fetch(`${import.meta.env.VITE_BASE_URL}/auth/forget-password`, {
             method: "post",
             headers: {
                 "Content-Type": "application/json",
