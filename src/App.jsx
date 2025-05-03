@@ -168,7 +168,7 @@ function App() {
         setRegisterError("Server error, please try again later")
       } else if (response.status === 200) {
         setRegisterError("")
-        setRegisterSuccess(!registerSuccess)
+        setRegisterSuccess(true)
       }
       return 
     }

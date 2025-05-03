@@ -119,6 +119,11 @@ const Register = () => {
         }
     }
 
+    const resendMail = () => {
+        setCounter(60)
+        handleRegister()
+    }
+
     useEffect(() => {
         setActButton(true)
         setUpName("")
@@ -141,7 +146,7 @@ const Register = () => {
     }, [upNameError, upLastNameError, upEmailError, upPasswordError, upConfirmPasswordError, upName, upLastName, upEmail, upPassword, upCPassword])
 
     useEffect(() => {
-        setPopUp(true)
+        setPopUp(registerSuccess)
         setCounter(60)
     }, [registerSuccess])
 
@@ -153,7 +158,7 @@ const Register = () => {
             return () => clearTimeout(timer)
         }
     }, [counter])
-    
+
 
     return (
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>
@@ -212,11 +217,11 @@ const Register = () => {
                     <p>
                         We've sent a confirmation email to <span className='font-semibold'>{upEmail}</span>. Please check your inbox and click the link to confirm your email address.
                     </p>
-                </DialogBody>
-                <p className='text-vngrey3 font-thin text-sm'>Resend confirmation email in {counter} seconds</p>
-                <Button onClick={handleRegister} disabled={counter>0} className="bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+                    <p className='text-vngrey3 font-thin text-sm'>Resend confirmation email in {counter} seconds</p>
+                    <Button onClick={resendMail} disabled={counter > 0} className="bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
                         Resend
                     </Button>
+                </DialogBody>
             </Dialog>
         </div>
     )
