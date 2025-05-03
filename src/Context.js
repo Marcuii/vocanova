@@ -7,6 +7,10 @@ const Context = createContext(
         setLoggedIn: () => {},
         firstLogin: false,
         setFirstLogin: () => {},
+        token: null,
+        setToken: () => {},
+        userData: null,
+        setUserData: () => {},
 
         //NotLogged Layout ----------------------------
         //app login

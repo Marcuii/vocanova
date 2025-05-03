@@ -18,6 +18,8 @@ import ResetPassword from './pages/notlogged/ResetPassword'
 function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [firstLogin, setFirstLogin] = useState(false)
+  const [token, setToken] = useState(null)
+  const [userData, setUserData] = useState(null)
 
   //login states
   const [inEmail, setInEmail] = useState("")
@@ -97,7 +99,16 @@ function App() {
       setLoggedIn(false)
     }
   }
-    , [])
+  , [])
+
+  //update user data
+  useEffect(() => {
+    if (loggedIn) {
+      const token = localStorage.getItem("token") || sessionStorage.getItem("token")
+      setToken(token)
+      getUserData()
+    }
+  }, [loggedIn])
 
   //login function
   const handleLogin = async () => {
@@ -198,6 +209,38 @@ function App() {
     }
   }
 
+  //get user data function
+  const getUserData = async () => {
+    // Perform get user data logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/auth/me", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Postman-Token": `${token}`,
+        },
+      }) 
+      if (response.status === 401) {
+        setLoggedIn(false)
+        setFirstLogin(false)
+      }
+      else if (response.status === 500) {
+        setLoggedIn(false)
+        setFirstLogin(false)
+      }
+      else if (response.status === 200) {
+        const data = await response.json()
+        setLoggedIn(true)
+        setUserData(data)
+        console.log(data)
+      }
+      return response.json()
+    } catch (error) {
+      // Handle error here
+      console.error("Error during get user data:", error)
+    }
+  }
+
 
   //profile setup function
   
@@ -210,6 +253,10 @@ function App() {
         setLoggedIn,
         firstLogin,
         setFirstLogin,
+        token,
+        setToken,
+        userData,
+        setUserData,
 
         //NotLogged Layout ----------------------------
         //app login
