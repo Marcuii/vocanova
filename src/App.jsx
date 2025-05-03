@@ -95,6 +95,7 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("loggedIn") === "true" || sessionStorage.getItem("loggedIn") === "true") {
       setLoggedIn(true)
+      getUserData()
     } else {
       setLoggedIn(false)
     }

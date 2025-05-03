@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router'
 import Context from '../../Context'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 const LoggedDB = () => {
   const {
@@ -19,7 +19,7 @@ const LoggedDB = () => {
       navigate("/profile-complete")
     }
   }, [firstLogin])
-  
+
   return (
     <div>LoggedDB</div>
   )
