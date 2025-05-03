@@ -103,12 +103,10 @@ function App() {
 
   //update user data
   useEffect(() => {
-    if (loggedIn) {
-      const token = localStorage.getItem("token") || sessionStorage.getItem("token")
-      setToken(token)
+    if (loggedIn && token) {
       getUserData()
     }
-  }, [loggedIn])
+  }, [loggedIn , token])
 
   //login function
   const handleLogin = async () => {
@@ -131,7 +129,6 @@ function App() {
       } else if (response.status === 200) {
         setLoginError("")
         const data = await response.json()
-        setLoggedIn(true)
         setToken(data.token)
         if (rememberMe) {
           localStorage.setItem("token", data.token)
@@ -140,6 +137,7 @@ function App() {
           sessionStorage.setItem("token", data.token)
           sessionStorage.setItem("loggedIn", true)
         }
+        setLoggedIn(true)
       }
       return response.json()
     }
