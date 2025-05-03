@@ -101,7 +101,6 @@ function App() {
       if (sessionStorage.getItem("loggedIn") === "true") {
         setToken(sessionStorage.getItem("token"))
       }
-      getUserData()
     } else {
       setLoggedIn(false)
     }
@@ -226,7 +225,7 @@ function App() {
           "Authorization": `Bearer ${token}`,
         },
       }) 
-      if (response.status === 401) {
+      if (response.status !== 200) {
         setLoggedIn(false)
         setFirstLogin(false)
         if (localStorage.getItem("loggedIn") === "true") {
@@ -237,20 +236,7 @@ function App() {
           sessionStorage.removeItem("token")
           sessionStorage.removeItem("loggedIn")
         }
-      }
-      else if (response.status === 500) {
-        setLoggedIn(false)
-        setFirstLogin(false)
-        if (localStorage.getItem("loggedIn") === "true") {
-          localStorage.removeItem("token")
-          localStorage.removeItem("loggedIn")
-        }
-        if (sessionStorage.getItem("loggedIn") === "true") {
-          sessionStorage.removeItem("token")
-          sessionStorage.removeItem("loggedIn")
-        }
-      }
-      else if (response.status === 200) {
+      } else {
         const data = await response.json()
         setLoggedIn(true)
         setUserData(data)
