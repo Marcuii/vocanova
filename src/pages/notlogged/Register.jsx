@@ -11,6 +11,7 @@ const Register = () => {
     const [actButton, setActButton] = useState(true)
     const [popUp, setPopUp] = useState(false)
     const [counter, setCounter] = useState(0)
+    const [resendMailError, setResendMailError] = useState("")
 
     const {
         //App states
@@ -119,9 +120,31 @@ const Register = () => {
         }
     }
 
-    const resendMail = () => {
-        setCounter(60)
-        handleRegister()
+    const resendMail = async () => {
+        try {
+            const response = await fetch(import.meta.env.VITE_BASE_URL + "/auth/resend-confirmation-email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: upEmail
+              }),
+            })
+            if (response.status === 409) {
+                setResendMailError("Email already exists")
+            } else if (response.status === 500) {
+                setResendMailError("Server error, please try again later")
+            } else if (response.status === 200) {
+                setResendMailError("")
+                setCounter(60)
+            }
+            return 
+        }
+        catch (error) {
+            // Handle error here
+            console.error("Error during register:", error)
+        }
     }
 
     useEffect(() => {
@@ -217,6 +240,7 @@ const Register = () => {
                     <p>
                         We've sent a confirmation email to <span className='font-semibold'>{upEmail}</span>. Please check your inbox and click the link to confirm your email address.
                     </p>
+                    {resendMailError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{resendMailError}</p>}
                     <p className='text-vngrey3 font-thin text-sm'>Resend confirmation email in {counter} seconds</p>
                     <Button onClick={resendMail} disabled={counter > 0} className="bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
                         Resend
