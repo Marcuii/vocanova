@@ -95,6 +95,12 @@ function App() {
   useEffect(() => {
     if (localStorage.getItem("loggedIn") === "true" || sessionStorage.getItem("loggedIn") === "true") {
       setLoggedIn(true)
+      if (localStorage.getItem("loggedIn") === "true") {
+        setToken(localStorage.getItem("token"))
+      }
+      if (sessionStorage.getItem("loggedIn") === "true") {
+        setToken(sessionStorage.getItem("token"))
+      }
       getUserData()
     } else {
       setLoggedIn(false)
@@ -223,10 +229,26 @@ function App() {
       if (response.status === 401) {
         setLoggedIn(false)
         setFirstLogin(false)
+        if (localStorage.getItem("loggedIn") === "true") {
+          localStorage.removeItem("token")
+          localStorage.removeItem("loggedIn")
+        }
+        if (sessionStorage.getItem("loggedIn") === "true") {
+          sessionStorage.removeItem("token")
+          sessionStorage.removeItem("loggedIn")
+        }
       }
       else if (response.status === 500) {
         setLoggedIn(false)
         setFirstLogin(false)
+        if (localStorage.getItem("loggedIn") === "true") {
+          localStorage.removeItem("token")
+          localStorage.removeItem("loggedIn")
+        }
+        if (sessionStorage.getItem("loggedIn") === "true") {
+          sessionStorage.removeItem("token")
+          sessionStorage.removeItem("loggedIn")
+        }
       }
       else if (response.status === 200) {
         const data = await response.json()
