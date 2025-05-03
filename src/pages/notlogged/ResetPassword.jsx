@@ -135,6 +135,9 @@ const ResetPassword = () => {
                         <p>
                             Password has been reset successfully. You can now login to your account with the new password.
                         </p>
+                        <Button onClick={() => navigate("/login")} className="bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+                            Login
+                        </Button>
                     </DialogBody>
                 </Dialog>
             </div>
