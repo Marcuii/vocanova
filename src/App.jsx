@@ -231,6 +231,11 @@ function App() {
         const data = await response.json()
         setLoggedIn(true)
         setUserData(data)
+        if (data.jobTitle === null) {
+          setFirstLogin(true)
+        } else {
+          setFirstLogin(false)
+        }
         console.log(data)
       }
       return 
