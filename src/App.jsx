@@ -139,7 +139,7 @@ function App() {
         }
         setLoggedIn(true)
       }
-      return response.json()
+      return 
     }
     catch (error) {
       // Handle error here
@@ -168,9 +168,9 @@ function App() {
         setRegisterError("Server error, please try again later")
       } else if (response.status === 200) {
         setRegisterError("")
-        setRegisterSuccess(true)
+        setRegisterSuccess(!registerSuccess)
       }
-      return response.json()
+      return 
     }
     catch (error) {
       // Handle error here
@@ -200,7 +200,7 @@ function App() {
         setInRecoveryEmailError("")
         setInRecoveryEmailSuccess(true)
       }
-      return response.json()
+      return 
     }
     catch (error) {
       // Handle error here
@@ -233,7 +233,7 @@ function App() {
         setUserData(data)
         console.log(data)
       }
-      return response.json()
+      return 
     } catch (error) {
       // Handle error here
       console.error("Error during get user data:", error)

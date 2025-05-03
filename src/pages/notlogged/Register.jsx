@@ -10,6 +10,7 @@ import Context from '../../Context';
 const Register = () => {
     const [actButton, setActButton] = useState(true)
     const [popUp, setPopUp] = useState(false)
+    const [counter, setCounter] = useState(0)
 
     const {
         //App states
@@ -140,8 +141,19 @@ const Register = () => {
     }, [upNameError, upLastNameError, upEmailError, upPasswordError, upConfirmPasswordError, upName, upLastName, upEmail, upPassword, upCPassword])
 
     useEffect(() => {
-        setPopUp(registerSuccess)
+        setPopUp(true)
+        setCounter(60)
     }, [registerSuccess])
+
+    useEffect(() => {
+        if (counter > 0) {
+            const timer = setTimeout(() => {
+                setCounter(counter - 1)
+            }, 1000)
+            return () => clearTimeout(timer)
+        }
+    }, [counter])
+    
 
     return (
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>
@@ -201,6 +213,10 @@ const Register = () => {
                         We've sent a confirmation email to <span className='font-semibold'>{upEmail}</span>. Please check your inbox and click the link to confirm your email address.
                     </p>
                 </DialogBody>
+                <p className='text-vngrey3 font-thin text-sm'>Resend confirmation email in {counter} seconds</p>
+                <Button onClick={handleRegister} disabled={counter>0} className="bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+                        Resend
+                    </Button>
             </Dialog>
         </div>
     )
