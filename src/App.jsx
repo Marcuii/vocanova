@@ -216,7 +216,7 @@ function App() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          "Postman-Token": `${token}`,
+          "Authorization": `Bearer ${token}`,
         },
       }) 
       if (response.status === 401) {
