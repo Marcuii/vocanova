@@ -132,6 +132,7 @@ function App() {
         setLoginError("")
         const data = await response.json()
         setLoggedIn(true)
+        setToken(data.token)
         if (rememberMe) {
           localStorage.setItem("token", data.token)
           localStorage.setItem("loggedIn", true)
