@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Routes, Route } from 'react-router-dom'
 
 import NotLoggedDB from './pages/notlogged/NotLoggedDB'
@@ -16,7 +16,7 @@ import ResetPassword from './pages/notlogged/ResetPassword'
 
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(localStorage.getItem("token") === true || sessionStorage.getItem("token") === true ? true : false)
+  const [loggedIn, setLoggedIn] = useState(false)
   const [firstLogin, setFirstLogin] = useState(false)
 
   //login states
@@ -88,6 +88,17 @@ function App() {
   const [resumeError, setResumeError] = useState("")
   const [resumeDone, setResumeDone] = useState(false)
 
+
+  //check if user is logged in
+  useEffect(() => {
+    if (localStorage.getItem("loggedIn") === "true" || sessionStorage.getItem("loggedIn") === "true") {
+      setLoggedIn(true)
+    } else {
+      setLoggedIn(false)
+    }
+  }
+    , [])
+
   //login function
   const handleLogin = async () => {
     // Perform login logic here
@@ -141,7 +152,7 @@ function App() {
           fullname: upName+ " " + upLastName,
         }),
       })
-      if (response.status === 401) {
+      if (response.status === 409) {
         setRegisterError("Email already exists")
       } else if (response.status === 500) {
         setRegisterError("Server error, please try again later")
