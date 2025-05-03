@@ -213,7 +213,7 @@ function App() {
   const getUserData = async () => {
     // Perform get user data logic here
     try {
-      const response = await fetch(import.meta.env.VITE_BASE_URL + "/auth/me", {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/me", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
