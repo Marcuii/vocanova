@@ -114,7 +114,7 @@ function App() {
     if (loggedIn && token) {
       getUserData()
     }
-  }, [loggedIn , token])
+  }, [loggedIn , token , firstLogin])
 
   //login function
   const handleLogin = async () => {
@@ -255,7 +255,6 @@ function App() {
       console.error("Error during get user data:", error)
     }
   }
-
 
   //profile setup function
   
