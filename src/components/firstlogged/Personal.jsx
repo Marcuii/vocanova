@@ -10,6 +10,10 @@ const Personal = () => {
     const [countries, setCountries] = useState([]);
     const [cities, setCities] = useState([]);
 
+    // Max date for date input
+    const today = new Date();
+    const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split("T")[0];
+    
     const {
         upCode,
         setUpCode,
@@ -236,7 +240,7 @@ const Personal = () => {
                 type="date"
                 value={upDOB}
                 min={"1930-01-01"}
-                max={new Date().toISOString().split("T")[0]}
+                max={maxDate}
                 onChange={(e) => handleDOBChange(e.target.value)}
                 className="h-fit w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
             />

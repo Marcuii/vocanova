@@ -141,8 +141,7 @@ function Experience() {
       setUpExperienceYearsError("Please enter years of experience");
     } else if (isNaN(val)) {
       setUpExperienceYearsError("Years of experience must be a number");
-    }
-    else if (parseInt(val) < 0) {
+    } else if (parseInt(val) < 0) {
       setUpExperienceYearsError("Years of experience cannot be negative");
     } else if (parseInt(val) > 50) {
       setUpExperienceYearsError("Years of experience cannot exceed 50 years");
@@ -162,6 +161,8 @@ function Experience() {
       setUpExpectedSalaryError("Maximum salary must be a number");
     } else if (parseInt(val) < 0) {
       setUpExpectedSalaryError("Maximum salary cannot be negative");
+    } else if (parseInt(val) > 1000000) {
+      setUpExpectedSalaryError("Maximum salary cannot exceed 1,000,000");
     } else {
       setUpExpectedSalaryError("");
     }
@@ -288,7 +289,7 @@ function Experience() {
       >
         <option value="">Select Graduation Year</option>
         {Array.from({ length: 50 }, (_, i) => {
-          const year = new Date().getFullYear() - i;
+          const year = (new Date().getFullYear() + 5) - i;
           return (
             <option key={year} value={year}>
               {year}
