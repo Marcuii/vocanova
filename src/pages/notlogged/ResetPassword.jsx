@@ -42,12 +42,14 @@ const ResetPassword = () => {
         const password = e.target.value
         if (password.length < 8) {
             setResetPassError("Password must be at least 8 characters long")
-            setActButton(true)
-            return
+        } else if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+            setResetPassError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
+        } else if (password.length > 20) {
+            setResetPassError("Password must be at most 20 characters long")
+        } else if (password.includes(" ")) {
+            setResetPassError("Password must not contain spaces")
         } else {
             setResetPassError("")
-            setActButton(false)
-            return
         }
     }
     const handleCPasswordChange = (e) => {
@@ -58,12 +60,8 @@ const ResetPassword = () => {
         const cpassword = e.target.value
         if (cpassword != resetPass) {
             setResetCPasswordError("Passwords do not match")
-            setActButton(true)
-            return
         } else {
             setResetCPasswordError("")
-            setActButton(false)
-            return
         }
     }
 

@@ -43,14 +43,14 @@ function Experience() {
     setUpCompany,
     upCompanyError,
     setUpCompanyError,
-    upMinSalary,
-    setUpMinSalary,
-    upMinSalaryError,
-    setUpMinSalaryError,
-    upMaxSalary,
-    setUpMaxSalary,
-    upMaxSalaryError,
-    setUpMaxSalaryError,
+    upExperienceYears,
+    setUpExperienceYears,
+    upExperienceYearsError,
+    setUpExperienceYearsError,
+    upExpectedSalary,
+    setUpExpectedSalary,
+    upExpectedSalaryError,
+    setUpExpectedSalaryError,
 
     experienceDone,
     setExperienceDone,
@@ -132,39 +132,38 @@ function Experience() {
     }
   };
 
-  const handleMinSalaryChange = (val) => {
-    setUpMinSalary(val);
-    checkMinSalary(val);
+  const handleExperienceYearsChange = (val) => {
+    setUpExperienceYears(val);
+    checkExperienceYears(val);
   };
-  const checkMinSalary = (val) => {
+  const checkExperienceYears = (val) => {
     if (val === "") {
-      setUpMinSalaryError("Please enter a minimum salary");
+      setUpExperienceYearsError("Please enter years of experience");
     } else if (isNaN(val)) {
-      setUpMinSalaryError("Minimum salary must be a number");
-    } else if (parseInt(val) < 0) {
-      setUpMinSalaryError("Minimum salary cannot be negative");
-    } else if (parseInt(val) > parseInt(upMaxSalary) && upMaxSalary !== "") {
-      setUpMinSalaryError("Minimum salary cannot be greater than maximum salary");
+      setUpExperienceYearsError("Years of experience must be a number");
+    }
+    else if (parseInt(val) < 0) {
+      setUpExperienceYearsError("Years of experience cannot be negative");
+    } else if (parseInt(val) > 50) {
+      setUpExperienceYearsError("Years of experience cannot exceed 50 years");
     } else {
-      setUpMinSalaryError("");
+      setUpExperienceYearsError("");
     }
   };
 
-  const handleMaxSalaryChange = (val) => {
-    setUpMaxSalary(val);
-    checkMaxSalary(val);
+  const handleExpectedSalaryChange = (val) => {
+    setUpExpectedSalary(val);
+    checkExpectedSalary(val);
   };
-  const checkMaxSalary = (val) => {
+  const checkExpectedSalary = (val) => {
     if (val === "") {
-      setUpMaxSalaryError("Please enter a maximum salary");
+      setUpExpectedSalaryError("Please enter a maximum salary");
     } else if (isNaN(val)) {
-      setUpMaxSalaryError("Maximum salary must be a number");
+      setUpExpectedSalaryError("Maximum salary must be a number");
     } else if (parseInt(val) < 0) {
-      setUpMaxSalaryError("Maximum salary cannot be negative");
-    } else if (parseInt(val) < parseInt(upMinSalary) && upMinSalary !== "") {
-      setUpMaxSalaryError("Maximum salary cannot be less than minimum salary");
+      setUpExpectedSalaryError("Maximum salary cannot be negative");
     } else {
-      setUpMaxSalaryError("");
+      setUpExpectedSalaryError("");
     }
   };
 
@@ -176,16 +175,16 @@ function Experience() {
       upGraduationDateError === "" &&
       upJobTitleError === "" &&
       upCompanyError === "" &&
-      upMinSalaryError === "" &&
-      upMaxSalaryError === "" &&
+      upExperienceYearsError === "" &&
+      upExpectedSalaryError === "" &&
       upDegree !== "" &&
       country !== "" &&
       upUniversity !== "" &&
       upGraduationDate !== "" &&
       upJobTitle !== "" &&
       upCompany !== "" &&
-      upMinSalary !== "" &&
-      upMaxSalary !== ""
+      upExperienceYears !== "" &&
+      upExpectedSalary !== ""
     ) {
       setExperienceDone(true);
     } else {
@@ -198,16 +197,16 @@ function Experience() {
     upGraduationDateError,
     upJobTitleError,
     upCompanyError,
-    upMinSalaryError,
-    upMaxSalaryError,
+    upExperienceYearsError,
+    upExpectedSalaryError,
     upDegree,
     country,
     upUniversity,
     upGraduationDate,
     upJobTitle,
     upCompany,
-    upMinSalary,
-    upMaxSalary,
+    upExperienceYears,
+    upExpectedSalary,
   ]);
 
   // Fetch universities based on selected country
@@ -280,15 +279,23 @@ function Experience() {
         ))}
       </select>
 
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Graduation Date</p>
+      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Graduation Year</p>
       {upGraduationDateError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upGraduationDateError}</p>}
-      <input
-        type="month"
-        placeholder="Enter your graduation year"
-        className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+      <select
+        className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
         value={upGraduationDate}
         onChange={(e) => handleGraduationDateChange(e.target.value)}
-      />
+      >
+        <option value="">Select Graduation Year</option>
+        {Array.from({ length: 50 }, (_, i) => {
+          const year = new Date().getFullYear() - i;
+          return (
+            <option key={year} value={year}>
+              {year}
+            </option>
+          );
+        })}
+      </select>
 
 
       <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Experience</h1>
@@ -301,7 +308,7 @@ function Experience() {
         className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
         value={upJobTitle}
         onChange={(e) => handleJobTitleChange(e.target.value)}
-        />
+      />
 
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Company</p>
       {upCompanyError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upCompanyError}</p>}
@@ -313,26 +320,26 @@ function Experience() {
         onChange={(e) => handleCompanyChange(e.target.value)}
       />
 
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Minimum Salary</p>
-      {upMinSalaryError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upMinSalaryError}</p>}
+      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Years of Experience</p>
+      {upExperienceYearsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upExperienceYearsError}</p>}
       <input
         type="number"
-        placeholder="Enter your minimum salary"
+        placeholder="Enter your years of experience"
         className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upMinSalary}
-        onChange={(e) => handleMinSalaryChange(e.target.value)}
+        value={upExperienceYears}
+        onChange={(e) => handleExperienceYearsChange(e.target.value)}
       />
 
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Maximum Salary</p>
-      {upMaxSalaryError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upMaxSalaryError}</p>}
+      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Expected Salary</p>
+      {upExpectedSalaryError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upExpectedSalaryError}</p>}
       <input
         type="number"
         placeholder="Enter your maximum salary"
         className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upMaxSalary}
-        onChange={(e) => handleMaxSalaryChange(e.target.value)}
+        value={upExpectedSalary}
+        onChange={(e) => handleExpectedSalaryChange(e.target.value)}
       />
-      
+
     </div>
   );
 }

@@ -53,6 +53,8 @@ function App() {
   const [upCodeError, setUpCodeError] = useState("");
   const [upPhoneNumber, setUpPhoneNumber] = useState("");
   const [upPhoneNumberError, setUpPhoneNumberError] = useState("");
+  const [upGender, setUpGender] = useState("");
+  const [upGenderError, setUpGenderError] = useState("");
   const [upDOB, setUpDOB] = useState("");
   const [upDOBError, setUpDOBError] = useState("");
   const [upCountry, setUpCountry] = useState("");
@@ -71,10 +73,10 @@ function App() {
   const [upJobTitleError, setUpJobTitleError] = useState("");
   const [upCompany, setUpCompany] = useState("");
   const [upCompanyError, setUpCompanyError] = useState("");
-  const [upMinSalary, setUpMinSalary] = useState("");
-  const [upMinSalaryError, setUpMinSalaryError] = useState("");
-  const [upMaxSalary, setUpMaxSalary] = useState("");
-  const [upMaxSalaryError, setUpMaxSalaryError] = useState("");
+  const [upExperienceYears, setUpExperienceYears] = useState("");
+  const [upExperienceYearsError, setUpExperienceYearsError] = useState("");
+  const [upExpectedSalary, setUpExpectedSalary] = useState("");
+  const [upExpectedSalaryError, setUpExpectedSalaryError] = useState("");
   const [experienceDone, setExperienceDone] = useState(false);
 
   const [hardSkills, setHardSkills] = useState([]);
@@ -334,6 +336,10 @@ function App() {
         setUpPhoneNumber,
         upPhoneNumberError,
         setUpPhoneNumberError,
+        upGender,
+        setUpGender,
+        upGenderError,
+        setUpGenderError,
         upDOB,
         setUpDOB,
         upDOBError,
@@ -370,15 +376,14 @@ function App() {
         setUpCompany,
         upCompanyError,
         setUpCompanyError,
-        upMinSalary,
-        setUpMinSalary,
-        upMinSalaryError,
-        setUpMinSalaryError,
-        upMaxSalary,
-        setUpMaxSalary,
-        setUpMaxSalary,
-        upMaxSalaryError,
-        setUpMaxSalaryError,
+        upExperienceYears,
+        setUpExperienceYears,
+        upExperienceYearsError,
+        setUpExperienceYearsError,
+        upExpectedSalary,
+        setUpExpectedSalary,
+        upExpectedSalaryError,
+        setUpExpectedSalaryError,
         experienceDone,
         setExperienceDone,
         //skills

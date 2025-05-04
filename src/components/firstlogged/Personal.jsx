@@ -19,6 +19,10 @@ const Personal = () => {
         setUpPhoneNumber,
         upPhoneNumberError,
         setUpPhoneNumberError,
+        upGender,
+        setUpGender,
+        upGenderError,
+        setUpGenderError,
         upDOB,
         setUpDOB,
         upDOBError,
@@ -59,6 +63,18 @@ const Personal = () => {
             setUpPhoneNumberError("Please enter a valid phone number");
         } else {
             setUpPhoneNumberError("");
+        }
+    };
+
+    const handleGenderChange = (val) => {
+        setUpGender(val);
+        checkGender(val);
+    };
+    const checkGender = (val) => {
+        if (val === "") {
+            setUpGenderError("Please select a Gender");
+        } else {
+            setUpGenderError("");
         }
     };
 
@@ -109,13 +125,13 @@ const Personal = () => {
     };
 
     useEffect(() => {
-        if (upCode !== "" && upPhoneNumber !== "" && upDOB !== "" && upCountry !== "" && upCity !== "" && upCodeError === "" && upPhoneNumberError === "" && upDOBError === "" && upCountryError === "" && upCityError === "") {
+        if (upCode !== "" && upPhoneNumber !== "" && upDOB !== "" && upCountry !== "" && upCity !== "" && upCodeError === "" && upPhoneNumberError === "" && upDOBError === "" && upCountryError === "" && upCityError === "" && upGender !== "" && upGenderError === "") {
             setPersonalDone(true);
         }
         else {
             setPersonalDone(false);
         }
-    }, [upCode, upPhoneNumber, upDOB, upCountry, upCity, upCodeError, upPhoneNumberError, upDOBError, upCountryError, upCityError]);
+    }, [upCode, upPhoneNumber, upDOB, upCountry, upCity, upCodeError, upPhoneNumberError, upDOBError, upCountryError, upCityError, upGender, upGenderError]);
 
 
     // Fetch country codes when the component mounts
@@ -206,11 +222,21 @@ const Personal = () => {
                 />
             </div>
 
+            <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Gender</p>
+            {upGenderError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upGenderError}</p>}
+            <select value={upGender} onChange={(e) => handleGenderChange(e.target.value)} className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
             <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Date of Birth</p>
             {upDOBError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upDOBError}</p>}
             <input
                 type="date"
                 value={upDOB}
+                min={"1930-01-01"}
+                max={new Date().toISOString().split("T")[0]}
                 onChange={(e) => handleDOBChange(e.target.value)}
                 className="h-fit w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
             />

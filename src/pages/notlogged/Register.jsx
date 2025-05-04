@@ -103,6 +103,12 @@ const Register = () => {
         const password = e.target.value
         if (password.length < 8) {
             setUpPasswordError("Password must be at least 8 characters long")
+        } else if (!/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[^A-Za-z0-9]/.test(password)) {
+            setUpPasswordError("Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character")
+        } else if (password.length > 20) {
+            setUpPasswordError("Password must be at most 20 characters long")
+        } else if (password.includes(" ")) {
+            setUpPasswordError("Password must not contain spaces")
         } else {
             setUpPasswordError("")
         }
