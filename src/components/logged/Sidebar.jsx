@@ -64,7 +64,7 @@ const Sidebar = () => {
                 className="p-0.5"
               />
             </ListItemPrefix>
-            Hi, {userData.fullName.split(" ")[0]}
+            Hi, {userData != {} && userData.fullName.split(" ")[0]}
           </ListItem>
           <hr className="my-2 border-blue-gray-50" />
           <ListItem onClick={() => handleNavigation("/job-recommendation")}>

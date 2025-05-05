@@ -85,7 +85,7 @@ const LoggedDB = () => {
               className="p-0.5"
             />
           </Button>
-          <div className="hidden sm:block">Hi, {userData.fullName.split(" ")[0]}</div>
+          <div className="hidden sm:block">Hi, {userData != {} && userData.fullName.split(" ")[0]}</div>
           <Button
             variant="text"
             size="sm"
