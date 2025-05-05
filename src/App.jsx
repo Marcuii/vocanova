@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 
 import NotLoggedDB from './pages/notlogged/NotLoggedDB'
 import Login from './pages/notlogged/Login'
@@ -16,11 +16,53 @@ import ResetPassword from './pages/notlogged/ResetPassword'
 
 
 function App() {
+  //App states
   const [loggedIn, setLoggedIn] = useState(false)
   const [firstLogin, setFirstLogin] = useState(false)
   const [token, setToken] = useState(null)
-  const [userData, setUserData] = useState(null)
+  const [userData, setUserData] = useState({
+          city: "Luxor ",
+          company: "ICPC EELU",
+          country: "Palastin ",
+          dateOfBirth:
+            "0001-01-01T00:00:00",
+          degree
+            :
+            "Bachelor",
+          email
+            :
+            "depalh19@gmail.com",
+          fullName: "Esmail Mohamed",
+          gender
+            :
+            "Male",
+          graduationYear
+            :
+            null,
+          jobTitle
+            :
+            "Back end ",
+          phoneNumber
+            :
+            "01068673112",
+          profilePictureUrl
+            :
+            "https://localhost:7126/images/6dea5ca5-aee5-4c9e-a716-f90242a39fac.jpg",
+          resumeFileUrl
+            :
+            "https://localhost:7126/files/e8d6673c-ad89-42b8-96cc-7873652a7150.pdf",
+          salaryExpectations
+            :
+            null,
+          skills
+            :
+            [],
+          university
+            :
+            "EELU"
+        })
 
+  //NotLogged Layout -----------------------------------
   //login states
   const [inEmail, setInEmail] = useState("")
   const [inEmailError, setInEmailError] = useState("")
@@ -28,7 +70,6 @@ function App() {
   const [inPasswordError, setInPasswordError] = useState("")
   const [rememberMe, setRememberMe] = useState(false)
   const [loginError, setLoginError] = useState("")
-
   //register states
   const [upName, setUpName] = useState("")
   const [upNameError, setUpNameError] = useState("")
@@ -42,13 +83,13 @@ function App() {
   const [upConfirmPasswordError, setUpConfirmPasswordError] = useState("")
   const [registerError, setRegisterError] = useState("")
   const [registerSuccess, setRegisterSuccess] = useState(false)
-
   //recovery states
   const [inRecoveryEmail, setInRecoveryEmail] = useState("")
   const [inRecoveryEmailError, setInRecoveryEmailError] = useState("")
   const [inRecoveryEmailSuccess, setInRecoveryEmailSuccess] = useState(false)
 
-  //first login states
+  //FirstLogged Layout -----------------------------------
+  //personal states
   const [upCode, setUpCode] = useState("");
   const [upCodeError, setUpCodeError] = useState("");
   const [upPhoneNumber, setUpPhoneNumber] = useState("");
@@ -62,7 +103,7 @@ function App() {
   const [upCity, setUpCity] = useState("");
   const [upCityError, setUpCityError] = useState("");
   const [personalDone, setPersonalDone] = useState(false);
-
+  //experience states
   const [upDegree, setUpDegree] = useState("");
   const [upDegreeError, setUpDegreeError] = useState("");
   const [upUniversity, setUpUniversity] = useState("");
@@ -78,22 +119,26 @@ function App() {
   const [upExpectedSalary, setUpExpectedSalary] = useState("");
   const [upExpectedSalaryError, setUpExpectedSalaryError] = useState("");
   const [experienceDone, setExperienceDone] = useState(false);
-
+  //skills states
   const [hardSkills, setHardSkills] = useState([]);
   const [hardSkillsError, setHardSkillsError] = useState("");
   const [softSkills, setSoftSkills] = useState([]);
   const [softSkillsError, setSoftSkillsError] = useState("");
   const [skillsDone, setSkillsDone] = useState(false);
-
+  //avatar states
   const [avatar, setAvatar] = useState(null)
   const [avatarDone, setAvatarDone] = useState(false)
-
+  //resume states
   const [resume, setResume] = useState(null)
   const [resumeError, setResumeError] = useState("")
   const [resumeDone, setResumeDone] = useState(false)
-
+  //submit profile states
   const [submitProfileError, setSubmitProfileError] = useState("")
+  //Logged Layout -----------------------------------
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
+
+  const navigate = useNavigate()
 
   //check if user is logged in
   useEffect(() => {
@@ -354,6 +399,23 @@ function App() {
     }
   }
 
+  //handle logout function
+  const handleLogout = () => {
+    setLoggedIn(false)
+    setFirstLogin(false)
+    setToken(null)
+    setUserData({})
+    navigate("/")
+    if (localStorage.getItem("loggedIn") === "true") {
+      localStorage.removeItem("token")
+      localStorage.removeItem("loggedIn")
+    }
+    if (sessionStorage.getItem("loggedIn") === "true") {
+      sessionStorage.removeItem("token")
+      sessionStorage.removeItem("loggedIn")
+    }
+  }
+
   return (
     <Context.Provider value={
       {
@@ -508,6 +570,13 @@ function App() {
         setSubmitProfileError,
         //app profile setup
         handleProfileSetup,
+
+        //Logged Layout ----------------------------
+        //app logout
+        handleLogout,
+        
+        isSidebarOpen,
+        setIsSidebarOpen,
         
       }
     }>
@@ -524,11 +593,11 @@ function App() {
           <Route path="/profile-complete" element={<ProfileSetup />} />
 
           <Route path="/job-recommendation" element={<LoggedDB />} />
-          <Route path="/profile" element={<LoggedDB />} />
           <Route path="/job-applications" element={<LoggedDB />} />
           <Route path="/job-application/:id" element={<LoggedDB />} />
           <Route path="/resume-analysis" element={<LoggedDB />} />
           <Route path="/mockup-interview" element={<LoggedDB />} />
+          <Route path="/profile" element={<LoggedDB />} />
           <Route path="/settings" element={<LoggedDB />} />
         </Routes>
       </div>

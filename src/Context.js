@@ -153,6 +153,13 @@ const Context = createContext(
         setSubmitProfileError: () => {},
         //app profile setup
         handleProfileSetup: () => {},
+
+        //Logged Layout ----------------------------
+        //app logout
+        handleLogout: () => {},
+        
+        isSidebarOpen: false,
+        setIsSidebarOpen: () => {},
     }
 );
 
