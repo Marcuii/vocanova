@@ -148,6 +148,11 @@ const Context = createContext(
         setResumeError: () => {},
         resumeDone: false,
         setResumeDone: () => {},
+        //submit profile
+        submitProfileError: "",
+        setSubmitProfileError: () => {},
+        //app profile setup
+        handleProfileSetup: () => {},
     }
 );
 

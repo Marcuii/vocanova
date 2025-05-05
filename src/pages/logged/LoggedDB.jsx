@@ -5,20 +5,24 @@ import { useContext, useEffect } from 'react'
 const LoggedDB = () => {
   const {
     //App states
+    loggedIn,
+    setLoggedIn,
     firstLogin,
     setFirstLogin,
-
-    
   } = useContext(Context)
 
   const navigate = useNavigate()
 
   // Redirect to home or profile-complete page if logged in
   useEffect(() => {
-    if (firstLogin) {
-      navigate("/profile-complete")
+    if (loggedIn) {
+      if (firstLogin) {
+        navigate("/profile-complete")
+      }
+    } else {
+      navigate("/")
     }
-  }, [firstLogin])
+  }, [loggedIn, firstLogin])
 
   return (
     <div>LoggedDB</div>

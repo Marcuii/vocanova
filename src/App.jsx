@@ -92,19 +92,33 @@ function App() {
   const [resumeError, setResumeError] = useState("")
   const [resumeDone, setResumeDone] = useState(false)
 
+  const [submitProfileError, setSubmitProfileError] = useState("")
+
 
   //check if user is logged in
   useEffect(() => {
     if (localStorage.getItem("loggedIn") === "true" || sessionStorage.getItem("loggedIn") === "true") {
-      setLoggedIn(true)
-      if (localStorage.getItem("loggedIn") === "true") {
+      if (localStorage.getItem("token") !== null) {
+        setLoggedIn(true)
         setToken(localStorage.getItem("token"))
-      }
-      if (sessionStorage.getItem("loggedIn") === "true") {
+      } else if (sessionStorage.getItem("token") !== null) {
+        setLoggedIn(true)
         setToken(sessionStorage.getItem("token"))
+      } else {
+        localStorage.removeItem("loggedIn")
+        localStorage.removeItem("token")
+        sessionStorage.removeItem("loggedIn")
+        sessionStorage.removeItem("token")
+        setLoggedIn(false)
+        setToken(null)
       }
     } else {
+      localStorage.removeItem("loggedIn")
+      localStorage.removeItem("token")
+      sessionStorage.removeItem("loggedIn")
+      sessionStorage.removeItem("token")
       setLoggedIn(false)
+      setToken(null)
     }
   }
   , [])
@@ -256,8 +270,89 @@ function App() {
     }
   }
 
+  //refresh token function
+  const refreshToken = async () => {
+    // Perform refresh token logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/auth/refresh", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+      if (response.status !== 200) {
+        setLoggedIn(false)
+        setFirstLogin(false)
+        if (localStorage.getItem("loggedIn") === "true") {
+          localStorage.removeItem("token")
+          localStorage.removeItem("loggedIn")
+        }
+        if (sessionStorage.getItem("loggedIn") === "true") {
+          sessionStorage.removeItem("token")
+          sessionStorage.removeItem("loggedIn")
+        }
+      } else {
+        const data = await response.json()
+        setToken(data.token)
+        if (localStorage.getItem("loggedIn") === "true") {
+          localStorage.setItem("token", data.token)
+        } else if (sessionStorage.getItem("loggedIn") === "true") {
+          sessionStorage.setItem("token", data.token)
+        }
+      }
+      return
+    } catch (error) {
+      // Handle error here
+      console.error("Error during refresh token:", error)
+    }
+  }
+
   //profile setup function
-  
+  const handleProfileSetup = async () => {
+    const formData = new FormData()
+    formData.append("PhoneNumber", upCode + upPhoneNumber)
+    formData.append("Gender", upGender)
+    formData.append("DateOfBirth", upDOB)
+    formData.append("Country", upCountry)
+    formData.append("City", upCity)
+    formData.append("Degree", upDegree)
+    formData.append("University", upUniversity)
+    formData.append("GraduationDate", upGraduationDate)
+    formData.append("JobTitle", upJobTitle)
+    formData.append("Company", upCompany)
+    formData.append("ExperienceYears", upExperienceYears)
+    formData.append("ExpectedSalary", upExpectedSalary)
+    formData.append("HardSkills", hardSkills)
+    formData.append("SoftSkills", softSkills)
+    formData.append("Avatar", avatar)
+    formData.append("Resume", resume)
+
+    // Perform profile setup logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/me/add-profile-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: formData,
+      })
+      if (response.status === 401) {
+        setSubmitProfileError("Unauthorized")
+      } else if (response.status === 500) {
+        setSubmitProfileError("Server error, please try again later")
+      } else if (response.status === 200) {
+        setSubmitProfileError("")
+        setFirstLogin(false)
+      }
+      return
+    }
+    catch (error) {
+      // Handle error here
+      console.error("Error during profile setup:", error)
+    }
+  }
 
   return (
     <Context.Provider value={
@@ -408,6 +503,11 @@ function App() {
         setResumeError,
         resumeDone,
         setResumeDone,
+        //submit profile
+        submitProfileError,
+        setSubmitProfileError,
+        //app profile setup
+        handleProfileSetup,
         
       }
     }>
@@ -417,9 +517,19 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/recovery" element={<Recovery />} />
+
           <Route path="/auth/email-confirm" element={<EmailConfirm />} />
           <Route path="/auth/reset-password" element={<ResetPassword />} />
+
           <Route path="/profile-complete" element={<ProfileSetup />} />
+
+          <Route path="/job-recommendation" element={<LoggedDB />} />
+          <Route path="/profile" element={<LoggedDB />} />
+          <Route path="/job-applications" element={<LoggedDB />} />
+          <Route path="/job-application/:id" element={<LoggedDB />} />
+          <Route path="/resume-analysis" element={<LoggedDB />} />
+          <Route path="/mockup-interview" element={<LoggedDB />} />
+          <Route path="/settings" element={<LoggedDB />} />
         </Routes>
       </div>
     </Context.Provider>

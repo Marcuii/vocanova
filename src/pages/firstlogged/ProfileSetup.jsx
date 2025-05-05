@@ -12,6 +12,7 @@ import Avatar from '../../components/firstlogged/Avatar';
 import Context from '../../Context';
 import Resume from '../../components/firstlogged/Resume';
 import { useNavigate } from 'react-router';
+import { MdError } from 'react-icons/md';
 
 
 const ProfileSetup = () => {
@@ -40,6 +41,10 @@ const ProfileSetup = () => {
         setAvatarDone,
         resumeDone,
         setResumeDone,
+
+        //submit profile
+        submitProfileError,
+        setSubmitProfileError,
     } = useContext(Context);
 
     const navigate = useNavigate()
@@ -104,6 +109,8 @@ const ProfileSetup = () => {
             <div className='w-5/6 lg:w-1/3 lg:ml-12 xl:ml-20 flex flex-col items-center text-start gap-7'>
                 <h1 className='w-full text-3xl'>Share a bit about yourself.</h1>
                 <p className='w-full text-vngrey3 font-thin'>Select your field of work. This information will help us optimize your experience.</p>
+
+                {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
 
                 <div className="w-full h-full">
                     <Stepper
