@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router'
 import Context from '../../Context'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Sidebar from '../../components/logged/Sidebar'
 import { Typography, Button, Avatar } from '@material-tailwind/react'
 import React from 'react'
@@ -14,6 +14,8 @@ import Profile from './../../components/logged/Profile';
 import Settings from './../../components/logged/Settings';
 
 const LoggedDB = () => {
+  const [name, setName] = useState("")
+
   const {
     //App states
     loggedIn,
@@ -60,6 +62,14 @@ const LoggedDB = () => {
     }
   }, [loggedIn, firstLogin])
 
+  useEffect(() => {
+    if (userData) {
+      setName(userData.fullName.split(" ")[0])
+    } else {
+      setName("")
+    }
+  } , [userData])
+
   return (
     <div className="w-full min-h-screen flex flex-col justify-start gap-5">
       {/* Navbar */}
@@ -85,7 +95,7 @@ const LoggedDB = () => {
               className="p-0.5"
             />
           </Button>
-          <div className="hidden sm:block">Hi, {userData != {} && userData.fullName.split(" ")[0]}</div>
+          <div className="hidden sm:block">Hi, {name}</div>
           <Button
             variant="text"
             size="sm"

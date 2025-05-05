@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import {
   Typography,
   List,
@@ -18,6 +18,8 @@ import { ClipboardDocumentListIcon, DocumentMagnifyingGlassIcon, MagnifyingGlass
 import { useNavigate } from "react-router";
 
 const Sidebar = () => {
+  const [name, setName] = React.useState("");
+
   const {
     //App states
     userData,
@@ -32,6 +34,14 @@ const Sidebar = () => {
   } = useContext(Context);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+      if (userData) {
+        setName(userData.fullName.split(" ")[0])
+      } else {
+        setName("")
+      }
+    } , [userData])
 
   //redirect to clicked page + close sidebar
   const handleNavigation = (path) => {
@@ -64,7 +74,7 @@ const Sidebar = () => {
                 className="p-0.5"
               />
             </ListItemPrefix>
-            Hi, {userData != {} && userData.fullName.split(" ")[0]}
+            Hi, {name}
           </ListItem>
           <hr className="my-2 border-blue-gray-50" />
           <ListItem onClick={() => handleNavigation("/job-recommendation")}>
