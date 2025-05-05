@@ -63,7 +63,7 @@ const LoggedDB = () => {
   }, [loggedIn, firstLogin])
 
   useEffect(() => {
-    if (userData) {
+    if (userData.fullName) {
       setName(userData.fullName.split(" ")[0])
     } else {
       setName("")
