@@ -398,7 +398,7 @@ const JobApplications = () => {
       </Dialog>
 
       <Dialog open={openEdit} handler={handleopenEdit}>
-        <DialogHeader>Add new job application</DialogHeader>
+        <DialogHeader>Edit job application</DialogHeader>
         <DialogBody className="flex flex-col gap-4 w-full max-h-[80vh] overflow-y-auto">
             <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
             <input
@@ -445,7 +445,7 @@ const JobApplications = () => {
             <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
             <input
               type="date"
-              value={appDate.toISOString().split('T')[0]}
+              value={appDate}
               onChange={(e) => handleDateChange(new Date(e.target.value))}
               className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
             />
