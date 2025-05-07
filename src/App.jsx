@@ -378,9 +378,10 @@ function App() {
         },
         body: formData,
       })
-      if (response.status !== 200) {
+      if (response.status !== 201) {
         setSubmitProfileError("Server error, please try again later")
-      } else if (response.status === 200) {
+        console.log(response.status)
+      } else if (response.status === 201) {
         setSubmitProfileError("")
         setFirstLogin(false)
       }
