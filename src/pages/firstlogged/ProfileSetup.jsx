@@ -112,7 +112,7 @@ const ProfileSetup = () => {
                 <h1 className='w-full text-3xl'>Share a bit about yourself.</h1>
                 <p className='w-full text-vngrey3 font-thin'>Select your field of work. This information will help us optimize your experience.</p>
 
-                {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
+                {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-center w-full text-error'><MdError />{submitProfileError}</p>}
 
                 <div className="w-full h-full">
                     <Stepper

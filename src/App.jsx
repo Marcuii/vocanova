@@ -374,7 +374,6 @@ function App() {
       const response = await fetch(import.meta.env.VITE_BASE_URL + "/me/add-profile-data", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
         body: formData,
