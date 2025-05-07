@@ -124,7 +124,7 @@ const JobApplications = () => {
     const formData = new FormData()
     formData.append("jobTitle", appJobTitle)
     formData.append("companyName", appCompanyName)
-    formData.append("source", appSource)
+    formData.append("ApplicationSource", appSource)
     formData.append("status", appStatus)
     formData.append("applicationDate", appDate.toISOString())
     formData.append("notes", appNotes)
