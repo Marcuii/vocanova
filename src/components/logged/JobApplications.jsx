@@ -129,7 +129,7 @@ const JobApplications = () => {
     formData.append("applicationDate", appDate.toISOString())
     formData.append("notes", appNotes)
     if (appAttachments.length) {
-        formData.append("attachments", appAttachments)
+        formData.append("attachment", appAttachments)
     }
     // Handle form submission logic here
     try {
