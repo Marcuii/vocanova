@@ -263,7 +263,7 @@ const JobApplications = () => {
           >
             <span>Cancel</span>
           </Button>
-          <Button disabled={actButton} variant="gradient" color="green" onClick={handleopen}>
+          <Button disabled={actButton} onClick={submitApplication} variant="gradient" color="green">
             <span>Confirm</span>
           </Button>
         </DialogFooter>
