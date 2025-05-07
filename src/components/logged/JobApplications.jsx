@@ -120,23 +120,25 @@ const JobApplications = () => {
   const handleopen = () => setOpen(!open)
 
   const submitApplication = async () => {
+    // formData
+    const formData = new FormData()
+    formData.append("jobTitle", appJobTitle)
+    formData.append("companyName", appCompanyName)
+    formData.append("source", appSource)
+    formData.append("status", appStatus)
+    formData.append("applicationDate", appDate.toISOString())
+    formData.append("notes", appNotes)
+    if (appAttachments.length) {
+        formData.append("attachments", appAttachments)
+    }
     // Handle form submission logic here
     try {
       const response = await fetch(import.meta.env.VITE_BASE_URL + "/JobApplication", {
         method: "POST",
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
           "Authorization": `Bearer ${token}`,
         },
-        body: JSON.stringify({
-          jobTitle: appJobTitle,
-          companyName: appCompanyName,
-          source: appSource,
-          status: appStatus,
-          applicationDate: appDate.toISOString(),
-          notes: appNotes,
-          attachments: appAttachments,
-        }),
+        body: formData,
       }) 
       if (response.status === 200) {
         getJobApplications()
