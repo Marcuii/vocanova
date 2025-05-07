@@ -16,8 +16,9 @@ const JobApplications = () => {
   const [actButton, setActButton] = useState(true)
 
   const {
-    getJobApplications,
     token,
+    jobApplications,
+    getJobApplications,
     handleLogout,
   } = useContext(Context)
 
@@ -168,6 +169,23 @@ const JobApplications = () => {
             <FaPlus />
           </button>
         </div>
+          {jobApplications.length > 0 ? (
+            jobApplications.map((application, index) => (
+              <div key={index} onClick={console.log(application)} className='w-1/2 lg:w-1/3 flex flex-col items-start justify-start gap-2 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
+                <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
+                <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
+                <p className='text-md text-vngrey2'>Status: 
+                  {application.status === "Offered" && <span className="bg-vngrey1 p-3 rounded-lg"> {application.status}</span>}
+                  {application.status === "Applied" && <span className="bg-secondary p-3 rounded-lg"> {application.status}</span>}
+                  {application.status === "Interviewed" && <span className="bg-primary p-3 rounded-lg"> {application.status}</span>}
+                  {application.status === "Rejected" && <span className="bg-error p-3 rounded-lg"> {application.status}</span>}
+                  {application.status === "Accepted" && <span className="bg-success p-3 rounded-lg"> {application.status}</span>}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className='text-md text-gray-600'>No job applications found.</p>
+          )}
 
 
       </div>
