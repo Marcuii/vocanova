@@ -362,7 +362,7 @@ function App() {
     formData.append("GraduationYear", upGraduationDate)
     formData.append("JobTitle", upJobTitle)
     formData.append("Company", upCompany)
-    //formData.append("ExperienceYears", upExperienceYears)
+    formData.append("ExperienceYears", upExperienceYears)
     formData.append("SalaryExpectations", upExpectedSalary)
     formData.append("HardSkills", hardSkills)
     formData.append("SoftSkills", softSkills)
