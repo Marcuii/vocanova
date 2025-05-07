@@ -141,7 +141,6 @@ const JobApplications = () => {
       }) 
       if (response.status === 204) {
         getJobApplications()
-        console.log(response.status)
         window.location.reload()
       } else if (response.status === 401) {
         handleLogout()
@@ -149,6 +148,7 @@ const JobApplications = () => {
       else {
         const errorData = await response.json()
         console.error("Error:", errorData)
+        console.log(response.status)
       }
       return 
     } catch (error) {
