@@ -13,7 +13,58 @@ import Context from "../../Context";
 
 const JobApplications = () => {
   const [open, setOpen] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false)
+  const [curApp, setCurApp] = useState({})
   const [actButton, setActButton] = useState(true)
+
+  const handleopen = () => {
+    if (open) {
+      setOpen(false)
+      setAppJobTitle("")
+      setAppCompanyName("")
+      setAppSource("")
+      setAppStatus("")
+      setAppDate(new Date())
+      setAppNotes("")
+      setAppAttachments([])
+      setAppJobTitleError("")
+      setAppCompanyNameError("")
+      setAppSourceError("")
+      setAppStatusError("")
+      setAppDateError("")
+    }
+    else {
+      setOpen(true)
+    }
+  }
+  const handleopenEdit = () => {
+    if (openEdit) {
+      setOpenEdit(false)
+      setCurApp({})
+      setAppJobTitle("")
+      setAppCompanyName("")
+      setAppSource("")
+      setAppStatus("")
+      setAppDate(new Date())
+      setAppNotes("")
+      setAppAttachments([])
+      setAppJobTitleError("")
+      setAppCompanyNameError("")
+      setAppSourceError("")
+      setAppStatusError("")
+      setAppDateError("")
+    }
+    else {
+      setOpenEdit(true)
+      setAppJobTitle(curApp.jobTitle)
+      setAppCompanyName(curApp.companyName)
+      setAppSource(curApp.ApplicationSource)
+      setAppStatus(curApp.status)
+      setAppDate(new Date(curApp.applicationDate))
+      setAppNotes(curApp.notes)
+      setAppAttachments(curApp.attachment)
+    }
+  }
 
   const {
     token,
@@ -116,10 +167,6 @@ const JobApplications = () => {
     }
   }, [appJobTitleError, appCompanyNameError, appSourceError, appStatusError, appDateError, appJobTitle, appCompanyName, appSource, appStatus, appDate])
 
-
-
-  const handleopen = () => setOpen(!open)
-
   const submitApplication = async () => {
     // formData
     const formData = new FormData()
@@ -156,6 +203,68 @@ const JobApplications = () => {
       console.error("Error during get user data:", error)
     }
   }
+
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + `/JobApplication/${curApp.id}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+      if (response.status === 200) {
+        getJobApplications()
+        window.location.reload()
+      } else if (response.status === 401) {
+        handleLogout()
+      }
+      else {
+        const errorData = await response.json()
+        console.error("Error:", errorData)
+      }
+      return
+    }
+    catch (error) {
+      // Handle error here
+      console.error("Error during get user data:", error)
+    }
+  }
+  const handleEdit = async () => {
+    // formData
+    const formData = new FormData()
+    formData.append("jobTitle", appJobTitle)
+    formData.append("companyName", appCompanyName)
+    formData.append("ApplicationSource", appSource)
+    formData.append("status", appStatus)
+    formData.append("applicationDate", appDate.toISOString())
+    formData.append("notes", appNotes)
+    formData.append("attachment", appAttachments)
+
+    // Handle form submission logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + `/JobApplication/${curApp.id}`, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        body: formData,
+      })
+      if (response.status === 200) {
+        getJobApplications()
+        window.location.reload()
+      } else if (response.status === 401) {
+        handleLogout()
+      }
+      else {
+        const errorData = await response.json()
+        console.error("Error:", errorData)
+      }
+      return
+    } catch (error) {
+      // Handle error here
+      console.error("Error during get user data:", error)
+    }
+  }
   
   
   return (
@@ -171,20 +280,20 @@ const JobApplications = () => {
         </div>
           {jobApplications.length > 0 ? (
             jobApplications.map((application, index) => (
-              <div key={index} onClick={console.log(application)} className='w-1/2 lg:w-1/3 flex flex-col items-start justify-start gap-2 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
+              <div key={index} onClick={() => setCurApp(application)} className='w-5/12 lg:w-3/12 flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
                 <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
                 <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
                 <p className='text-md text-vngrey2'>Status: 
-                  {application.status === "Offered" && <span className="bg-vngrey1 p-3 rounded-lg"> {application.status}</span>}
-                  {application.status === "Applied" && <span className="bg-secondary p-3 rounded-lg"> {application.status}</span>}
-                  {application.status === "Interviewed" && <span className="bg-primary p-3 rounded-lg"> {application.status}</span>}
-                  {application.status === "Rejected" && <span className="bg-error p-3 rounded-lg"> {application.status}</span>}
-                  {application.status === "Accepted" && <span className="bg-success p-3 rounded-lg"> {application.status}</span>}
+                  {application.status === "Offered" && <span className="bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
+                  {application.status === "Applied" && <span className="bg-secondary p-2 rounded-lg"> {application.status}</span>}
+                  {application.status === "Interviewed" && <span className="bg-primary p-2 rounded-lg"> {application.status}</span>}
+                  {application.status === "Rejected" && <span className="bg-error p-2 rounded-lg"> {application.status}</span>}
+                  {application.status === "Accepted" && <span className="bg-success p-2 rounded-lg"> {application.status}</span>}
                 </p>
               </div>
             ))
           ) : (
-            <p className='text-md text-gray-600'>No job applications found.</p>
+            <p className='text-2xl text-vnblack1'>No job applications found.</p>
           )}
 
 
@@ -287,6 +396,103 @@ const JobApplications = () => {
           </Button>
         </DialogFooter>
       </Dialog>
+
+      <Dialog open={openEdit} handler={handleopenEdit}>
+        <DialogHeader>Add new job application</DialogHeader>
+        <DialogBody className="flex flex-col gap-4 w-full max-h-[80vh] overflow-y-auto">
+            <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
+            <input
+              type="text"
+              value={appJobTitle}
+              onChange={(e) => handleJobTitleChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appJobTitleError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appJobTitleError && <p className="text-red-500 text-sm">{appJobTitleError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Company Name</label>
+            <input
+              type="text"
+              value={appCompanyName}
+              onChange={(e) => handleCompanyNameChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appCompanyNameError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appCompanyNameError && <p className="text-red-500 text-sm">{appCompanyNameError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Source</label>
+            <input
+              type="text"
+              value={appSource}
+              onChange={(e) => handleSourceChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appSourceError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appSourceError && <p className="text-red-500 text-sm">{appSourceError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Status</label>
+            <select
+              value={appStatus}
+              onChange={(e) => handleStatusChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
+            >
+              <option value="">Select status</option>
+              <option value="offer">Offered</option>
+              <option value="applied">Applied</option>
+              <option value="interview">Interviewed</option>
+              <option value="rejected">Rejected</option>
+              <option value="accepted">Accepted</option>
+            </select>
+            {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
+            <input
+              type="date"
+              value={appDate.toISOString().split('T')[0]}
+              onChange={(e) => handleDateChange(new Date(e.target.value))}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
+            <textarea
+              value={appNotes}
+              onChange={(e) => setAppNotes(e.target.value)}
+              className="w-full p-2 border text-vnblack1 rounded-md min-h-16"
+              rows="4"
+            ></textarea>
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
+            <input
+              type="file"
+              onChange={(e) => setAppAttachments(e.target.files[0])}
+              accept=".doc, .docx, .pdf"
+              className="w-full p-2 border text-vnblack1 rounded-md"
+            />
+            {appAttachments.length > 0 && (
+              <ul className="list-disc pl-5 mt-2">
+                {appAttachments.map((file, index) => (
+                  <li key={index} className="text-vnblack1">{file.name}</li>
+                ))}
+              </ul>
+            )}
+
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleopenEdit}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button onClick={handleDelete} variant="gradient" color="red">
+            <span>Delete</span>
+          </Button>
+          <Button disabled={actButton} onClick={handleEdit} variant="gradient" color="green">
+            <span>Save</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
+
     </div>
   )
 }
