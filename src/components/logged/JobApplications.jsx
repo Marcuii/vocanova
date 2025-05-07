@@ -77,7 +77,6 @@ const JobApplications = () => {
       setOpenEdit(false)
     }
     else {
-      
       setOpenEdit(true)
     }
   }
@@ -86,9 +85,9 @@ const JobApplications = () => {
     if (openEdit) {
       setAppJobTitle(curApp.jobTitle)
       setAppCompanyName(curApp.companyName)
-      setAppSource(curApp.ApplicationSource)
+      setAppSource(curApp.applicationSource)
       setAppStatus(curApp.status)
-      setAppDate(new Date())
+      setAppDate(new Date(curApp.applicationDate))
       setAppNotes(curApp.notes)
       setAppAttachments(curApp.attachment)
     }
@@ -170,7 +169,7 @@ const JobApplications = () => {
 
   // Check if any of the fields are empty or have errors
   useEffect(() => {
-    if (appJobTitleError || appCompanyNameError || appSourceError || appStatusError || appDateError || appDate== "" || appStatus== "" || appJobTitle== "" || appCompanyName== "" || appSource== "") {
+    if (appJobTitleError || appCompanyNameError || appSourceError || appStatusError || appDateError || appDate == "" || appStatus == "" || appJobTitle == "" || appCompanyName == "" || appSource == "") {
       setActButton(true)
     } else {
       setActButton(false)
@@ -188,7 +187,7 @@ const JobApplications = () => {
     formData.append("applicationDate", appDate.toISOString())
     formData.append("notes", appNotes)
     formData.append("attachment", appAttachments)
-    
+
     // Handle form submission logic here
     try {
       const response = await fetch(import.meta.env.VITE_BASE_URL + "/JobApplication", {
@@ -197,14 +196,14 @@ const JobApplications = () => {
           "Authorization": `Bearer ${token}`,
         },
         body: formData,
-      }) 
+      })
       if (response.status === 201) {
         getJobApplications()
         window.location.reload()
       } else if (response.status === 401) {
         handleLogout()
       }
-      return 
+      return
     } catch (error) {
       // Handle error here
       console.error("Error during get user data:", error)
@@ -251,7 +250,7 @@ const JobApplications = () => {
         },
         body: formData,
       })
-      if (response.status === 200) {
+      if (response.status === 204) {
         getJobApplications()
         window.location.reload()
       } else if (response.status === 401) {
@@ -266,8 +265,8 @@ const JobApplications = () => {
       console.error("Error during get user data:", error)
     }
   }
-  
-  
+
+
   return (
     <div className='w-full min-h-screen flex flex-col lg:flex-row justify-start items-center lg:justify-center lg:items-start gap-5 p-4'>
       <div className='w-11/12 lg:w-2/3 flex flex-wrap items-center justify-center gap-4 p-4'>
@@ -279,101 +278,120 @@ const JobApplications = () => {
             <FaPlus />
           </button>
         </div>
-          {jobApplications.length > 0 ? (
-            jobApplications.map((application, index) => (
-              <div key={index} onClick={() => {setCurApp(application), handleopenEdit()}} className='w-5/12 lg:w-3/12 flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
-                <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
-                <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
-                <p className='text-md text-vngrey2'>Status: 
-                  {application.status === "Offered" && <span className="bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
-                  {application.status === "Applied" && <span className="bg-secondary p-2 rounded-lg"> {application.status}</span>}
-                  {application.status === "Interviewed" && <span className="bg-primary p-2 rounded-lg"> {application.status}</span>}
-                  {application.status === "Rejected" && <span className="bg-error p-2 rounded-lg"> {application.status}</span>}
-                  {application.status === "Accepted" && <span className="bg-success p-2 rounded-lg"> {application.status}</span>}
-                </p>
-              </div>
-            ))
-          ) : (
-            <p className='text-2xl text-vnblack1'>No job applications found.</p>
-          )}
+        {jobApplications.length > 0 ? (
+          jobApplications.map((application, index) => (
+            <div key={index} onClick={() => { setCurApp(application), handleopenEdit() }} className='w-5/12 lg:w-3/12 flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
+              <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
+              <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
+              <p className='text-md text-vngrey2'>Status:
+                {application.status === "Offered" && <span className="bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Applied" && <span className="bg-secondary p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Interviewed" && <span className="bg-primary p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Rejected" && <span className="bg-error p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Accepted" && <span className="bg-success p-2 rounded-lg"> {application.status}</span>}
+              </p>
+            </div>
+          ))
+        ) : (
+          <p className='text-2xl text-vnblack1'>No job applications found.</p>
+        )}
 
 
       </div>
-      <Calendar
-        className='w-11/12 lg:w-1/3 p-4 rounded-xl bg-white shadow-lg'
-        value={new Date()}
+      <div className='w-11/12 lg:w-1/3 p-4 flex flex-col items-center justify-center gap-4 h-full'>
+        <h1 className='text-2xl text-center'>Calendar</h1>
+        <Calendar
+          className='w-full p-4 rounded-xl bg-white shadow-lg'
+          value={new Date()}
 
-      />
+        />
+        <hr className='w-full border-vngrey1' />
+        <h1 className='text-xl text-center'>Coming Important Dates</h1>
+        {jobApplications.length > 0 ? (
+          jobApplications.map((application, index) => {
+            new Date(application.applicationDate) > new Date() ? (
+              <div key={index} className='w-full flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
+                <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
+                <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
+                <p className='text-md text-vngrey2'>Date: <span className="text-vnblack1">{new Date(application.applicationDate).toLocaleDateString()}</span></p>
+              </div>
+            ) : null
+          })
+        ) : (
+          <p className='text-2xl text-vnblack1'>No important dates found.</p>
+        )}
+
+      </div>
 
       <Dialog open={open} handler={handleopen}>
         <DialogHeader>Add new job application</DialogHeader>
         <DialogBody className="flex flex-col gap-4 w-full max-h-[80vh] overflow-y-auto">
-            <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
-            <input
-              type="text"
-              value={appJobTitle}
-              onChange={(e) => handleJobTitleChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appJobTitleError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appJobTitleError && <p className="text-red-500 text-sm">{appJobTitleError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
+          <input
+            type="text"
+            value={appJobTitle}
+            onChange={(e) => handleJobTitleChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appJobTitleError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appJobTitleError && <p className="text-red-500 text-sm">{appJobTitleError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Company Name</label>
-            <input
-              type="text"
-              value={appCompanyName}
-              onChange={(e) => handleCompanyNameChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appCompanyNameError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appCompanyNameError && <p className="text-red-500 text-sm">{appCompanyNameError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Company Name</label>
+          <input
+            type="text"
+            value={appCompanyName}
+            onChange={(e) => handleCompanyNameChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appCompanyNameError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appCompanyNameError && <p className="text-red-500 text-sm">{appCompanyNameError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Source</label>
-            <input
-              type="text"
-              value={appSource}
-              onChange={(e) => handleSourceChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appSourceError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appSourceError && <p className="text-red-500 text-sm">{appSourceError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Source</label>
+          <input
+            type="text"
+            value={appSource}
+            onChange={(e) => handleSourceChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appSourceError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appSourceError && <p className="text-red-500 text-sm">{appSourceError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Status</label>
-            <select
-              value={appStatus}
-              onChange={(e) => handleStatusChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
-            >
-              <option value="">Select status</option>
-              <option value="Offer">Offered</option>
-              <option value="Aapplied">Applied</option>
-              <option value="Interview">Interviewed</option>
-              <option value="Rejected">Rejected</option>
-              <option value="Accepted">Accepted</option>
-            </select>
-            {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Status</label>
+          <select
+            value={appStatus}
+            onChange={(e) => handleStatusChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
+          >
+            <option value="">Select status</option>
+            <option value="Offer">Offered</option>
+            <option value="Aapplied">Applied</option>
+            <option value="Interview">Interviewed</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Accepted">Accepted</option>
+          </select>
+          {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
-            <input
-              type="date"
-              value={appDate.toISOString().split('T')[0]}
-              onChange={(e) => handleDateChange(new Date(e.target.value))}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
+          <input
+            type="date"
+            value={appDate.toISOString().split('T')[0]}
+            onChange={(e) => handleDateChange(new Date(e.target.value))}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
-            <textarea
-              value={appNotes}
-              onChange={(e) => setAppNotes(e.target.value)}
-              className="w-full p-2 border text-vnblack1 rounded-md min-h-16"
-              rows="4"
-            ></textarea>
+          <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
+          <textarea
+            value={appNotes}
+            onChange={(e) => setAppNotes(e.target.value)}
+            className="w-full p-2 border text-vnblack1 rounded-md min-h-16"
+            rows="4"
+          ></textarea>
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
-            <input
-              type="file"
-              onChange={(e) => setAppAttachments(e.target.files[0])}
-              accept=".doc, .docx, .pdf"
-              className="w-full p-2 border text-vnblack1 rounded-md"
-            />
+          <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
+          <input
+            type="file"
+            onChange={(e) => setAppAttachments(e.target.files[0])}
+            accept=".doc, .docx, .pdf"
+            className="w-full p-2 border text-vnblack1 rounded-md"
+          />
         </DialogBody>
         <DialogFooter>
           <Button
@@ -393,72 +411,72 @@ const JobApplications = () => {
       <Dialog open={openEdit} handler={handleopenEdit}>
         <DialogHeader>Edit job application</DialogHeader>
         <DialogBody className="flex flex-col gap-4 w-full max-h-[80vh] overflow-y-auto">
-            <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
-            <input
-              type="text"
-              value={appJobTitle}
-              onChange={(e) => handleJobTitleChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appJobTitleError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appJobTitleError && <p className="text-red-500 text-sm">{appJobTitleError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
+          <input
+            type="text"
+            value={appJobTitle}
+            onChange={(e) => handleJobTitleChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appJobTitleError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appJobTitleError && <p className="text-red-500 text-sm">{appJobTitleError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Company Name</label>
-            <input
-              type="text"
-              value={appCompanyName}
-              onChange={(e) => handleCompanyNameChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appCompanyNameError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appCompanyNameError && <p className="text-red-500 text-sm">{appCompanyNameError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Company Name</label>
+          <input
+            type="text"
+            value={appCompanyName}
+            onChange={(e) => handleCompanyNameChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appCompanyNameError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appCompanyNameError && <p className="text-red-500 text-sm">{appCompanyNameError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Source</label>
-            <input
-              type="text"
-              value={appSource}
-              onChange={(e) => handleSourceChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appSourceError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appSourceError && <p className="text-red-500 text-sm">{appSourceError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Source</label>
+          <input
+            type="text"
+            value={appSource}
+            onChange={(e) => handleSourceChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appSourceError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appSourceError && <p className="text-red-500 text-sm">{appSourceError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Status</label>
-            <select
-              value={appStatus}
-              onChange={(e) => handleStatusChange(e)}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
-            >
-              <option value="">Select status</option>
-              <option value="Offer">Offered</option>
-              <option value="Aapplied">Applied</option>
-              <option value="Interview">Interviewed</option>
-              <option value="Rejected">Rejected</option>
-              <option value="Accepted">Accepted</option>
-            </select>
-            {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Status</label>
+          <select
+            value={appStatus}
+            onChange={(e) => handleStatusChange(e)}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
+          >
+            <option value="">Select status</option>
+            <option value="Offer">Offered</option>
+            <option value="Aapplied">Applied</option>
+            <option value="Interview">Interviewed</option>
+            <option value="Rejected">Rejected</option>
+            <option value="Accepted">Accepted</option>
+          </select>
+          {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
-            <input
-              type="date"
-              value={appDate.toISOString().split('T')[0]}
-              onChange={(e) => handleDateChange(new Date(e.target.value))}
-              className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
-            />
-            {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
+          <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
+          <input
+            type="date"
+            value={appDate.toISOString().split('T')[0]}
+            onChange={(e) => handleDateChange(new Date(e.target.value))}
+            className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
+          />
+          {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
-            <textarea
-              value={appNotes}
-              onChange={(e) => setAppNotes(e.target.value)}
-              className="w-full p-2 border text-vnblack1 rounded-md min-h-16"
-              rows="4"
-            ></textarea>
+          <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
+          <textarea
+            value={appNotes}
+            onChange={(e) => setAppNotes(e.target.value)}
+            className="w-full p-2 border text-vnblack1 rounded-md min-h-16"
+            rows="4"
+          ></textarea>
 
-            <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
-            <input
-              type="file"
-              onChange={(e) => setAppAttachments(e.target.files[0])}
-              accept=".doc, .docx, .pdf"
-              className="w-full p-2 border text-vnblack1 rounded-md"
-            />
+          <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
+          <input
+            type="file"
+            onChange={(e) => setAppAttachments(e.target.files[0])}
+            accept=".doc, .docx, .pdf"
+            className="w-full p-2 border text-vnblack1 rounded-md"
+          />
         </DialogBody>
         <DialogFooter>
           <Button
