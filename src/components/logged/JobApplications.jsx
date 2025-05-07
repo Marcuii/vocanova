@@ -125,7 +125,7 @@ const JobApplications = () => {
       const response = await fetch(import.meta.env.VITE_BASE_URL + "/JobApplication", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
           "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
