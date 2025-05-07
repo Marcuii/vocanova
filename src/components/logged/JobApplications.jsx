@@ -128,9 +128,8 @@ const JobApplications = () => {
     formData.append("status", appStatus)
     formData.append("applicationDate", appDate.toISOString())
     formData.append("notes", appNotes)
-    if (appAttachments.length) {
-        formData.append("attachment", appAttachments)
-    }
+    formData.append("attachment", appAttachments)
+    
     // Handle form submission logic here
     try {
       const response = await fetch(import.meta.env.VITE_BASE_URL + "/JobApplication", {
