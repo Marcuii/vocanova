@@ -52,7 +52,7 @@ const Sidebar = () => {
   const closeDrawer = () => setIsSidebarOpen(false);
 
   return (
-    <Drawer open={isSidebarOpen} onClose={closeDrawer}>
+    <Drawer open={isSidebarOpen} onClose={closeDrawer} className="z-50">
       <Card
         color="transparent"
         shadow={false}
