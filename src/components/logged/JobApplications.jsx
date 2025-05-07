@@ -139,7 +139,7 @@ const JobApplications = () => {
         },
         body: formData,
       }) 
-      if (response.status === 204) {
+      if (response.status === 201) {
         getJobApplications()
         window.location.reload()
       } else if (response.status === 401) {
@@ -148,7 +148,6 @@ const JobApplications = () => {
       else {
         const errorData = await response.json()
         console.error("Error:", errorData)
-        console.log(response.status)
       }
       return 
     } catch (error) {
