@@ -60,7 +60,7 @@ const JobApplications = () => {
       setAppCompanyName(curApp.companyName)
       setAppSource(curApp.ApplicationSource)
       setAppStatus(curApp.status)
-      setAppDate(new Date(curApp.applicationDate))
+      setAppDate(curApp.applicationDate)
       setAppNotes(curApp.notes)
       setAppAttachments(curApp.attachment)
     }
@@ -445,7 +445,7 @@ const JobApplications = () => {
             <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
             <input
               type="date"
-              value={appDate}
+              value={appDate.toISOString().split('T')[0]}
               onChange={(e) => handleDateChange(new Date(e.target.value))}
               className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
             />
