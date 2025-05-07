@@ -61,7 +61,6 @@ const JobApplications = () => {
 
   const handleopenEdit = () => {
     if (openEdit) {
-      setOpenEdit(false)
       setCurApp({})
       setAppJobTitle("")
       setAppCompanyName("")
@@ -75,9 +74,9 @@ const JobApplications = () => {
       setAppSourceError("")
       setAppStatusError("")
       setAppDateError("")
+      setOpenEdit(false)
     }
     else {
-      setOpenEdit(true)
       setAppJobTitle(curApp.jobTitle)
       setAppCompanyName(curApp.companyName)
       setAppSource(curApp.ApplicationSource)
@@ -85,6 +84,7 @@ const JobApplications = () => {
       setAppDate(new Date())
       setAppNotes(curApp.notes)
       setAppAttachments(curApp.attachment)
+      setOpenEdit(true)
     }
   }
 
@@ -223,7 +223,7 @@ const JobApplications = () => {
         handleLogout()
       }
       else {
-        const errorData = await response.json()
+        console.error("Error:", response.status)
         console.error("Error:", errorData)
       }
       return
@@ -472,7 +472,7 @@ const JobApplications = () => {
           >
             <span>Cancel</span>
           </Button>
-          <Button onClick={handleDelete} variant="gradient" color="red">
+          <Button onClick={handleDelete} variant="gradient" color="red" className="mr-1" >
             <span>Delete</span>
           </Button>
           <Button disabled={actButton} onClick={handleEdit} variant="gradient" color="green">
