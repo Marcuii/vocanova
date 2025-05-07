@@ -12,11 +12,32 @@ import { FaPlus } from 'react-icons/fa6';
 import Context from "../../Context";
 
 const JobApplications = () => {
+  const [appJobTitle, setAppJobTitle] = useState("")
+  const [appJobTitleError, setAppJobTitleError] = useState("")
+  const [appCompanyName, setAppCompanyName] = useState("")
+  const [appCompanyNameError, setAppCompanyNameError] = useState("")
+  const [appSource, setAppSource] = useState("")
+  const [appSourceError, setAppSourceError] = useState("")
+  const [appStatus, setAppStatus] = useState("")
+  const [appStatusError, setAppStatusError] = useState("")
+  const [appDate, setAppDate] = useState(new Date())
+  const [appDateError, setAppDateError] = useState("")
+  const [appNotes, setAppNotes] = useState("")
+  const [appAttachments, setAppAttachments] = useState([])
+
+  const {
+    token,
+    jobApplications,
+    getJobApplications,
+    handleLogout,
+  } = useContext(Context)
+
   const [open, setOpen] = useState(false);
   const [openEdit, setOpenEdit] = useState(false)
   const [curApp, setCurApp] = useState({})
   const [actButton, setActButton] = useState(true)
 
+  // Drawer functions
   const handleopen = () => {
     if (open) {
       setOpen(false)
@@ -37,6 +58,7 @@ const JobApplications = () => {
       setOpen(true)
     }
   }
+
   const handleopenEdit = () => {
     if (openEdit) {
       setOpenEdit(false)
@@ -60,32 +82,13 @@ const JobApplications = () => {
       setAppCompanyName(curApp.companyName)
       setAppSource(curApp.ApplicationSource)
       setAppStatus(curApp.status)
-      setAppDate(new Date(curApp.applicationDate))
+      setAppDate(new Date())
       setAppNotes(curApp.notes)
       setAppAttachments(curApp.attachment)
     }
   }
 
-  const {
-    token,
-    jobApplications,
-    getJobApplications,
-    handleLogout,
-  } = useContext(Context)
-
-  const [appJobTitle, setAppJobTitle] = useState("")
-  const [appJobTitleError, setAppJobTitleError] = useState("")
-  const [appCompanyName, setAppCompanyName] = useState("")
-  const [appCompanyNameError, setAppCompanyNameError] = useState("")
-  const [appSource, setAppSource] = useState("")
-  const [appSourceError, setAppSourceError] = useState("")
-  const [appStatus, setAppStatus] = useState("")
-  const [appStatusError, setAppStatusError] = useState("")
-  const [appDate, setAppDate] = useState(new Date())
-  const [appDateError, setAppDateError] = useState("")
-  const [appNotes, setAppNotes] = useState("")
-  const [appAttachments, setAppAttachments] = useState([])
-
+  // Validation functions
   const handleJobTitleChange = (e) => {
     setAppJobTitle(e.target.value)
     checkJobTitle(e)
@@ -159,6 +162,7 @@ const JobApplications = () => {
   //   }
   // }
 
+  // Check if any of the fields are empty or have errors
   useEffect(() => {
     if (appJobTitleError || appCompanyNameError || appSourceError || appStatusError || appDateError || appDate== "" || appStatus== "" || appJobTitle== "" || appCompanyName== "" || appSource== "") {
       setActButton(true)
@@ -167,6 +171,7 @@ const JobApplications = () => {
     }
   }, [appJobTitleError, appCompanyNameError, appSourceError, appStatusError, appDateError, appJobTitle, appCompanyName, appSource, appStatus, appDate])
 
+  // Backend functions
   const submitApplication = async () => {
     // formData
     const formData = new FormData()
@@ -203,7 +208,6 @@ const JobApplications = () => {
       console.error("Error during get user data:", error)
     }
   }
-
   const handleDelete = async () => {
     try {
       const response = await fetch(import.meta.env.VITE_BASE_URL + `/JobApplication/${curApp.id}`, {
@@ -350,12 +354,12 @@ const JobApplications = () => {
             {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
 
             <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
-            {/* <input
+            <input
               type="date"
               value={appDate.toISOString().split('T')[0]}
               onChange={(e) => handleDateChange(new Date(e.target.value))}
               className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
-            /> */}
+            />
             {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
 
             <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
@@ -373,14 +377,6 @@ const JobApplications = () => {
               accept=".doc, .docx, .pdf"
               className="w-full p-2 border text-vnblack1 rounded-md"
             />
-            {appAttachments.length > 0 && (
-              <ul className="list-disc pl-5 mt-2">
-                {appAttachments.map((file, index) => (
-                  <li key={index} className="text-vnblack1">{file.name}</li>
-                ))}
-              </ul>
-            )}
-
         </DialogBody>
         <DialogFooter>
           <Button
@@ -443,12 +439,12 @@ const JobApplications = () => {
             {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
 
             <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
-            {/* <input
+            <input
               type="date"
               value={appDate.toISOString().split('T')[0]}
               onChange={(e) => handleDateChange(new Date(e.target.value))}
               className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
-            /> */}
+            />
             {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
 
             <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
@@ -466,7 +462,6 @@ const JobApplications = () => {
               accept=".doc, .docx, .pdf"
               className="w-full p-2 border text-vnblack1 rounded-md"
             />
-
         </DialogBody>
         <DialogFooter>
           <Button
