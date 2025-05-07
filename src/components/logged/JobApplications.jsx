@@ -60,7 +60,7 @@ const JobApplications = () => {
       setAppCompanyName(curApp.companyName)
       setAppSource(curApp.ApplicationSource)
       setAppStatus(curApp.status)
-      setAppDate(curApp.applicationDate)
+      setAppDate(new Date(curApp.applicationDate))
       setAppNotes(curApp.notes)
       setAppAttachments(curApp.attachment)
     }
