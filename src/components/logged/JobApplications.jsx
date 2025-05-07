@@ -204,10 +204,6 @@ const JobApplications = () => {
       } else if (response.status === 401) {
         handleLogout()
       }
-      else {
-        const errorData = await response.json()
-        console.error("Error:", errorData)
-      }
       return 
     } catch (error) {
       // Handle error here
@@ -255,15 +251,14 @@ const JobApplications = () => {
         },
         body: formData,
       })
-      if (response.status === 201) {
+      if (response.status === 200) {
         getJobApplications()
         window.location.reload()
       } else if (response.status === 401) {
         handleLogout()
       }
       else {
-        const errorData = await response.json()
-        console.error("Error:", errorData)
+        console.error("Error:", response.status)
       }
       return
     } catch (error) {
@@ -347,11 +342,11 @@ const JobApplications = () => {
               className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
             >
               <option value="">Select status</option>
-              <option value="offer">Offered</option>
-              <option value="applied">Applied</option>
-              <option value="interview">Interviewed</option>
-              <option value="rejected">Rejected</option>
-              <option value="accepted">Accepted</option>
+              <option value="Offer">Offered</option>
+              <option value="Aapplied">Applied</option>
+              <option value="Interview">Interviewed</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Accepted">Accepted</option>
             </select>
             {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
 
@@ -432,11 +427,11 @@ const JobApplications = () => {
               className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
             >
               <option value="">Select status</option>
-              <option value="offer">Offered</option>
-              <option value="applied">Applied</option>
-              <option value="interview">Interviewed</option>
-              <option value="rejected">Rejected</option>
-              <option value="accepted">Accepted</option>
+              <option value="Offer">Offered</option>
+              <option value="Aapplied">Applied</option>
+              <option value="Interview">Interviewed</option>
+              <option value="Rejected">Rejected</option>
+              <option value="Accepted">Accepted</option>
             </select>
             {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
 
