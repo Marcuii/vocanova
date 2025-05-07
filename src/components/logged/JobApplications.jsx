@@ -466,13 +466,6 @@ const JobApplications = () => {
               accept=".doc, .docx, .pdf"
               className="w-full p-2 border text-vnblack1 rounded-md"
             />
-            {appAttachments.length > 0 && (
-              <ul className="list-disc pl-5 mt-2">
-                {appAttachments.map((file, index) => (
-                  <li key={index} className="text-vnblack1">{file.name}</li>
-                ))}
-              </ul>
-            )}
 
         </DialogBody>
         <DialogFooter>
