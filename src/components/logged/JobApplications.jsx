@@ -1,51 +1,273 @@
-import React from 'react'
+import {
+  Button,
+  Dialog,
+  DialogHeader,
+  DialogBody,
+  DialogFooter,
+} from "@material-tailwind/react";
+import { useContext, useEffect, useState } from "react";
 import Calendar from 'react-calendar'
+import 'react-calendar/dist/Calendar.css';
+import { FaPlus } from 'react-icons/fa6';
+import Context from "../../Context";
 
 const JobApplications = () => {
+  const [open, setOpen] = useState(false);
+  const [actButton, setActButton] = useState(true)
+
+  const {
+    getJobApplications,
+    token,
+    handleLogout,
+  } = useContext(Context)
+
+  const [appJobTitle, setAppJobTitle] = useState("")
+  const [appJobTitleError, setAppJobTitleError] = useState("")
+  const [appCompanyName, setAppCompanyName] = useState("")
+  const [appCompanyNameError, setAppCompanyNameError] = useState("")
+  const [appSource, setAppSource] = useState("")
+  const [appSourceError, setAppSourceError] = useState("")
+  const [appStatus, setAppStatus] = useState("")
+  const [appStatusError, setAppStatusError] = useState("")
+  const [appDate, setAppDate] = useState(new Date())
+  const [appDateError, setAppDateError] = useState("")
+  const [appNotes, setAppNotes] = useState("")
+  const [appAttachments, setAppAttachments] = useState([])
+
+  const handleJobTitleChange = (e) => {
+    setAppJobTitle(e.target.value)
+    checkJobTitle(e)
+  }
+  const checkJobTitle = (e) => {
+    const jobTitle = e.target.value
+    if (jobTitle.length < 3) {
+      setAppJobTitleError("Job title must be at least 3 characters long")
+    } else if (jobTitle.length > 50) {
+      setAppJobTitleError("Job title must be less than 50 characters long")
+    } else if (!/^[a-zA-Z0-9 ]+$/.test(jobTitle)) {
+      setAppJobTitleError("Job title can only contain letters, numbers, and spaces")
+    } else {
+      setAppJobTitleError("")
+    }
+  }
+
+  const handleCompanyNameChange = (e) => {
+    setAppCompanyName(e.target.value)
+    checkCompanyName(e)
+  }
+  const checkCompanyName = (e) => {
+    const companyName = e.target.value
+    if (companyName.length < 3) {
+      setAppCompanyNameError("Company name must be at least 3 characters long")
+    } else if (companyName.length > 50) {
+      setAppCompanyNameError("Company name must be less than 50 characters long")
+    } else if (!/^[a-zA-Z0-9 ]+$/.test(companyName)) {
+      setAppCompanyNameError("Company name can only contain letters, numbers, and spaces")
+    } else {
+      setAppCompanyNameError("")
+    }
+  }
+
+  const handleSourceChange = (e) => {
+    setAppSource(e.target.value)
+    checkSource(e)
+  }
+  const checkSource = (e) => {
+    const source = e.target.value
+    if (source.length < 3) {
+      setAppSourceError("Source must be at least 3 characters long")
+    } else {
+      setAppSourceError("")
+    }
+  }
+
+  const handleStatusChange = (e) => {
+    setAppStatus(e.target.value)
+    checkStatus(e)
+  }
+  const checkStatus = (e) => {
+    const status = e.target.value
+    if (status === "") {
+      setAppStatusError("Status is required")
+    } else {
+      setAppStatusError("")
+    }
+  }
+
+  const handleDateChange = (date) => {
+    setAppDate(date)
+    //checkDate(date)
+  }
+  // const checkDate = (date) => {
+  //   const today = new Date()
+  //   if (date > today) {
+  //     setAppDateError("Date cannot be in the future")
+  //   } else {
+  //     setAppDateError("")
+  //   }
+  // }
+
+  useEffect(() => {
+    if (appJobTitleError || appCompanyNameError || appSourceError || appStatusError || appDateError || appDate== "" || appStatus== "" || appJobTitle== "" || appCompanyName== "" || appSource== "") {
+      setActButton(true)
+    } else {
+      setActButton(false)
+    }
+  }, [appJobTitleError, appCompanyNameError, appSourceError, appStatusError, appDateError, appJobTitle, appCompanyName, appSource, appStatus, appDate])
+
+
+
+  const handleopen = () => setOpen(!open)
+
+  const submitApplication = async () => {
+    // Handle form submission logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/JobApplication", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          jobTitle: appJobTitle,
+          companyName: appCompanyName,
+          source: appSource,
+          status: appStatus,
+          applicationDate: appDate.toISOString(),
+          notes: appNotes,
+          attachments: appAttachments,
+        }),
+      }) 
+      if (response.status === 200) {
+        getJobApplications()
+        window.location.reload()
+      } else if (response.status === 401) {
+        handleLogout()
+      }
+      else {
+        const errorData = await response.json()
+        console.error("Error:", errorData)
+      }
+      return 
+    } catch (error) {
+      // Handle error here
+      console.error("Error during get user data:", error)
+    }
+  }
+  
+  
   return (
-    <div className='w-full min-h-screen flex flex-row justify-start gap-5 p-4'>
-      <div className='w-2/3 flex flex-wrap items-center justify-center gap-4 p-4'>
-        <h1 className='text-2xl text-center text-primary'>
-          Job Applications
-        </h1>
-        <div className='w-full flex flex-row items-center justify-around gap-4 p-4'>
-          <div className='w-1/3 flex flex-col items-center justify-center gap-4 p-4'>
-            <h2 className='text-xl text-center text-secondary'>
-              Application 1
-            </h2>
-            <p className='text-lg text-center text-gray-700'>
-              Status: Pending
-            </p>
-          </div>
-          <div className='w-1/3 flex flex-col items-center justify-center gap-4 p-4'>
-            <h2 className='text-xl text-center text-secondary'>
-              Application 2
-            </h2>
-            <p className='text-lg text-center text-gray-700'>
-              Status: Accepted
-            </p>
-          </div>
+    <div className='w-full min-h-screen flex flex-col lg:flex-row justify-start items-center lg:justify-center lg:items-start gap-5 p-4'>
+      <div className='w-11/12 lg:w-2/3 flex flex-wrap items-center justify-center gap-4 p-4'>
+        <div className='w-full flex flex-row items-center justify-between gap-4 p-4'>
+          <h1 className='text-2xl text-center'>
+            Job Applications
+          </h1>
+          <button onClick={handleopen} className='bg-primary text-white px-4 py-2 rounded-full h-12 shadow-md hover:bg-secondary transition duration-300'>
+            <FaPlus />
+          </button>
         </div>
+
+
       </div>
       <Calendar
+        className='w-11/12 lg:w-1/3 p-4 rounded-xl bg-white shadow-lg'
         value={new Date()}
-        navigationLabel={null}
-        className="text-center w-2/3 h-fit rounded-lg shadow-md"
-        tileClassName={({ date, view }) => {
-          // Highlight specific dates
-          if (view === 'month') {
-            const dateString = date.toDateString()
-            if (dateString === new Date().toDateString()) {
-              return 'highlighted-date'
-            }
-          }
-          return null
-        } 
-        }
-        
-        
-         // Apply custom class for highlighted days
+
       />
+
+      <Dialog open={open} handler={handleopen}>
+        <DialogHeader>Add new job application</DialogHeader>
+        <DialogBody className="flex flex-col gap-4 w-full max-h-[80vh] overflow-y-auto">
+            <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
+            <input
+              type="text"
+              value={appJobTitle}
+              onChange={(e) => handleJobTitleChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appJobTitleError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appJobTitleError && <p className="text-red-500 text-sm">{appJobTitleError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Company Name</label>
+            <input
+              type="text"
+              value={appCompanyName}
+              onChange={(e) => handleCompanyNameChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appCompanyNameError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appCompanyNameError && <p className="text-red-500 text-sm">{appCompanyNameError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Source</label>
+            <input
+              type="text"
+              value={appSource}
+              onChange={(e) => handleSourceChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appSourceError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appSourceError && <p className="text-red-500 text-sm">{appSourceError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Status</label>
+            <select
+              value={appStatus}
+              onChange={(e) => handleStatusChange(e)}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
+            >
+              <option value="">Select status</option>
+              <option value="offer">Offered</option>
+              <option value="applied">Applied</option>
+              <option value="interview">Interviewed</option>
+              <option value="rejected">Rejected</option>
+              <option value="accepted">Accepted</option>
+            </select>
+            {appStatusError && <p className="text-red-500 text-sm">{appStatusError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
+            <input
+              type="date"
+              value={appDate.toISOString().split('T')[0]}
+              onChange={(e) => handleDateChange(new Date(e.target.value))}
+              className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {appDateError && <p className="text-red-500 text-sm">{appDateError}</p>}
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Notes</label>
+            <textarea
+              value={appNotes}
+              onChange={(e) => setAppNotes(e.target.value)}
+              className="w-full p-2 border text-vnblack1 rounded-md min-h-16"
+              rows="4"
+            ></textarea>
+
+            <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
+            <input
+              type="file"
+              onChange={(e) => setAppAttachments(e.target.files[0])}
+              accept=".doc, .docx, .pdf"
+              className="w-full p-2 border text-vnblack1 rounded-md"
+            />
+            {appAttachments.length > 0 && (
+              <ul className="list-disc pl-5 mt-2">
+                {appAttachments.map((file, index) => (
+                  <li key={index} className="text-vnblack1">{file.name}</li>
+                ))}
+              </ul>
+            )}
+
+        </DialogBody>
+        <DialogFooter>
+          <Button
+            variant="text"
+            color="red"
+            onClick={handleopen}
+            className="mr-1"
+          >
+            <span>Cancel</span>
+          </Button>
+          <Button disabled={actButton} variant="gradient" color="green" onClick={handleopen}>
+            <span>Confirm</span>
+          </Button>
+        </DialogFooter>
+      </Dialog>
     </div>
   )
 }

@@ -13,6 +13,9 @@ const Context = createContext(
         setUserData: () => {},
         jobApplications: [],
         setJobApplications: () => {},
+        //app functions
+        getUserData: () => {},
+        getJobApplications: () => {},
 
         //NotLogged Layout ----------------------------
         //app login
