@@ -359,15 +359,15 @@ function App() {
     formData.append("City", upCity)
     formData.append("Degree", upDegree)
     formData.append("University", upUniversity)
-    formData.append("GraduationDate", upGraduationDate)
+    formData.append("GraduationYear", upGraduationDate)
     formData.append("JobTitle", upJobTitle)
     formData.append("Company", upCompany)
-    formData.append("ExperienceYears", upExperienceYears)
-    formData.append("ExpectedSalary", upExpectedSalary)
+    //formData.append("ExperienceYears", upExperienceYears)
+    formData.append("SalaryExpectations", upExpectedSalary)
     formData.append("HardSkills", hardSkills)
     formData.append("SoftSkills", softSkills)
-    formData.append("Avatar", avatar)
-    formData.append("Resume", resume)
+    formData.append("ProfilePicture", avatar)
+    formData.append("ResumeFile", resume)
 
     // Perform profile setup logic here
     try {
@@ -379,9 +379,7 @@ function App() {
         },
         body: formData,
       })
-      if (response.status === 401) {
-        setSubmitProfileError("Unauthorized")
-      } else if (response.status === 500) {
+      if (response.status !== 200) {
         setSubmitProfileError("Server error, please try again later")
       } else if (response.status === 200) {
         setSubmitProfileError("")
