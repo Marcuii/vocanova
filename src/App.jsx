@@ -311,44 +311,6 @@ function App() {
     }
   }
 
-  //refresh token function
-  const refreshToken = async () => {
-    // Perform refresh token logic here
-    try {
-      const response = await fetch(import.meta.env.VITE_BASE_URL + "/auth/refresh", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`,
-        },
-      })
-      if (response.status !== 200) {
-        setLoggedIn(false)
-        setFirstLogin(false)
-        if (localStorage.getItem("loggedIn") === "true") {
-          localStorage.removeItem("token")
-          localStorage.removeItem("loggedIn")
-        }
-        if (sessionStorage.getItem("loggedIn") === "true") {
-          sessionStorage.removeItem("token")
-          sessionStorage.removeItem("loggedIn")
-        }
-      } else {
-        const data = await response.json()
-        setToken(data.token)
-        if (localStorage.getItem("loggedIn") === "true") {
-          localStorage.setItem("token", data.token)
-        } else if (sessionStorage.getItem("loggedIn") === "true") {
-          sessionStorage.setItem("token", data.token)
-        }
-      }
-      return
-    } catch (error) {
-      // Handle error here
-      console.error("Error during refresh token:", error)
-    }
-  }
-
   //profile setup function
   const handleProfileSetup = async () => {
     const formData = new FormData()

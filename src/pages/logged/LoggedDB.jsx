@@ -73,7 +73,7 @@ const LoggedDB = () => {
   return (
     <div className="w-full min-h-screen flex flex-col justify-start gap-5">
       {/* Navbar */}
-      <div className="sticky top-0 z-10 w-full flex items-center justify-between rounded-none px-4 py-2 shadow-md">
+      <div className="sticky top-0 z-50 w-full flex items-center justify-between rounded-none px-4 py-2 shadow-md bg-white">
         <Typography
           as="a"
           href="#"
