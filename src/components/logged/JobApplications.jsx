@@ -139,8 +139,9 @@ const JobApplications = () => {
         },
         body: formData,
       }) 
-      if (response.status === 200) {
+      if (response.status === 204) {
         getJobApplications()
+        console.log(response.status)
         window.location.reload()
       } else if (response.status === 401) {
         handleLogout()
