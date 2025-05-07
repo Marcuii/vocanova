@@ -5,7 +5,7 @@ import {
   DialogBody,
   DialogFooter,
 } from "@material-tailwind/react";
-import { useContext, useEffect, useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import { FaPlus } from 'react-icons/fa6';
@@ -77,6 +77,13 @@ const JobApplications = () => {
       setOpenEdit(false)
     }
     else {
+      
+      setOpenEdit(true)
+    }
+  }
+
+  useEffect(() => {
+    if (openEdit) {
       setAppJobTitle(curApp.jobTitle)
       setAppCompanyName(curApp.companyName)
       setAppSource(curApp.ApplicationSource)
@@ -84,9 +91,8 @@ const JobApplications = () => {
       setAppDate(new Date())
       setAppNotes(curApp.notes)
       setAppAttachments(curApp.attachment)
-      setOpenEdit(true)
     }
-  }
+  }, [openEdit])
 
   // Validation functions
   const handleJobTitleChange = (e) => {
@@ -216,15 +222,11 @@ const JobApplications = () => {
           "Authorization": `Bearer ${token}`,
         },
       })
-      if (response.status === 200) {
+      if (response.status === 204) {
         getJobApplications()
         window.location.reload()
       } else if (response.status === 401) {
         handleLogout()
-      }
-      else {
-        console.error("Error:", response.status)
-        console.error("Error:", errorData)
       }
       return
     }
@@ -253,7 +255,7 @@ const JobApplications = () => {
         },
         body: formData,
       })
-      if (response.status === 200) {
+      if (response.status === 201) {
         getJobApplications()
         window.location.reload()
       } else if (response.status === 401) {
