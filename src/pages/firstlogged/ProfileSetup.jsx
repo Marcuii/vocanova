@@ -45,6 +45,8 @@ const ProfileSetup = () => {
         //submit profile
         submitProfileError,
         setSubmitProfileError,
+        //app profile setup
+        handleProfileSetup,
     } = useContext(Context);
 
     const navigate = useNavigate()
@@ -75,7 +77,7 @@ const ProfileSetup = () => {
             }
         } else if (activeStep === 4) {
             if (resumeDone) {
-             console.log("Submit")
+             handleProfileSetup()
             }
         }
     

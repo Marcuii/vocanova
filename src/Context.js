@@ -11,6 +11,8 @@ const Context = createContext(
         setToken: () => {},
         userData: null,
         setUserData: () => {},
+        jobApplications: [],
+        setJobApplications: () => {},
 
         //NotLogged Layout ----------------------------
         //app login
@@ -157,7 +159,7 @@ const Context = createContext(
         //Logged Layout ----------------------------
         //app logout
         handleLogout: () => {},
-        
+
         isSidebarOpen: false,
         setIsSidebarOpen: () => {},
     }

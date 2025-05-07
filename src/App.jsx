@@ -20,47 +20,8 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [firstLogin, setFirstLogin] = useState(false)
   const [token, setToken] = useState(null)
-  const [userData, setUserData] = useState({
-          city: "Luxor ",
-          company: "ICPC EELU",
-          country: "Palastin ",
-          dateOfBirth:
-            "0001-01-01T00:00:00",
-          degree
-            :
-            "Bachelor",
-          email
-            :
-            "depalh19@gmail.com",
-          fullName: "Esmail Mohamed",
-          gender
-            :
-            "Male",
-          graduationYear
-            :
-            null,
-          jobTitle
-            :
-            "Back end ",
-          phoneNumber
-            :
-            "01068673112",
-          profilePictureUrl
-            :
-            "https://localhost:7126/images/6dea5ca5-aee5-4c9e-a716-f90242a39fac.jpg",
-          resumeFileUrl
-            :
-            "https://localhost:7126/files/e8d6673c-ad89-42b8-96cc-7873652a7150.pdf",
-          salaryExpectations
-            :
-            null,
-          skills
-            :
-            [],
-          university
-            :
-            "EELU"
-        })
+  const [userData, setUserData] = useState({})
+  const [jobApplications, setJobApplications] = useState([])
 
   //NotLogged Layout -----------------------------------
   //login states
@@ -305,6 +266,7 @@ function App() {
           setFirstLogin(true)
         } else {
           setFirstLogin(false)
+          getJobApplications()
         }
         console.log(data)
       }
@@ -312,6 +274,40 @@ function App() {
     } catch (error) {
       // Handle error here
       console.error("Error during get user data:", error)
+    }
+  }
+
+  //get job applications function
+  const getJobApplications = async () => {
+    // Perform get job applications logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/JobApplication", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+        },
+      })
+      if (response.status !== 200) {
+        setLoggedIn(false)
+        setFirstLogin(false)
+        if (localStorage.getItem("loggedIn") === "true") {
+          localStorage.removeItem("token")
+          localStorage.removeItem("loggedIn")
+        }
+        if (sessionStorage.getItem("loggedIn") === "true") {
+          sessionStorage.removeItem("token")
+          sessionStorage.removeItem("loggedIn")
+        }
+      } else {
+        const data = await response.json()
+        setJobApplications(data)
+        console.log(data)
+      }
+      return 
+    } catch (error) {
+      // Handle error here
+      console.error("Error during get job applications:", error)
     }
   }
 
@@ -428,6 +424,8 @@ function App() {
         setToken,
         userData,
         setUserData,
+        jobApplications,
+        setJobApplications,
 
         //NotLogged Layout ----------------------------
         //app login
