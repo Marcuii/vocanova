@@ -7,7 +7,6 @@ import React from 'react'
 import { ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline'
 import JobRecommendation from './../../components/logged/JobRecommendation';
 import JobApplications from './../../components/logged/JobApplications';
-import JobApplication from './../../components/logged/JobApplication';
 import ResumeAnalysis from './../../components/logged/ResumeAnalysis';
 import MockupInterview from './../../components/logged/MockupInterview';
 import Profile from './../../components/logged/Profile';
@@ -40,7 +39,6 @@ const LoggedDB = () => {
   const renderStep = () => {
     if (path === "/job-recommendation") return <JobRecommendation />;
     if (path === "/job-applications") return <JobApplications />;
-    if (path.startsWith("/job-application/")) return <JobApplication />;
     if (path === "/resume-analysis") return <ResumeAnalysis />;
     if (path === "/mockup-interview") return <MockupInterview />;
     if (path === "/profile") return <Profile />;

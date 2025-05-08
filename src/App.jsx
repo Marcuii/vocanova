@@ -555,7 +555,6 @@ function App() {
 
           <Route path="/job-recommendation" element={<LoggedDB />} />
           <Route path="/job-applications" element={<LoggedDB />} />
-          <Route path="/job-application/:id" element={<LoggedDB />} />
           <Route path="/resume-analysis" element={<LoggedDB />} />
           <Route path="/mockup-interview" element={<LoggedDB />} />
           <Route path="/profile" element={<LoggedDB />} />
