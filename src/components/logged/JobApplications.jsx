@@ -308,16 +308,13 @@ const JobApplications = () => {
         <hr className='w-full border-vngrey1' />
         <h1 className='text-xl text-center'>Coming Important Dates</h1>
         {jobApplications.length > 0 ? (
-          jobApplications.map((application, index) => {
-            new Date(application.applicationDate) > new Date() ? (
+          jobApplications.map((application, index) => {new Date(application.applicationDate) > new Date() && (
               <div key={index} className='w-full flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
                 <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
                 <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
                 <p className='text-md text-vngrey2'>Date: <span className="text-vnblack1">{new Date(application.applicationDate).toLocaleDateString()}</span></p>
               </div>
-            ) : null
-          })
-        ) : (
+            )})) : (
           <p className='text-2xl text-vnblack1'>No important dates found.</p>
         )}
 

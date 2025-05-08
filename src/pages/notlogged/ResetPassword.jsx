@@ -122,7 +122,7 @@ const ResetPassword = () => {
                         </Button>
                     </div>
     
-                    <img className='hidden lg:block ' src="./assets/reg.png" alt="register" />
+                    <img className='hidden lg:block ' src="https://vocanova.vercel.app/assets/reg.png" alt="register" />
                 </div>
                 <p className='mt-3 font-[10] text-sm text-vngrey4'>By continuing, you agree to VocaNova Term of Use and confirm that you have read Privacy Policy</p>
     

@@ -1,23 +1,28 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import Context from '../../Context'
 
 const MockupInterview = () => {
   const [questions, setQuestions] = useState([])
 
+  const {
+    userData,
+  } = useContext(Context)
+
   // Function to fetch mockup interview questions from the API
   const fetchQuestions = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_INTERVIEW_API + "/evaluate-answer", {
+      const response = await fetch(import.meta.env.VITE_INTERVIEW_API + "/generate-questions", {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_INTERVIEW_API_TOKEN}`,
-          'x-ms-model-mesh-model-name': `${import.meta.env.VITE_INTERVIEW_API_MODEL}`,
+          'Content-Type': 'application/json'
         },
-        body: {
-          "question": "What is overfitting in machine learning?",
-  "answer": "Overfitting happens when the model learns the training data too well..."
-        },
+        body: JSON.stringify({
+          job_role: userData.jobTitle,
+        })
     })
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
+      }
       const data = await response.json()
       setQuestions(data)
       console.log('Mockup interview questions:', data)
@@ -26,6 +31,7 @@ const MockupInterview = () => {
     }
   }
 
+  fetchQuestions()
   return (
     <div>MockupInterview</div>
   )

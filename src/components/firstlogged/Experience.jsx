@@ -113,6 +113,10 @@ function Experience() {
       setUpJobTitleError("Please enter a job title");
     } else if (val.length < 2) {
       setUpJobTitleError("Job title must be at least 2 characters long");
+    } else if (val.length > 50) {
+      setUpJobTitleError("Job title must be less than 50 characters long");
+    } else if (!/^[a-zA-Z0-9\s]+$/.test(val)) {
+      setUpJobTitleError("Job title can only contain letters, numbers, and spaces");
     } else {
       setUpJobTitleError("");
     }
@@ -127,6 +131,10 @@ function Experience() {
       setUpCompanyError("Please enter a company name");
     } else if (val.length < 2) {
       setUpCompanyError("Company name must be at least 2 characters long");
+    } else if (val.length > 50) {
+      setUpCompanyError("Company name must be less than 50 characters long");
+    } else if (!/^[a-zA-Z0-9\s]+$/.test(val)) {
+      setUpCompanyError("Company name can only contain letters, numbers, and spaces");
     } else {
       setUpCompanyError("");
     }

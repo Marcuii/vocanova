@@ -30,6 +30,8 @@ const Skills = () => {
                 // Check if the skill already exists
                 if (hardSkills.includes(curHardSkill)) {
                     setHardSkillsError("This hard skill already exists.");
+                } else if (!/^[a-zA-Z\s]+$/.test(curHardSkill)) {
+                    setHardSkillsError("Please enter a valid hard skill (letters and spaces only).");
                 } else {
                     setHardSkills([...hardSkills, curHardSkill]);
                     setHardSkillsError("");
@@ -65,6 +67,8 @@ const Skills = () => {
                 // Check if the skill already exists
                 if (softSkills.includes(curSoftSkill)) {
                     setSoftSkillsError("This soft skill already exists.");
+                } else if (!/^[a-zA-Z\s]+$/.test(curSoftSkill)) {
+                    setSoftSkillsError("Please enter a valid soft skill (letters and spaces only).");
                 } else {
                     setSoftSkills([...softSkills, curSoftSkill]);
                     setSoftSkillsError("");

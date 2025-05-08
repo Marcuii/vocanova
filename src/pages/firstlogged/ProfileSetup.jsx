@@ -4,6 +4,9 @@ import {
     CogIcon,
     UserIcon,
     BuildingLibraryIcon,
+    CodeBracketIcon,
+    UserCircleIcon,
+    DocumentIcon,
 } from "@heroicons/react/24/outline";
 import Personal from '../../components/firstlogged/Personal';
 import Experience from '../../components/firstlogged/Experience';
@@ -122,7 +125,7 @@ const ProfileSetup = () => {
                     >
                         <Step>
                             <UserIcon className="h-5 w-5" />
-                            <div className="absolute -bottom-[3rem] w-max text-center">
+                            <div className="absolute -bottom-[3rem] w-max text-center hidden sm:block">
                                 <Typography
                                     variant="h6"
                                     color={activeStep === 0 ? "blue-gray" : "gray"}
@@ -133,7 +136,7 @@ const ProfileSetup = () => {
                         </Step>
                         <Step>
                             <CogIcon className="h-5 w-5" />
-                            <div className="absolute -bottom-[3rem] w-max text-center">
+                            <div className="absolute -bottom-[3rem] w-max text-center hidden sm:block">
                                 <Typography
                                     variant="h6"
                                     color={activeStep === 1 ? "blue-gray" : "gray"}
@@ -143,8 +146,8 @@ const ProfileSetup = () => {
                             </div>
                         </Step>
                         <Step>
-                            <BuildingLibraryIcon className="h-5 w-5" />
-                            <div className="absolute -bottom-[3rem] w-max text-center">
+                            <CodeBracketIcon  className="h-5 w-5" />
+                            <div className="absolute -bottom-[3rem] w-max text-center hidden sm:block">
                                 <Typography
                                     variant="h6"
                                     color={activeStep === 2 ? "blue-gray" : "gray"}
@@ -154,8 +157,8 @@ const ProfileSetup = () => {
                             </div>
                         </Step>
                         <Step>
-                            <BuildingLibraryIcon className="h-5 w-5" />
-                            <div className="absolute -bottom-[3rem] w-max text-center">
+                            <UserCircleIcon className="h-5 w-5" />
+                            <div className="absolute -bottom-[3rem] w-max text-center hidden sm:block">
                                 <Typography
                                     variant="h6"
                                     color={activeStep === 3 ? "blue-gray" : "gray"}
@@ -165,8 +168,8 @@ const ProfileSetup = () => {
                             </div>
                         </Step>
                         <Step>
-                            <BuildingLibraryIcon className="h-5 w-5" />
-                            <div className="absolute -bottom-[3rem] w-max text-center">
+                            <DocumentIcon className="h-5 w-5" />
+                            <div className="absolute -bottom-[3rem] w-max text-center hidden sm:block">
                                 <Typography
                                     variant="h6"
                                     color={activeStep === 4 ? "blue-gray" : "gray"}
@@ -196,7 +199,7 @@ const ProfileSetup = () => {
 
             </div>
 
-            <img className='hidden lg:block max-w-[50%] min-h-screen lg:absolute right-0 ' src="./assets/profile.png" alt="recovery" />
+            <img className='hidden lg:block max-w-[50%] min-h-screen lg:fixed right-0 top-0' src="./assets/profile.png" alt="recovery" />
         </div>
     )
 }

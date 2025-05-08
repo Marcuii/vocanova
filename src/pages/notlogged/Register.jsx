@@ -66,6 +66,10 @@ const Register = () => {
         const name = e.target.value
         if (name.length < 3) {
             setUpNameError("First Name must be at least 3 characters long")
+        } else if (name.length > 20) {
+            setUpNameError("First Name must be at most 20 characters long")
+        } else if (!/^[a-zA-Z]+$/.test(name)) {
+            setUpNameError("First Name must only contain letters")
         } else {
             setUpNameError("")
         }
@@ -78,6 +82,10 @@ const Register = () => {
         const lastName = e.target.value
         if (lastName.length < 3) {
             setUpLastNameError("Last Name must be at least 3 characters long")
+        } else if (lastName.length > 20) {
+            setUpLastNameError("Last Name must be at most 20 characters long")
+        } else if (!/^[a-zA-Z]+$/.test(lastName)) {
+            setUpLastNameError("Last Name must only contain letters")
         } else {
             setUpLastNameError("")
         }
