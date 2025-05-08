@@ -10,6 +10,7 @@ import Calendar from 'react-calendar'
 import 'react-calendar/dist/Calendar.css';
 import { FaPlus } from 'react-icons/fa6';
 import Context from "../../Context";
+import { DocumentIcon } from "@heroicons/react/24/outline";
 
 const JobApplications = () => {
   const [appJobTitle, setAppJobTitle] = useState("")
@@ -255,9 +256,6 @@ const JobApplications = () => {
     if (appNotes !== "") {
       formData.append("notes", appNotes)
     }
-    if (appAttachments ){
-      formData.append("attachment", appAttachments)
-    }
 
     // Handle form submission logic here
     try {
@@ -497,7 +495,7 @@ const JobApplications = () => {
           ></textarea>
 
           <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
-          <a href={appAttachments} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">{appAttachments}</a>
+          <p className='flex flex-wrap gap-2 justify-center items-center'>Files: {curApp.attachmentUrl ? <DocumentIcon className='h-6 w-6 text-primary' onClick={() => window.open(curApp.attachmentUrl, "_blank")} /> : "None"}</p>
         </DialogBody>
         <DialogFooter>
           <Button
