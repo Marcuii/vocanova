@@ -300,7 +300,7 @@ const JobApplications = () => {
             <div key={index} onClick={() => { setCurApp(application), handleopenEdit() }} className='w-5/12 lg:w-3/12 flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
               <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
               <p className='text-md text-vngrey2 flex flex-row'>Company: <span className="ml-2 text-vnblack1"> {application.companyName}</span></p>
-              <p className='text-md text-vngrey2 flex flex-row items-center'>Status: 
+              <p className='text-md text-vngrey2 flex flex-col items-start sm:flex-row sm:items-center'>Status: 
                 {application.status === "Offered" && <span className="ml-2 bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
                 {application.status === "Applied" && <span className="ml-2 bg-secondary p-2 rounded-lg"> {application.status}</span>}
                 {application.status === "Interviewed" && <span className="ml-2 bg-primary p-2 rounded-lg"> {application.status}</span>}
