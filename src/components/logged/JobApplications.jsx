@@ -202,6 +202,9 @@ const JobApplications = () => {
         window.location.reload()
       } else if (response.status === 401) {
         handleLogout()
+      } else {
+        const data = await response.json()
+        console.error("Error during form submission:", data)
       }
       return
     } catch (error) {
@@ -255,9 +258,9 @@ const JobApplications = () => {
         window.location.reload()
       } else if (response.status === 401) {
         handleLogout()
-      }
-      else {
-        console.error("Error:", response.status)
+      } else {
+        const data = await response.json()
+        console.error("Error during form submission:", data)
       }
       return
     } catch (error) {
@@ -265,7 +268,6 @@ const JobApplications = () => {
       console.error("Error during get user data:", error)
     }
   }
-
 
   return (
     <div className='w-full min-h-screen flex flex-col lg:flex-row justify-start items-center lg:justify-center lg:items-start gap-5 p-4'>
@@ -283,7 +285,7 @@ const JobApplications = () => {
             <div key={index} onClick={() => { setCurApp(application), handleopenEdit() }} className='w-5/12 lg:w-3/12 flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
               <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
               <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
-              <p className='text-md text-vngrey2'>Status:
+              <p className='text-md text-vngrey2'>Status: 
                 {application.status === "Offered" && <span className="bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
                 {application.status === "Applied" && <span className="bg-secondary p-2 rounded-lg"> {application.status}</span>}
                 {application.status === "Interviewed" && <span className="bg-primary p-2 rounded-lg"> {application.status}</span>}
@@ -322,7 +324,7 @@ const JobApplications = () => {
 
       <Dialog open={open} handler={handleopen}>
         <DialogHeader>Add new job application</DialogHeader>
-        <DialogBody className="flex flex-col gap-4 w-full max-h-[80vh] overflow-y-auto">
+        <DialogBody className="flex flex-col gap-4 w-full max-h-[70vh] overflow-y-auto">
           <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
           <input
             type="text"
@@ -368,6 +370,8 @@ const JobApplications = () => {
           <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
           <input
             type="date"
+            min={new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString().split('T')[0]}
+            max={new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]}
             value={appDate.toISOString().split('T')[0]}
             onChange={(e) => handleDateChange(new Date(e.target.value))}
             className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
@@ -407,7 +411,7 @@ const JobApplications = () => {
 
       <Dialog open={openEdit} handler={handleopenEdit}>
         <DialogHeader>Edit job application</DialogHeader>
-        <DialogBody className="flex flex-col gap-4 w-full max-h-[80vh] overflow-y-auto">
+        <DialogBody className="flex flex-col gap-4 w-full max-h-[70vh] overflow-y-auto">
           <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
           <input
             type="text"
@@ -453,6 +457,8 @@ const JobApplications = () => {
           <label className="text-md font-medium text-vngrey2 mt-5">Date</label>
           <input
             type="date"
+            min={new Date(new Date().setFullYear(new Date().getFullYear() - 1)).toISOString().split('T')[0]}
+            max={new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0]}
             value={appDate.toISOString().split('T')[0]}
             onChange={(e) => handleDateChange(new Date(e.target.value))}
             className={`w-full p-2 border text-vnblack1 rounded-md ${appDateError ? 'border-red-500' : 'border-gray-300'}`}
@@ -468,12 +474,7 @@ const JobApplications = () => {
           ></textarea>
 
           <label className="text-md font-medium text-vngrey2 mt-5">Attachments</label>
-          <input
-            type="file"
-            onChange={(e) => setAppAttachments(e.target.files[0])}
-            accept=".doc, .docx, .pdf"
-            className="w-full p-2 border text-vnblack1 rounded-md"
-          />
+          <a href={appAttachments} target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">{appAttachments}</a>
         </DialogBody>
         <DialogFooter>
           <Button
