@@ -265,7 +265,7 @@ function App() {
           setFirstLogin(true)
         } else {
           setFirstLogin(false)
-          setUserData({...data, hardSkills: data.hardSkills.split[0](",") , softSkills: data.softSkills.split[0](",")})
+          setUserData({...data, hardSkills: data.hardSkills[0].split(",") , softSkills: data.softSkills[0].split(",")})
           getJobApplications()
         }
         console.log(data)
