@@ -36,6 +36,17 @@ const JobApplications = () => {
   const [openEdit, setOpenEdit] = useState(false)
   const [curApp, setCurApp] = useState({})
   const [actButton, setActButton] = useState(true)
+  const [dates, setDates] = useState([])
+
+  // Calendar highlight dates
+  useEffect(() => {
+    const dates = jobApplications.map((application) => {
+      return new Date(application.applicationDate).toLocaleDateString()
+    })
+    setDates(dates)
+  }, [jobApplications])
+  // Calendar functions
+  
 
   // Drawer functions
   const handleopen = () => {
@@ -89,7 +100,7 @@ const JobApplications = () => {
       setAppStatus(curApp.status)
       setAppDate(new Date(curApp.applicationDate))
       setAppNotes(curApp.notes)
-      setAppAttachments(curApp.attachment)
+      //setAppAttachments(curApp.attachment)
     }
   }, [openEdit])
 
@@ -156,16 +167,16 @@ const JobApplications = () => {
 
   const handleDateChange = (date) => {
     setAppDate(date)
-    //checkDate(date)
+    checkDate(date)
   }
-  // const checkDate = (date) => {
-  //   const today = new Date()
-  //   if (date > today) {
-  //     setAppDateError("Date cannot be in the future")
-  //   } else {
-  //     setAppDateError("")
-  //   }
-  // }
+  const checkDate = (date) => {
+    const today = new Date()
+    if (date > today) {
+      setAppDateError("Date cannot be in the future")
+    } else {
+      setAppDateError("")
+    }
+  }
 
   // Check if any of the fields are empty or have errors
   useEffect(() => {
@@ -241,9 +252,13 @@ const JobApplications = () => {
     formData.append("ApplicationSource", appSource)
     formData.append("status", appStatus)
     formData.append("applicationDate", appDate.toISOString())
-    formData.append("notes", appNotes)
-    formData.append("attachment", appAttachments)
-
+    if (appNotes !== "") {
+      formData.append("notes", appNotes)
+    }
+    if (appAttachments ){
+      formData.append("attachment", appAttachments)
+    }
+    
     // Handle form submission logic here
     try {
       const response = await fetch(import.meta.env.VITE_BASE_URL + `/JobApplication/${curApp.id}`, {
@@ -286,11 +301,11 @@ const JobApplications = () => {
               <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
               <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
               <p className='text-md text-vngrey2'>Status: 
-                {application.status === "Offered" && <span className="bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Applied" && <span className="bg-secondary p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Interviewed" && <span className="bg-primary p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Rejected" && <span className="bg-error p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Accepted" && <span className="bg-success p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Offered" && <span className="ml-2 bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Applied" && <span className="ml-2 bg-secondary p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Interviewed" && <span className="ml-2 bg-primary p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Rejected" && <span className="ml-2 bg-error p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Accepted" && <span className="ml-2 bg-success p-2 rounded-lg"> {application.status}</span>}
               </p>
             </div>
           ))
@@ -305,18 +320,22 @@ const JobApplications = () => {
         <Calendar
           className='w-full p-4 rounded-xl bg-white shadow-lg'
           value={new Date()}
-
+          tileClassName={({ date, view }) => {
+          const dateString = date.toLocaleDateString()
+          if (view === 'month' && dates.includes(dateString)) {
+            return 'rounded-lg bg-secondary';
+          }}}
         />
         <hr className='w-full border-vngrey1' />
-        <h1 className='text-xl text-center'>Coming Important Dates</h1>
+        <h1 className='text-xl text-center'>Important Dates</h1>
         {jobApplications.length > 0 ? (
-          jobApplications.map((application, index) => {new Date(application.applicationDate) > new Date() && (
+          jobApplications.map((application, index) => (
               <div key={index} className='w-full flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
                 <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
                 <p className='text-md text-vngrey2'>Company: <span className="text-vnblack1">{application.companyName}</span></p>
                 <p className='text-md text-vngrey2'>Date: <span className="text-vnblack1">{new Date(application.applicationDate).toLocaleDateString()}</span></p>
               </div>
-            )})) : (
+            ))) : (
           <p className='text-2xl text-vnblack1'>No important dates found.</p>
         )}
 
@@ -324,7 +343,7 @@ const JobApplications = () => {
 
       <Dialog open={open} handler={handleopen}>
         <DialogHeader>Add new job application</DialogHeader>
-        <DialogBody className="flex flex-col gap-4 w-full max-h-[70vh] overflow-y-auto">
+        <DialogBody className="flex flex-col gap-4 w-full max-h-[65vh] overflow-y-auto">
           <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
           <input
             type="text"
@@ -359,9 +378,9 @@ const JobApplications = () => {
             className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
           >
             <option value="">Select status</option>
-            <option value="Offer">Offered</option>
-            <option value="Aapplied">Applied</option>
-            <option value="Interview">Interviewed</option>
+            <option value="Offered">Offered</option>
+            <option value="Applied">Applied</option>
+            <option value="Interviewed">Interviewed</option>
             <option value="Rejected">Rejected</option>
             <option value="Accepted">Accepted</option>
           </select>
@@ -411,7 +430,7 @@ const JobApplications = () => {
 
       <Dialog open={openEdit} handler={handleopenEdit}>
         <DialogHeader>Edit job application</DialogHeader>
-        <DialogBody className="flex flex-col gap-4 w-full max-h-[70vh] overflow-y-auto">
+        <DialogBody className="flex flex-col gap-4 w-full max-h-[65vh] overflow-y-auto">
           <label className="text-md font-medium text-vngrey2 mt-5">Job Title</label>
           <input
             type="text"
@@ -446,9 +465,9 @@ const JobApplications = () => {
             className={`w-full p-2 border text-vnblack1 rounded-md ${appStatusError ? 'border-red-500' : 'border-gray-300'}`}
           >
             <option value="">Select status</option>
-            <option value="Offer">Offered</option>
-            <option value="Aapplied">Applied</option>
-            <option value="Interview">Interviewed</option>
+            <option value="Offered">Offered</option>
+            <option value="Applied">Applied</option>
+            <option value="Interviewed">Interviewed</option>
             <option value="Rejected">Rejected</option>
             <option value="Accepted">Accepted</option>
           </select>

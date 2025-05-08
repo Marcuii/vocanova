@@ -261,11 +261,11 @@ function App() {
       } else {
         const data = await response.json()
         setLoggedIn(true)
-        setUserData(data)
         if (data.jobTitle === null) {
           setFirstLogin(true)
         } else {
           setFirstLogin(false)
+          setUserData({...data, hardSkills: data.hardSkills.split[0](",") , softSkills: data.softSkills.split[0](",")})
           getJobApplications()
         }
         console.log(data)
