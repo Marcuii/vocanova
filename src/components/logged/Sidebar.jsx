@@ -90,13 +90,13 @@ const Sidebar = () => {
             Job Applications
           </ListItem>
           <hr className="my-2 border-blue-gray-50" />
-          <ListItem onClick={() => handleNavigation("/resume-analysis")}>
+          <ListItem onClick={() => window.open(`${import.meta.env.VITE_ANALYSIS_API}`, '_blank', 'noopener,noreferrer')}>
             <ListItemPrefix>
               <DocumentMagnifyingGlassIcon className="h-5 w-5 text-primary" />
             </ListItemPrefix>
             Resume Analysis
           </ListItem>
-          <ListItem onClick={() => handleNavigation("/mockup-interview")}>
+          <ListItem onClick={() => window.open(`${import.meta.env.VITE_INTERVIEW_API}`, '_blank', 'noopener,noreferrer')}>
             <ListItemPrefix>
               <UsersIcon className="h-5 w-5 text-primary" />
             </ListItemPrefix>
