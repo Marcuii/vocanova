@@ -260,7 +260,7 @@ function App() {
       } else {
         const data = await response.json()
         setLoggedIn(true)
-        if (data.jobTitle === null) {
+        if (data.hardSkills === undefined) {
           setFirstLogin(true)
         } else {
           setFirstLogin(false)
