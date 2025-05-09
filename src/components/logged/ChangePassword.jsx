@@ -63,7 +63,7 @@ const ChangePassword = () => {
     }
     const checkCPassword = (e) => {
         const cpassword = e.target.value
-        if (cpassword != upPassword) {
+        if (cpassword != newPassword) {
             setConfirmPasswordError("Passwords do not match")
         } else {
             setConfirmPasswordError("")
@@ -82,7 +82,7 @@ const ChangePassword = () => {
     // Function to handle change password
     const handleChangePassword = async () => {
         try {
-            const response = await fetch(import.meta.env.VITE_API_URL + '/me/change-password', {
+            const response = await fetch(import.meta.env.VITE_BASE_URL + '/me/change-password', {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
