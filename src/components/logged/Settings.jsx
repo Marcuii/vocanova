@@ -89,6 +89,7 @@ const Settings = () => {
   } = useContext(Context);
 
   useEffect(() => {
+    if (!userData) return;
     setEditFullName(userData.fullName);
     setEditEmail(userData.email);
     setUpPhoneNumber(userData.phoneNumber);
@@ -482,8 +483,10 @@ const Settings = () => {
       <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
       <img src={preview ? preview : userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
        alt="Profile Preview" className="rounded-full w-1/2" />
-      <input name="fullName" value={editFullName} disabled className="p-2 border rounded" placeholder="Full Name" />
-      <input name="email" value={editEmail} disabled className="p-2 border rounded" placeholder="Email" />
+       <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Full Name</p>
+      <input name="fullName" value={editFullName} disabled className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Full Name" />
+      <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
+      <input name="email" value={editEmail} disabled className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Email" />
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Phone Number</p>
       {upPhoneNumberError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPhoneNumberError}</p>}
         <input
@@ -720,7 +723,7 @@ const Settings = () => {
                     onChange={handleResFileChange} />
             </div>
 
-      <button type="submit" disabled={actButton} className="bg-primary text-white px-4 py-2 rounded mt-4">Save Changes</button>
+      <button type="submit" disabled={!actButton} className="bg-primary text-white px-4 py-2 rounded mt-4">Save Changes</button>
     </form>
   );
 };
