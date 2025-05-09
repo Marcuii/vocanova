@@ -14,6 +14,7 @@ const Register = () => {
     const [counter, setCounter] = useState(0)
     const [resendMailError, setResendMailError] = useState("")
     const [showPassword, setShowPassword] = useState(false)
+    const [showCPassword, setShowCPassword] = useState(false)
 
     const {
         //App states
@@ -233,26 +234,13 @@ const Register = () => {
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
                     {upEmailError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upEmailError}</p>}
                     <input onChange={handleEmailChange} name='email' type="email" placeholder="xxx@gmail.com" autoComplete='email' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
-
-                    <div className="relative w-11/12">
-                        <p className="text-start text-vngrey2 text-lg -mb-5">Password</p>
-                        {upPasswordError && (
-                            <p className="flex flex-row gap-2 items-center text-start text-red-500 text-sm -mb-5">
-                                <MdError />
-                                {upPasswordError}
-                            </p>
-                        )}
-                        <input
-                            name="password"
-                            type={showPassword ? "text" : "password"}
-                            placeholder="********"
-                            onChange={handlePasswordChange}
-                            className="w-full h-12 px-4 pr-12 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-                        />
+                    <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Password</p>
+                    {upPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPasswordError}</p>}
+                    <div className='w-11/12 relative'>
                         <button
                             type="button"
                             onClick={() => setShowPassword(!showPassword)}
-                            className="absolute top-[38px] right-3 text-gray-500 hover:text-primary transition"
+                            className="absolute top-3 right-3 text-gray-500 hover:text-primary transition"
                         >
                             {showPassword ? (
                                 <EyeSlashIcon className="w-5 h-5" />
@@ -260,11 +248,24 @@ const Register = () => {
                                 <EyeIcon className="w-5 h-5" />
                             )}
                         </button>
+                        <input onChange={handlePasswordChange} name='password' type={showPassword ? "text" : "password"} placeholder="********" className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     </div>
-
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Confirm Password</p>
                     {upConfirmPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upConfirmPasswordError}</p>}
-                    <input onChange={handleCPasswordChange} name='confirmPassword' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <div className='w-11/12 relative'>
+                        <button
+                            type="button"
+                            onClick={() => setShowCPassword(!showCPassword)}
+                            className="absolute top-3 right-3 text-gray-500 hover:text-primary transition"
+                        >
+                            {showCPassword ? (
+                                <EyeSlashIcon className="w-5 h-5" />
+                            ) : (
+                                <EyeIcon className="w-5 h-5" />
+                            )}
+                        </button>
+                        <input onChange={handleCPasswordChange} name='confirmPassword' type={showCPassword ? "text" : "password"} placeholder="********" className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    </div>
                     <Button onClick={handleRegister} disabled={actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
                         Sign Up
                     </Button>

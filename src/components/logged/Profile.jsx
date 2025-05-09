@@ -28,7 +28,7 @@ const Profile = () => {
 
       <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-4 lg:px-8 lg:flex-row lg:justify-between lg:items-start'>
         <div className='w-11/12 lg:hidden flex flex-col justify-center items-center'>
-          <img src={userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"} alt="" className='rounded-full h-40 w-40 lg:h-60 lg:w-60 sm:w-1/3' />
+          <img src={userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"} alt="" className='rounded-full h-40 w-40 lg:h-60 lg:w-60' />
         </div>
         <div className='lg:w-7/12 w-11/12 flex flex-col justify-start items-start gap-5'>
           <div className='w-full flex flex-col justify-start items-start gap-2'>
