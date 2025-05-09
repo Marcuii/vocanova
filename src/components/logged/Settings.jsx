@@ -539,7 +539,7 @@ const Settings = () => {
   ]);
 
   return (
-    <form onSubmit={handleSubmit} className="w-full min-h-screen flex flex-col gap-5 p-4 lg:px-8">
+    <form className="w-full min-h-screen flex flex-col gap-5 p-4 lg:px-8">
       <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
       <img src={preview ? preview : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
        alt="Profile Preview" className="rounded-full w-1/2" />
