@@ -55,8 +55,6 @@ const LoggedDB = () => {
       if (firstLogin) {
         navigate("/profile-complete")
       }
-    } else {
-      navigate("/")
     }
   }, [loggedIn, firstLogin])
 
