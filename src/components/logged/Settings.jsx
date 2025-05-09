@@ -630,7 +630,7 @@ const Settings = () => {
       <select
         className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
         value={upUniversity}
-        disabled={country === "" || countryError !== ""}
+        disabled={upCountry === "" || upCountryError !== ""}
         onChange={(e) => handleUniversityChange(e.target.value)}
       >
         <option value="">Select</option>
