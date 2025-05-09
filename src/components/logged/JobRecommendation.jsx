@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Context from '../../Context';
 import { use } from 'react';
+import JobCard from './JobCard';
 
 const JobRecommendation = () => {
   const [foundJobs, setFoundJobs] = useState([])
@@ -15,8 +16,8 @@ const JobRecommendation = () => {
     const options = {
       method: 'GET',
       headers: {
-        'x-rapidapi-key': '62b39a02c1mshdfb3cfafe57d9d3p191ccajsn22b3dc592be1',
-        'x-rapidapi-host': 'jsearch.p.rapidapi.com'
+        'x-rapidapi-key': `${import.meta.env.VITE_JOB_SEARCH_TOKEN}`,
+        'x-rapidapi-host': `${import.meta.env.VITE_RAPID_API_HOST}`,
       }
     };
 
@@ -46,10 +47,7 @@ const JobRecommendation = () => {
           <h1 className='w-full text-primary text-2xl text-center'>Job Applications</h1>
           {foundJobs.length > 0 ? (
             foundJobs.map((job, index) => (
-              <div key={index} className='w-11/12 sm:w-5/12 flex flex-col items-start justify-start gap-3 p-4 bg-vnbg shadow-md rounded-lg hover:shadow-lg transition duration-300'>
-                <h2 className='text-xl font-bold text-primary mb-3'>{job.title}</h2>
-                <button>{job.link}</button>
-              </div>
+              <JobCard key={index} job={job} />
             ))
           ) : (
             <p className='text-2xl text-vnblack1'>No recommended jobs found.</p>
