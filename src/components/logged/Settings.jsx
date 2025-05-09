@@ -4,6 +4,7 @@ import Context from '../../Context';
 import { FaPlus } from 'react-icons/fa';
 import { MdError, MdRemove } from 'react-icons/md';
 import { CiCircleRemove } from 'react-icons/ci';
+import { PencilIcon } from '@heroicons/react/24/outline';
 
 const degreeOptions = [
   "High School Diploma",
@@ -462,7 +463,7 @@ const Settings = () => {
   }, [upCountry]);
 
   useEffect(() => {
-    if (upPhoneNumberError === "" && upGenderError === "" && upDOBError === "" && upCountryError === "" && upCityError === "" && upDegreeError === "" && upUniversityError === "" && upGraduationDateError === "" && upJobTitleError === "" && upCompanyError === "" && upExperienceYearsError === "" && upExpectedSalaryError === "" && hardSkillsError === "" && softSkillsError === "") {
+    if (upPhoneNumberError === "" && upGenderError === "" && upDOBError === "" && upCountryError === "" && upCityError === "" && upDegreeError === "" && upUniversityError === "" && upGraduationDateError === "" && upJobTitleError === "" && upCompanyError === "" && upExperienceYearsError === "" && upExpectedSalaryError === "" && (hardSkillsError === "" || hardSkillsError === "You can only add up to 7 hard skills.") && (softSkillsError === "" || softSkillsError === "You can only add up to 7 soft skills.")) {
       setActButton(true);
     } else {
       setActButton(false);
@@ -488,11 +489,47 @@ const Settings = () => {
     <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-8'>
       <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
       {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
-      <img src={preview ? preview : userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
-        alt="Profile Preview" className="rounded-full w-1/2" />
-      <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Full Name</p>
+      <div className="relative w-40 h-40">
+        <img
+          src={
+            preview
+              ? preview
+              : userData.profilePictureUrl
+                ? userData.profilePictureUrl
+                : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"
+          }
+          alt="Profile Preview"
+          className="rounded-full object-cover w-full h-full border border-gray-300 shadow-sm"
+        />
+
+        {/* Upload Pencil Icon */}
+        <label className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <PencilIcon className="w-5 h-5 text-gray-700" />
+        </label>
+
+        {/* Optional: Remove Button */}
+        {preview && (
+          <button
+            onClick={() => {
+              setPreview(null);
+              setAvatar(null);
+            }}
+            className="absolute top-2 right-2 bg-error text-white p-1 rounded-full hover:bg-red-700 transition"
+          >
+            <CiCircleRemove className="w-5 h-5" />
+          </button>
+        )}
+      </div>
+      <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Personal</h1>
+      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Full Name</p>
       <input name="fullName" value={editFullName} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Full Name" />
-      <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
+      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Email</p>
       <input name="email" value={editEmail} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Email" />
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Phone Number</p>
       {upPhoneNumberError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPhoneNumberError}</p>}
@@ -544,7 +581,7 @@ const Settings = () => {
           </option>
         ))}
       </select>
-
+      <hr className='w-full border-t-2 border-gray-300' />
       <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Education</h1>
 
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Degree</p>
@@ -596,7 +633,7 @@ const Settings = () => {
         })}
       </select>
 
-
+      <hr className='w-full border-t-2 border-gray-300' />
       <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Experience</h1>
 
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Job title</p>
@@ -638,7 +675,8 @@ const Settings = () => {
         value={upExpectedSalary}
         onChange={(e) => handleExpectedSalaryChange(e.target.value)}
       />
-
+      <hr className='w-full border-t-2 border-gray-300' />
+      <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Skills</h1>
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Hard Skills</p>
       {hardSkillsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{hardSkillsError}</p>}
       <div className='flex flex-row relative items-center justify-between w-full'>
@@ -654,7 +692,7 @@ const Settings = () => {
         </button>
       </div>
 
-      <div className='w-full flex flex-wrap items-center justify-start gap-4'>
+      <div className='w-11/12 flex flex-wrap items-center justify-start gap-4'>
         {hardSkills.map((skill, idx) => (
           <div key={idx} className='flex flex-row bg-primary rounded-xl p-2 items-center justify-center gap-2'>
             <p className='text-vngrey5 text-lg'>{skill}</p>
@@ -683,7 +721,7 @@ const Settings = () => {
         </button>
       </div>
 
-      <div className='w-full flex flex-wrap items-center justify-start gap-4'>
+      <div className='w-11/12 flex flex-wrap items-center justify-start gap-4'>
         {softSkills.map((skill, idx) => (
           <div key={idx} className='flex flex-row bg-secondary rounded-xl p-2 items-center justify-center gap-2'>
             <p className='text-vngrey2 text-lg'>{skill}</p>
@@ -696,25 +734,7 @@ const Settings = () => {
           </div>
         ))}
       </div>
-
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Profile Picture</p>
-      <div className="w-full flex items-center justify-between relative">
-        <button
-          onClick={() => {
-            setPreview(null);
-            setAvatar(null);
-          }}
-          className="absolute right-0 top-0 z-10 text-center p-2 bg-error text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out">
-          <CiCircleRemove />
-
-        </button>
-        <input
-          className="w-full p-20 border border-gray-300 rounded-lg"
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange} />
-      </div>
+      <hr className='w-full border-t-2 border-gray-300' />
 
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Resume</p>
       <div className="w-full flex items-center justify-between relative">
