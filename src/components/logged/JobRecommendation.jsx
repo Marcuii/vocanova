@@ -8,7 +8,7 @@ const JobRecommendation = () => {
   } = useContext(Context);
 
   async function fetchJobs(jobTitle) {
-    const response = await fetch("https://huggingface.co/spaces/Nour83/Job/get-jobs", {
+    const response = await fetch("https://nour83-job.hf.space/get-jobs", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
