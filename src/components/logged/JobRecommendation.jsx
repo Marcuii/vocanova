@@ -24,10 +24,10 @@ const JobRecommendation = () => {
       const response = await fetch(url, options);
       const result = await response.text();
       console.log(result);
+      return JSON.parse(result).data
     } catch (error) {
       console.error(error);
     }
-    return result;
   }
 
     useEffect(() => {
