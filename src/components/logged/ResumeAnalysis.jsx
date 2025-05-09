@@ -18,7 +18,7 @@ const ResumeAnalysis = () => {
     formData.append('file', resume)
 
     try {
-        fetch(import.meta.env.VITE_ANALYSIS_API +  'analyze', {
+        fetch(import.meta.env.VITE_ANALYSIS_API +  '/analyze', {
           method: 'POST',
           body: formData
         })
