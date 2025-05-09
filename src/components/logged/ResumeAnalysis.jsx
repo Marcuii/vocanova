@@ -18,19 +18,12 @@ const ResumeAnalysis = () => {
     formData.append('file', resume)
 
     try {
-      const response = await fetch(import.meta.env.VITE_ANALYSIS_API + "/analyze", {
-        method: "POST",
-        body: formData,
-      })
-      if (!response.ok) {
-        throw new Error("Network response was not ok")
-      }
-      const data = await response.json()
-      if (data.error) {
-        throw new Error(data.error)
-      }
-      // Handle the response data as needed
-      console.log(data)  
+        fetch(import.meta.env.VITE_ANALYSIS_API +  'analyze', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => console.log(data.feedback));
       console.log("Resume analyzed successfully")
     } catch (error) {
       setResumeError("Error analyzing resume. Please try again.")
