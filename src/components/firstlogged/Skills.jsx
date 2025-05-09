@@ -40,6 +40,10 @@ const Skills = () => {
             } else {
                 setHardSkillsError("You can only add up to 7 hard skills.");
             }
+        } else if (curHardSkill.length > 20) {
+            setHardSkillsError("Please enter a hard skill with less than 20 characters.");
+        } else if (curHardSkill.length < 2) {
+            setHardSkillsError("Please enter a hard skill with more than 2 characters.");
         } else {
             setHardSkillsError("Please enter a hard skill.");
         }
@@ -77,6 +81,10 @@ const Skills = () => {
             } else {
                 setSoftSkillsError("You can only add up to 7 soft skills.");
             }
+        } else if (curSoftSkill.length > 20) {
+            setSoftSkillsError("Please enter a soft skill with less than 20 characters.");
+        } else if (curSoftSkill.length < 2) {
+            setSoftSkillsError("Please enter a soft skill with more than 2 characters.");
         } else {
             setSoftSkillsError("Please enter a soft skill.");
         }

@@ -5,6 +5,7 @@ import { FaPlus } from 'react-icons/fa';
 import { MdError, MdRemove } from 'react-icons/md';
 import { CiCircleRemove } from 'react-icons/ci';
 import { PencilIcon } from '@heroicons/react/24/outline';
+import { Button } from '@material-tailwind/react';
 
 const degreeOptions = [
   "High School Diploma",
@@ -255,6 +256,8 @@ const Settings = () => {
       setUpJobTitleError("Job title must be less than 50 characters long");
     } else if (!/^[a-zA-Z0-9\s]+$/.test(val)) {
       setUpJobTitleError("Job title can only contain letters, numbers, and spaces");
+    } else if (!/[a-zA-Z]/.test(val)) {
+      setUpJobTitleError("Job title must include at least one letter");
     } else {
       setUpJobTitleError("");
     }
@@ -331,6 +334,10 @@ const Settings = () => {
       } else {
         setHardSkillsError("You can only add up to 7 hard skills.");
       }
+    } else if (curHardSkill.length > 20) {
+      setHardSkillsError("Please enter a hard skill with less than 20 characters.");
+    } else if (curHardSkill.length < 2) {
+      setHardSkillsError("Please enter a hard skill with more than 2 characters.");
     } else {
       setHardSkillsError("Please enter a hard skill.");
     }
@@ -368,6 +375,10 @@ const Settings = () => {
       } else {
         setSoftSkillsError("You can only add up to 7 soft skills.");
       }
+    } else if (curSoftSkill.length > 20) {
+      setSoftSkillsError("Please enter a soft skill with less than 20 characters.");
+    } else if (curSoftSkill.length < 2) {
+      setSoftSkillsError("Please enter a soft skill with more than 2 characters.");
     } else {
       setSoftSkillsError("Please enter a soft skill.");
     }
@@ -463,7 +474,7 @@ const Settings = () => {
   }, [upCountry]);
 
   useEffect(() => {
-    if (upPhoneNumberError === "" && upGenderError === "" && upDOBError === "" && upCountryError === "" && upCityError === "" && upDegreeError === "" && upUniversityError === "" && upGraduationDateError === "" && upJobTitleError === "" && upCompanyError === "" && upExperienceYearsError === "" && upExpectedSalaryError === "" && (hardSkillsError === "" || hardSkillsError === "You can only add up to 7 hard skills.") && (softSkillsError === "" || softSkillsError === "You can only add up to 7 soft skills.")) {
+    if (upPhoneNumberError === "" && upGenderError === "" && upDOBError === "" && upCountryError === "" && upCityError === "" && upDegreeError === "" && upUniversityError === "" && upGraduationDateError === "" && upJobTitleError === "" && upCompanyError === "" && upExperienceYearsError === "" && upExpectedSalaryError === "" && hardSkills.length >= 3 && softSkills.length >= 3) {
       setActButton(true);
     } else {
       setActButton(false);
@@ -481,15 +492,15 @@ const Settings = () => {
     upCompanyError,
     upExperienceYearsError,
     upExpectedSalaryError,
-    hardSkillsError,
-    softSkillsError,
+    hardSkills,
+    softSkills,
   ]);
 
   return (
     <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-8'>
       <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
       {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
-      <div className="relative w-40 h-40">
+      <div className="relative w-40 h-40 lg:h-60 lg:w-60">
         <img
           src={
             preview
@@ -753,7 +764,10 @@ const Settings = () => {
           onChange={handleResFileChange} />
       </div>
 
-      <button onClick={() => handleProfileUpdate()} disabled={!actButton} className="bg-primary text-vnwhite p-3 rounded mt-4 hover:bg-vngrey2">Save Changes</button>
+
+      <Button onClick={() => handleProfileUpdate()} disabled={!actButton} className="bg-primary text-vnwhite p-3 rounded mt-4 hover:bg-vngrey2" >
+        Save Changes
+      </Button>
     </div>
   );
 };

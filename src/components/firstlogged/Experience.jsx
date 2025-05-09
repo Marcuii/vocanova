@@ -117,6 +117,8 @@ function Experience() {
       setUpJobTitleError("Job title must be less than 50 characters long");
     } else if (!/^[a-zA-Z0-9\s]+$/.test(val)) {
       setUpJobTitleError("Job title can only contain letters, numbers, and spaces");
+    } else if (!/[a-zA-Z]/.test(val)) {
+      setUpJobTitleError("Job title must include at least one letter");
     } else {
       setUpJobTitleError("");
     }
