@@ -358,6 +358,7 @@ function App() {
   //profile update function
   const handleProfileUpdate = async () => {
     const formData = new FormData()
+    formData.append("FullName", userData.fullName)
     formData.append("PhoneNumber", upPhoneNumber)
     formData.append("Gender", upGender)
     formData.append("DateOfBirth", upDOB)

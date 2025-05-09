@@ -485,22 +485,22 @@ const Settings = () => {
   ]);
 
   return (
-    <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-4 lg:px-8 lg:flex-row lg:justify-between lg:items-start'>
+    <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-8'>
       <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
       {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
       <img src={preview ? preview : userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
         alt="Profile Preview" className="rounded-full w-1/2" />
       <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Full Name</p>
-      <input name="fullName" value={editFullName} disabled className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Full Name" />
+      <input name="fullName" value={editFullName} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Full Name" />
       <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
-      <input name="email" value={editEmail} disabled className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Email" />
+      <input name="email" value={editEmail} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Email" />
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Phone Number</p>
       {upPhoneNumberError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPhoneNumberError}</p>}
       <input
         type="tel"
         placeholder="Phone number"
         value={upPhoneNumber}
-        className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+        className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
         onChange={(e) => handlePhoneNumberChange(e.target.value)}
       />
 
@@ -733,7 +733,7 @@ const Settings = () => {
           onChange={handleResFileChange} />
       </div>
 
-      <button onClick={() => handleProfileUpdate()} disabled={!actButton} className="bg-primary text-white px-4 py-2 rounded mt-4">Save Changes</button>
+      <button onClick={() => handleProfileUpdate()} disabled={!actButton} className="bg-primary text-vnwhite p-3 rounded mt-4 hover:bg-vngrey2">Save Changes</button>
     </div>
   );
 };
