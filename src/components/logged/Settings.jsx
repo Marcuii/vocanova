@@ -95,7 +95,7 @@ const Settings = () => {
   } = useContext(Context);
 
   useEffect(() => {
-    if (!userData.dateOfBirth.includes('T')) return;
+    if (userData.dateOfBirth === undefined) return;
     setEditFullName(userData.fullName);
     setEditEmail(userData.email);
     setUpPhoneNumber(userData.phoneNumber);
