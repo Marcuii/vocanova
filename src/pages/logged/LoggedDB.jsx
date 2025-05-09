@@ -57,6 +57,8 @@ const LoggedDB = () => {
       if (firstLogin) {
         navigate("/profile-complete")
       }
+    } else if (localStorage.getItem("loggedIn") !== "true" && sessionStorage.getItem("loggedIn") !== "true") {
+      navigate("/")
     }
   }, [loggedIn, firstLogin])
 
