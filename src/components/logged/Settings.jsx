@@ -110,15 +110,7 @@ const Settings = () => {
     setUpExpectedSalary(userData.salaryExpectations);
     setHardSkills(userData.hardSkills);
     setSoftSkills(userData.softSkills);
-    setAvatar(urlToFile(userData.profilePictureUrl, "profile.jpg", "image/jpeg") );
-    setResume(urlToFile(userData.resumeFileUrl, "resume.pdf", "pdf"));
   }, [userData]);
-
-  const urlToFile = async (url, filename, mimeType) => {
-    const res = await fetch(url);
-    const blob = await res.blob();
-    return new File([blob], filename, { type: mimeType });
-  };
   
   const [actButton, setActButton] = useState(false);
 
@@ -437,14 +429,6 @@ const Settings = () => {
     checkSoftSkill();
   }, [hardSkills, softSkills]);
 
-  useEffect(() => {
-    if (hardSkills.length >= 3 && softSkills.length >= 3) {
-      setSkillsDone(true);
-    } else {
-      setSkillsDone(false);
-    }
-  }, [hardSkills, softSkills]);
-
   // Fetch country codes when the component mounts
   useEffect(() => {
     async function fetchCountries() {
@@ -541,7 +525,7 @@ const Settings = () => {
   return (
     <form className="w-full min-h-screen flex flex-col gap-5 p-4 lg:px-8">
       <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
-      <img src={preview ? preview : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
+      <img src={preview ? preview : userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
        alt="Profile Preview" className="rounded-full w-1/2" />
       <input name="fullName" value={editFullName} disabled className="p-2 border rounded" placeholder="Full Name" />
       <input name="email" value={editEmail} disabled className="p-2 border rounded" placeholder="Email" />
