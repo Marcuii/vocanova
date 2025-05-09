@@ -1,5 +1,5 @@
 import React, { use, useContext, useEffect, useState } from 'react';
-import universityData from './universityData.json';
+import universityData from '../firstlogged/universities.json';
 import Context from '../../Context';
 import { FaPlus } from 'react-icons/fa';
 import { MdError, MdRemove } from 'react-icons/md';
