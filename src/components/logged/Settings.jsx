@@ -1,4 +1,5 @@
 import React, { use, useContext, useEffect, useState } from 'react';
+import universityData from '../firstlogged/universityData.json';
 import Context from '../../Context';
 import { FaPlus } from 'react-icons/fa';
 import { MdError, MdRemove } from 'react-icons/md';
