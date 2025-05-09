@@ -21,10 +21,6 @@ const Settings = () => {
   const {
     userData,
 
-    upCode,
-    setUpCode,
-    upCodeError,
-    setUpCodeError,
     upPhoneNumber,
     setUpPhoneNumber,
     upPhoneNumberError,
@@ -95,8 +91,7 @@ const Settings = () => {
   useEffect(() => {
     setEditFullName(userData.fullName);
     setEditEmail(userData.email);
-    setUpCode(userData.phoneNumber.slice(0, 3));
-    setUpPhoneNumber(userData.phoneNumber.slice(3));
+    setUpPhoneNumber(userData.phoneNumber);
     setUpGender(userData.gender);
     setUpDOB(userData.dateOfBirth.split("T")[0]);
     setUpCountry(userData.country);
@@ -114,9 +109,6 @@ const Settings = () => {
   
   const [actButton, setActButton] = useState(false);
 
-  // Country code state
-  const [myCountries, setMyCountries] = useState([]);
-
   // Country and city states
   const [countries, setCountries] = useState([]);
   const [cities, setCities] = useState([]);
@@ -132,18 +124,6 @@ const Settings = () => {
   // Max date for date input
   const today = new Date();
   const maxDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate()).toISOString().split("T")[0];
-
-  const handleCodeChange = (val) => {
-    setUpCode(val);
-    checkCode(val);
-  };
-  const checkCode = (val) => {
-    if (val === "") {
-      setUpCodeError("Please select a country code");
-    } else {
-      setUpCodeError("");
-    }
-  };
 
   const handlePhoneNumberChange = (val) => {
     setUpPhoneNumber(val);
@@ -429,30 +409,6 @@ const Settings = () => {
     checkSoftSkill();
   }, [hardSkills, softSkills]);
 
-  // Fetch country codes when the component mounts
-  useEffect(() => {
-    async function fetchCountries() {
-      const response = await fetch('https://restcountries.com/v3.1/all');
-      const data = await response.json();
-
-      const countryData = data.map((country) => {
-        return {
-          name: country.name.common,
-          code: country.idd?.root
-            ? country.idd.root + (country.idd.suffixes ? country.idd.suffixes[0] : '')
-            : null
-        };
-      }).filter(c => c.code !== null);
-
-      // Sort countries alphabetically by name
-      countryData.sort((a, b) => a.name.localeCompare(b.name));
-
-      setMyCountries(countryData);
-    }
-
-    fetchCountries();
-  }, []);
-
   // Fetch all countries when the component mounts
   useEffect(() => {
     async function fetchCountries() {
@@ -499,13 +455,12 @@ const Settings = () => {
   }, [upCountry]);
 
   useEffect(() => {
-    if (upCodeError === "" && upPhoneNumberError === "" && upGenderError === "" && upDOBError === "" && upCountryError === "" && upCityError === "" && upDegreeError === "" && upUniversityError === "" && upGraduationDateError === "" && upJobTitleError === "" && upCompanyError === "" && upExperienceYearsError === "" && upExpectedSalaryError === "" && hardSkillsError === "" && softSkillsError === "") {
+    if (upPhoneNumberError === "" && upGenderError === "" && upDOBError === "" && upCountryError === "" && upCityError === "" && upDegreeError === "" && upUniversityError === "" && upGraduationDateError === "" && upJobTitleError === "" && upCompanyError === "" && upExperienceYearsError === "" && upExpectedSalaryError === "" && hardSkillsError === "" && softSkillsError === "") {
       setActButton(true);
     } else {
       setActButton(false);
     }
   }, [
-    upCodeError,
     upPhoneNumberError,
     upGenderError,
     upDOBError,
@@ -530,26 +485,14 @@ const Settings = () => {
       <input name="fullName" value={editFullName} disabled className="p-2 border rounded" placeholder="Full Name" />
       <input name="email" value={editEmail} disabled className="p-2 border rounded" placeholder="Email" />
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Phone Number</p>
-      {upCodeError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upCodeError}</p>}
       {upPhoneNumberError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPhoneNumberError}</p>}
-      <div className="w-full flex flex-row items- gap-4">
-        <select value={upCode} onChange={(e) => handleCodeChange(e.target.value)} className="h-fit w-1/3 p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
-          <option value="">Country</option>
-          {myCountries.map((c, idx) => (
-            <option key={idx} value={c.code}>
-              {c.name} ({c.code})
-            </option>
-          ))}
-        </select>
         <input
           type="tel"
           placeholder="Phone number"
-          disabled={upCode === ""}
           value={upPhoneNumber}
-          className="h-fit w-2/3 p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
           onChange={(e) => handlePhoneNumberChange(e.target.value)}
         />
-      </div>
 
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Gender</p>
       {upGenderError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upGenderError}</p>}
@@ -777,7 +720,7 @@ const Settings = () => {
                     onChange={handleResFileChange} />
             </div>
 
-      <button type="submit" className="bg-primary text-white px-4 py-2 rounded mt-4">Save Changes</button>
+      <button type="submit" disabled={actButton} className="bg-primary text-white px-4 py-2 rounded mt-4">Save Changes</button>
     </form>
   );
 };
