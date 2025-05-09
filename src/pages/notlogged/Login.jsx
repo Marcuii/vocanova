@@ -6,9 +6,11 @@ import { SiLinkedin } from "react-icons/si";
 import { MdError } from "react-icons/md";
 import { FaArrowLeft } from 'react-icons/fa6';
 import Context from '../../Context';
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 
 const Login = () => {
     const [actButton, setActButton] = useState(true)
+    const [showPassword, setShowPassword] = useState(false)
 
     const {
         //App states
@@ -120,7 +122,20 @@ const Login = () => {
                     <input onChange={handleEmailChange} name='email' type="email" placeholder="xxx@gmail.com" autoComplete='email' className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
                     <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Password</p>
                     {inPasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{inPasswordError}</p>}
-                    <input onChange={handlePasswordChange} name='password' type="password" placeholder="********" className="w-11/12 h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    <div className='w-11/12 relative'>
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute top-3 right-3 text-gray-500 hover:text-primary transition"
+                        >
+                            {showPassword ? (
+                                <EyeSlashIcon className="w-5 h-5" />
+                            ) : (
+                                <EyeIcon className="w-5 h-5" />
+                            )}
+                        </button>
+                        <input onChange={handlePasswordChange} name='password' type={showPassword ? "text" : "password"} placeholder="********" className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" />
+                    </div>
                     <div className='w-11/12 flex flex-row items-center justify-between'>
                         <Checkbox onChange={handleRememberMeChange} label={<p className='text-primary font-thin text-sm'>Remember me?</p>} color='blue' />
                         <Typography onClick={() => navigate("/recovery")} className='text-primary font-thin text-sm cursor-pointer hover:underline'>Forgot password?</Typography>
