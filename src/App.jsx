@@ -243,7 +243,6 @@ function App() {
       const response = await fetch(import.meta.env.VITE_BASE_URL + "/me", {
         method: "GET",
         headers: {
-          "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`,
         },
       }) 
