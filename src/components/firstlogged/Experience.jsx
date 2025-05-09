@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, use } from "react";
-import universityData from "./universities.json";
+import universityData from "../universities.json";
 import Context from "../../Context";
 import { MdError } from "react-icons/md";
 
