@@ -765,7 +765,7 @@ const Settings = () => {
       </div>
 
 
-      <Button onClick={() => handleProfileUpdate()} disabled={!actButton} className="bg-primary text-vnwhite p-3 rounded mt-4 hover:bg-vngrey2" >
+      <Button onClick={() => handleProfileUpdate()} disabled={!actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
         Save Changes
       </Button>
     </div>

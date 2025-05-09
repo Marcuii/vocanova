@@ -59,12 +59,12 @@ const Sidebar = () => {
         className="h-[calc(100vh-2rem)] w-full p-4"
       >
         <div className="mb-2 flex items-center gap-4 p-4">
-          <Typography variant="h5" color="blue-gray" className="font-bold text-primary">
+          <Typography variant="h5" color="blue-gray" className="font-bold text-primary hover:cursor-default">
             VocaNova
           </Typography>
         </div>
         <List>
-          <ListItem className="text-success">
+          <ListItem className="text-success" onClick={() => handleNavigation("/profile")}>
             <ListItemPrefix>
               <Avatar
                 src={userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}

@@ -73,9 +73,8 @@ const LoggedDB = () => {
       {/* Navbar */}
       <div className="sticky top-0 z-50 w-full flex items-center justify-between rounded-none px-4 py-2 shadow-md bg-white">
         <Typography
-          as="a"
-          href="#"
-          className="cursor-pointer font-bold text-2xl text-primary"
+          onClick={() => navigate("/")}
+          className="cursor-pointer font-bold text-2xl text-primary hover:cursor-pointer"
         >
           VocaNova
         </Typography>

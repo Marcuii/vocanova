@@ -1,10 +1,15 @@
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline'
 import { Button } from '@material-tailwind/react'
-import React, { use, useEffect, useState } from 'react'
+import React, { use, useContext, useEffect, useState } from 'react'
 import { IoMdCheckmarkCircle } from 'react-icons/io'
 import { MdError } from 'react-icons/md'
+import Context from '../../Context'
 
 const ChangePassword = () => {
+    const {
+        token,
+    } = useContext(Context)
+
     const [curPassword, setCurPassword] = useState("")
     const [curPasswordError, setCurPasswordError] = useState("")
     const [newPassword, setNewPassword] = useState("")
@@ -86,7 +91,7 @@ const ChangePassword = () => {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${localStorage.getItem("token")}`
+                    "Authorization": `Bearer ${token}`
                 },
                 body: JSON.stringify({
                     currentPassword: curPassword,
