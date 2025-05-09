@@ -104,6 +104,7 @@ const ChangePassword = () => {
                 setConfirmPasswordError("")
                 setActButton(true)
             } else {
+                console.log(response.status)
                 setChangePasswordError("Your current password is incorrect")
             }
         } catch (error) {
