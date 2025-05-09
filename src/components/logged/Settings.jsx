@@ -86,10 +86,16 @@ const Settings = () => {
     //resume
     resume,
     setResume,
+
+    //save changes
+    submitProfileError,
+    setSubmitProfileError,
+
+    handleProfileUpdate,
   } = useContext(Context);
 
   useEffect(() => {
-    if (!userData) return;
+    if (!userData.dateOfBirth.includes('T')) return;
     setEditFullName(userData.fullName);
     setEditEmail(userData.email);
     setUpPhoneNumber(userData.phoneNumber);
@@ -107,7 +113,7 @@ const Settings = () => {
     setHardSkills(userData.hardSkills);
     setSoftSkills(userData.softSkills);
   }, [userData]);
-  
+
   const [actButton, setActButton] = useState(false);
 
   // Country and city states
@@ -382,28 +388,28 @@ const Settings = () => {
   };
 
   const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setAvatar(file);
-    };
-
-    const handleResFileChange = (e) => {
-      const file = e.target.files[0];
-      setResume(file);
+    const file = e.target.files[0];
+    setAvatar(file);
   };
 
-    useEffect(() => {
-        if (avatar) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setPreview(reader.result); // base64 preview
-            };
-            reader.readAsDataURL(avatar);
-        } else {
-            setPreview(null);
-        }
-    }, [avatar]);
+  const handleResFileChange = (e) => {
+    const file = e.target.files[0];
+    setResume(file);
+  };
 
-    
+  useEffect(() => {
+    if (avatar) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result); // base64 preview
+      };
+      reader.readAsDataURL(avatar);
+    } else {
+      setPreview(null);
+    }
+  }, [avatar]);
+
+
 
   useEffect(() => {
     checkHardSkill();
@@ -479,23 +485,24 @@ const Settings = () => {
   ]);
 
   return (
-    <form className="w-full min-h-screen flex flex-col gap-5 p-4 lg:px-8">
+    <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-4 lg:px-8 lg:flex-row lg:justify-between lg:items-start'>
       <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
+      {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
       <img src={preview ? preview : userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
-       alt="Profile Preview" className="rounded-full w-1/2" />
-       <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Full Name</p>
+        alt="Profile Preview" className="rounded-full w-1/2" />
+      <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Full Name</p>
       <input name="fullName" value={editFullName} disabled className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Full Name" />
       <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Email</p>
       <input name="email" value={editEmail} disabled className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Email" />
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Phone Number</p>
       {upPhoneNumberError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPhoneNumberError}</p>}
-        <input
-          type="tel"
-          placeholder="Phone number"
-          value={upPhoneNumber}
-          className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-          onChange={(e) => handlePhoneNumberChange(e.target.value)}
-        />
+      <input
+        type="tel"
+        placeholder="Phone number"
+        value={upPhoneNumber}
+        className="h-fit p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+        onChange={(e) => handlePhoneNumberChange(e.target.value)}
+      />
 
       <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Gender</p>
       {upGenderError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upGenderError}</p>}
@@ -690,41 +697,44 @@ const Settings = () => {
         ))}
       </div>
 
+
+      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Profile Picture</p>
       <div className="w-full flex items-center justify-between relative">
-                <button
-                    onClick={() => {
-                        setPreview(null);
-                        setAvatar(null);
-                    }}
-                    className="absolute right-0 top-0 z-10 text-center p-2 bg-error text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out">
-                    <CiCircleRemove />
+        <button
+          onClick={() => {
+            setPreview(null);
+            setAvatar(null);
+          }}
+          className="absolute right-0 top-0 z-10 text-center p-2 bg-error text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out">
+          <CiCircleRemove />
 
-                </button>
-                <input
-                    className="w-full p-20 border border-gray-300 rounded-lg"
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange} />
-            </div>
+        </button>
+        <input
+          className="w-full p-20 border border-gray-300 rounded-lg"
+          type="file"
+          accept="image/*"
+          onChange={handleFileChange} />
+      </div>
 
-            <div className="w-full flex items-center justify-between relative">
-                <button
-                    onClick={() => {
-                        setResume(null);
-                    }}
-                    className="absolute right-0 top-0 z-10 text-center p-2 bg-error text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out">
-                    <CiCircleRemove />
+      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Resume</p>
+      <div className="w-full flex items-center justify-between relative">
+        <button
+          onClick={() => {
+            setResume(null);
+          }}
+          className="absolute right-0 top-0 z-10 text-center p-2 bg-error text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out">
+          <CiCircleRemove />
 
-                </button>
-                <input
-                    className="w-full p-20 border border-gray-300 rounded-lg"
-                    type="file"
-                    accept=".doc, .docx, .pdf"
-                    onChange={handleResFileChange} />
-            </div>
+        </button>
+        <input
+          className="w-full p-20 border border-gray-300 rounded-lg"
+          type="file"
+          accept=".doc, .docx, .pdf"
+          onChange={handleResFileChange} />
+      </div>
 
-      <button type="submit" disabled={!actButton} className="bg-primary text-white px-4 py-2 rounded mt-4">Save Changes</button>
-    </form>
+      <button onClick={() => handleProfileUpdate()} disabled={!actButton} className="bg-primary text-white px-4 py-2 rounded mt-4">Save Changes</button>
+    </div>
   );
 };
 

@@ -355,6 +355,50 @@ function App() {
     }
   }
 
+  //profile update function
+  const handleProfileUpdate = async () => {
+    const formData = new FormData()
+    formData.append("PhoneNumber", upPhoneNumber)
+    formData.append("Gender", upGender)
+    formData.append("DateOfBirth", upDOB)
+    formData.append("Country", upCountry)
+    formData.append("City", upCity)
+    formData.append("Degree", upDegree)
+    formData.append("University", upUniversity)
+    formData.append("GraduationYear", upGraduationDate)
+    formData.append("JobTitle", upJobTitle)
+    formData.append("Company", upCompany)
+    formData.append("ExperienceYears", upExperienceYears)
+    formData.append("SalaryExpectations", upExpectedSalary)
+    formData.append("HardSkills", hardSkills)
+    formData.append("SoftSkills", softSkills)
+    if (avatar) formData.append("ProfilePicture", avatar);
+    if (resume) formData.append("ResumeFile", resume);
+
+    // Perform profile setup logic here
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "/me/info", {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+        },
+        body: formData,
+      })
+      if (response.status !== 204) {
+        setSubmitProfileError("Server error, please try again later")
+        console.log(response.status)
+      } else if (response.status === 204) {
+        setSubmitProfileError("")
+        window.location.reload()  
+      }
+      return
+    }
+    catch (error) {
+      // Handle error here
+      console.error("Error during profile setup:", error)
+    }
+  }
+
   //handle logout function
   const handleLogout = () => {
     setLoggedIn(false)
@@ -531,6 +575,7 @@ function App() {
         setSubmitProfileError,
         //app profile setup
         handleProfileSetup,
+        handleProfileUpdate,
 
         //Logged Layout ----------------------------
         //app logout
