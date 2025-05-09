@@ -47,10 +47,6 @@ src/
    npm run dev
    ```
 
-## 📸 Screenshots
-
-> *(Add screenshots or GIFs of your app here)*
-
 ## 🧠 License
 
 This project is open-source and free to use under the MIT License.

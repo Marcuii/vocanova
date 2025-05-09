@@ -267,7 +267,6 @@ function App() {
           setUserData({...data, hardSkills: data.hardSkills[0].split(",") , softSkills: data.softSkills[0].split(",")})
           getJobApplications()
         }
-        console.log(data)
       }
       return 
     } catch (error) {
@@ -301,7 +300,6 @@ function App() {
       } else {
         const data = await response.json()
         setJobApplications(data)
-        console.log(data)
       }
       return 
     } catch (error) {

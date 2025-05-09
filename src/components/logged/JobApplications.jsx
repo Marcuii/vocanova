@@ -301,11 +301,11 @@ const JobApplications = () => {
               <h2 className='text-xl font-bold text-primary mb-3'>{application.jobTitle}</h2>
               <p className='text-md text-vngrey2 flex flex-row'>Company: <span className="ml-2 text-vnblack1"> {application.companyName}</span></p>
               <p className='text-md text-vngrey2 flex flex-col items-start sm:flex-row sm:items-center'>Status: 
-                {application.status === "Offered" && <span className="ml-2 bg-vngrey1 p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Applied" && <span className="ml-2 bg-secondary p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Interviewed" && <span className="ml-2 bg-primary p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Rejected" && <span className="ml-2 bg-error p-2 rounded-lg"> {application.status}</span>}
-                {application.status === "Accepted" && <span className="ml-2 bg-success p-2 rounded-lg"> {application.status}</span>}
+                {application.status === "Offered" && <span className="ml-2 bg-vngrey1 p-2 rounded-lg text-vnwhite"> {application.status}</span>}
+                {application.status === "Applied" && <span className="ml-2 bg-secondary p-2 rounded-lg text-vnwhite"> {application.status}</span>}
+                {application.status === "Interviewed" && <span className="ml-2 bg-primary p-2 rounded-lg text-vnwhite"> {application.status}</span>}
+                {application.status === "Rejected" && <span className="ml-2 bg-error p-2 rounded-lg text-vnwhite"> {application.status}</span>}
+                {application.status === "Accepted" && <span className="ml-2 bg-success p-2 rounded-lg text-vnwhite"> {application.status}</span>}
               </p>
             </div>
           ))
