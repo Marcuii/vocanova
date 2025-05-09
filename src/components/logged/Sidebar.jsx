@@ -14,7 +14,7 @@ import {
   PowerIcon,
 } from "@heroicons/react/24/solid";
 import Context from "../../Context";
-import { ClipboardDocumentListIcon, DocumentMagnifyingGlassIcon, MagnifyingGlassIcon, UsersIcon } from "@heroicons/react/24/outline";
+import { ArrowPathRoundedSquareIcon, ClipboardDocumentListIcon, DocumentMagnifyingGlassIcon, MagnifyingGlassIcon, UsersIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router";
 
 const Sidebar = () => {
@@ -114,6 +114,12 @@ const Sidebar = () => {
               <Cog6ToothIcon className="h-5 w-5 text-primary" />
             </ListItemPrefix>
             Settings
+          </ListItem>
+          <ListItem onClick={() => handleNavigation("/change-password")}>
+            <ListItemPrefix>
+              <ArrowPathRoundedSquareIcon className="h-5 w-5 text-primary" />
+            </ListItemPrefix>
+            Change Password
           </ListItem>
           <ListItem onClick={() => handleLogout()} className="text-error">
             <ListItemPrefix>

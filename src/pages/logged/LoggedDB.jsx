@@ -11,6 +11,7 @@ import ResumeAnalysis from './../../components/logged/ResumeAnalysis';
 import MockupInterview from './../../components/logged/MockupInterview';
 import Profile from './../../components/logged/Profile';
 import Settings from './../../components/logged/Settings';
+import ChangePassword from '../../components/logged/ChangePassword'
 
 const LoggedDB = () => {
   const [name, setName] = useState("")
@@ -43,6 +44,7 @@ const LoggedDB = () => {
     if (path === "/mockup-interview") return <MockupInterview />;
     if (path === "/profile") return <Profile />;
     if (path === "/settings") return <Settings />;
+    if (path === "/change-password") return <ChangePassword />;
     return <JobRecommendation />;
   }
 

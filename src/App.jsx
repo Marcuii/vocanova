@@ -604,6 +604,7 @@ function App() {
           <Route path="/mockup-interview" element={<LoggedDB />} />
           <Route path="/profile" element={<LoggedDB />} />
           <Route path="/settings" element={<LoggedDB />} />
+          <Route path="/change-password" element={<LoggedDB />} />
         </Routes>
       </div>
     </Context.Provider>
