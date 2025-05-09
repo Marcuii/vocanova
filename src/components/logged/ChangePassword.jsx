@@ -93,7 +93,6 @@ const ChangePassword = () => {
                     newPassword: newPassword,
                 })
             })
-            const data = await response.json()
             if (response.status == 200) {
                 setChangePasswordSuccess("Password changed successfully")
                 setChangePasswordError("")
@@ -105,10 +104,9 @@ const ChangePassword = () => {
                 setConfirmPasswordError("")
                 setActButton(true)
             } else {
-                setChangePasswordError(data.message)
+                setChangePasswordError("Your current password is incorrect")
             }
         } catch (error) {
-            console.log(error)
             setChangePasswordError("Something went wrong. Please try again later.")
         }
     }
@@ -116,8 +114,8 @@ const ChangePassword = () => {
         <div className='w-full flex flex-col items-center justify-center gap-5 p-5'>
             <h1 className='text-3xl font-bold text-vngrey1'>Change Password</h1>
             <p className='text-vngrey2 text-lg'>Change your password to keep your account secure.</p>
-            {changePasswordError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-xl -mb-5'><MdError />{changePasswordError}</p>}
-            {changePasswordSuccess != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-green-500 text-xl -mb-5'><IoMdCheckmarkCircle />{changePasswordSuccess}</p>}
+            {changePasswordError != "" && <p className='flex flex-row gap-2 items-center text-center w-11/12 text-red-500 text-xl -mb-5'><MdError />{changePasswordError}</p>}
+            {changePasswordSuccess != "" && <p className='flex flex-row gap-2 items-center text-center w-11/12 text-green-500 text-xl -mb-5'><IoMdCheckmarkCircle />{changePasswordSuccess}</p>}
             <div className='w-11/12 flex flex-col items-center text-start gap-7'>
 
                 <p className='text-start w-11/12 text-vngrey2 text-lg -mb-5'>Current Password</p>
