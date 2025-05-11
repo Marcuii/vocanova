@@ -5,7 +5,7 @@ import { FaPlus } from 'react-icons/fa';
 import { MdError, MdRemove } from 'react-icons/md';
 import { CiCircleRemove } from 'react-icons/ci';
 import { PencilIcon } from '@heroicons/react/24/outline';
-import { Button } from '@material-tailwind/react';
+import { Button, Spinner } from '@material-tailwind/react';
 
 const degreeOptions = [
   "High School Diploma",
@@ -503,7 +503,7 @@ const Settings = () => {
 
   if (loading) {
     return (
-      <div className='w-full min-h-screen flex justify-center items-center'>
+      <div className='w-full min-h-screen flex flex-col justify-center items-center'>
         <h1 className='text-2xl font-semibold text-primary'>Loading...</h1>
         <Spinner className="h-16 w-16 text-primary" />
       </div>

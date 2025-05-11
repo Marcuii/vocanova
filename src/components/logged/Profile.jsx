@@ -19,7 +19,7 @@ const Profile = () => {
 
   if (isLoading === false) {
     return (
-      <div className='w-full min-h-screen flex justify-center items-center'>
+      <div className='w-full min-h-screen flex flex-col justify-center items-center'>
         <h1 className='text-2xl font-semibold text-primary'>Loading...</h1>
         <Spinner className="h-16 w-16 text-primary" />
       </div>

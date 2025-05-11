@@ -26,8 +26,10 @@ const MockupInterview = () => {
   useEffect(() => {
     if (userData.jobTitle) {
       setActButton(true)
+      setLoading(false)
     } else {
       setActButton(false)
+      setLoading(true)
     }
   }, [userData])
 
@@ -70,6 +72,7 @@ const MockupInterview = () => {
 
   // Function to fetch mockup interview questions from the API
   const fetchQuestions = async () => {
+    setLoading(true)
     try {
       const response = await fetch(import.meta.env.VITE_INTERVIEW_API + "/start-interview", {
         method: 'POST',
@@ -91,10 +94,12 @@ const MockupInterview = () => {
     } catch (error) {
       setError('Failed to get questions. Please try again later.')
     }
+    setLoading(false)
   }
 
   // Function to fetch the next question
   const fetchNextQuestion = async () => {
+    setLoading(true)
     try {
       const response = await fetch(import.meta.env.VITE_INTERVIEW_API + "/submit-answer", {
         method: 'POST',
@@ -109,16 +114,15 @@ const MockupInterview = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
-      setLoading(true)
       const data = await response.json()
       setFeedbacks([...feedbacks, { ...data, question: questions[curQuestion], answer: curAnswer }])
       setCurQuestion(curQuestion + 1)
       setCurAnswer("")
       setError("")
-      setLoading(false)
     } catch (error) {
       setError('Failed to submit answer. Please try again later.')
     }
+    setLoading(false)
   }
 
   return (
