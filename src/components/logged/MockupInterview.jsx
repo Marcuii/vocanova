@@ -128,12 +128,12 @@ const MockupInterview = () => {
         </Button>
         {started ?
           (loading ? 
-            (<p className='text-2xl text-vnblack1'>Loading...</p>) : 
+            (<p className='text-2xl text-vnblack1 text-center w-full'>Loading...</p>) : 
             (questions.length > 0 ? 
               (
                 <div className='w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
-                  <h2 className='w-full text-vnblack1 text-xl text-center'>{questions[curQuestion]}</h2>
-                  {answerError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{answerError}</p>}
+                  <h2 className={`${questions.length === curQuestion ? "hidden" : "block"} w-full text-vnblack1 text-xl text-center`}>{questions[curQuestion]}</h2>
+                  {answerError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-3'><MdError />{answerError}</p>}
                   <textarea
                     value={curAnswer}
                     onChange={(e) => handleChangeAnswer(e.target.value)}
@@ -143,23 +143,23 @@ const MockupInterview = () => {
                   <Button onClick={() => fetchNextQuestion()} disabled={!actButton2} className={`${questions.length === curQuestion ? "hidden" : "flex"} w-11/12 font-medium normal-case flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out`}>
                     Submit
                   </Button>
-                  {questions.length === curQuestion && <p className='text-2xl text-success'>You have completed the interview!</p>}
+                  {questions.length === curQuestion && <p className='text-2xl text-success text-center w-full'>You have completed the interview!</p>}
                 </div>
               ) :
-              (<p className='text-2xl text-vnblack1'>No questions found.</p>)
+              (<p className='text-2xl text-vnblack1 text-center w-full'>No questions found.</p>)
             )
           ) :
-          (<p className='text-2xl text-vnblack1'>Click the button to start the interview.</p>)
+          (<p className='text-2xl text-vnblack1 text-center w-full'>Click the button to start the interview.</p>)
         }
         {feedbacks.length > 0 && 
           <div className='w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
             <h2 className='w-full text-vnblack1 text-xl text-center'>Feedback</h2>
             {feedbacks.map((feedback, index) => (
               <div key={index} className='w-full flex flex-col items-start justify-start gap-2 p-4 border-vngrey4 border rounded-lg'>
-                <p className='text-success text-lg'>Question: <span className='text-vnblack2'>{feedback.question}</span></p>
-                <p className='text-success text-base'>Answer: <span className='text-vnblack2'>{feedback.answer}</span></p>
-                <p className='text-success text-xl'>Feedback: <span className='text-vnblack2'>{feedback.feedback}</span></p>
-                <p className='text-success text-xl'>Rate: <span className='text-vnblack2'>{feedback.rating}</span></p>
+                <p className='text-success text-center w-full text-sm lg:text-lg'>Question: <span className='text-vnblack2'>{feedback.question}</span></p>
+                <p className='text-success text-center w-full text-sm lg:text-base'>Answer: <span className='text-vnblack2'>{feedback.answer}</span></p>
+                <p className='text-success text-center w-full text-sm lg:text-xl'>Feedback: <span className='text-vnblack2'>{feedback.feedback}</span></p>
+                <p className='text-success text-center w-full text-sm lg:text-xl'>Rate: <span className='text-vnblack2'>{feedback.rating}</span></p>
               </div>
             ))}
           </div>
