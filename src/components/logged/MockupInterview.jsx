@@ -126,8 +126,8 @@ const MockupInterview = () => {
         <Button onClick={() => fetchQuestions()} disabled={!actButton} className={`${started ? "hidden" : "flex"} w-11/12 font-medium normal-case flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out`}>
           Start Interview
         </Button>
-        {started && 
-          loading ? 
+        {started ?
+          (loading ? 
             (<p className='text-2xl text-vnblack1'>Loading...</p>) : 
             (questions.length > 0 ? 
               (
@@ -137,7 +137,7 @@ const MockupInterview = () => {
                   <textarea
                     value={curAnswer}
                     onChange={(e) => handleChangeAnswer(e.target.value)}
-                    className="w-full p-2 border text-vnblack1 rounded-md min-h-40"
+                    className={`${questions.length === curQuestion ? "hidden" : "block"} w-full p-2 border text-vnblack1 rounded-md min-h-40`}
                     rows="4"
                   ></textarea>
                   <Button onClick={() => fetchNextQuestion()} disabled={!actButton2} className={`${questions.length === curQuestion ? "hidden" : "flex"} w-11/12 font-medium normal-case flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out`}>
@@ -148,16 +148,18 @@ const MockupInterview = () => {
               ) :
               (<p className='text-2xl text-vnblack1'>No questions found.</p>)
             )
+          ) :
+          (<p className='text-2xl text-vnblack1'>Click the button to start the interview.</p>)
         }
         {feedbacks.length > 0 && 
           <div className='w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
             <h2 className='w-full text-vnblack1 text-xl text-center'>Feedback</h2>
             {feedbacks.map((feedback, index) => (
               <div key={index} className='w-full flex flex-col items-start justify-start gap-2 p-4 border-vngrey4 border rounded-lg'>
-                <p className='text-success text-lg'>Question: {feedback.question}</p>
-                <p className='text-success text-sm'>Answer: {feedback.answer}</p>
-                <p className='text-success text-sm'>Feedback: {feedback.feedback}</p>
-                <p className='text-success text-sm'>Rate: {feedback.rating}</p>
+                <p className='text-success text-lg'>Question: <span className='text-vnblack2'>{feedback.question}</span></p>
+                <p className='text-success text-base'>Answer: <span className='text-vnblack2'>{feedback.answer}</span></p>
+                <p className='text-success text-xl'>Feedback: <span className='text-vnblack2'>{feedback.feedback}</span></p>
+                <p className='text-success text-xl'>Rate: <span className='text-vnblack2'>{feedback.rating}</span></p>
               </div>
             ))}
           </div>
