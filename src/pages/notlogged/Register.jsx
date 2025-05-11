@@ -165,6 +165,7 @@ const Register = () => {
     }
 
     useEffect(() => {
+        document.title = "Vocanova | Register"
         setActButton(true)
         setUpName("")
         setUpNameError("")

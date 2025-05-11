@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import Context from '../../Context'
-import { Button } from '@material-tailwind/react';
+import { Button, Spinner } from '@material-tailwind/react';
 import { MdError } from 'react-icons/md';
 
 const MockupInterview = () => {
@@ -33,7 +33,7 @@ const MockupInterview = () => {
 
   //Activate Loading
   useEffect(() => {
-    if (questions === 0){
+    if (questions === 0) {
       setLoading(true)
     } else {
       setLoading(false)
@@ -109,10 +109,13 @@ const MockupInterview = () => {
       if (!response.ok) {
         throw new Error('Network response was not ok')
       }
+      setLoading(true)
       const data = await response.json()
-      setFeedbacks([...feedbacks, {...data, question: questions[curQuestion], answer: curAnswer }])
+      setFeedbacks([...feedbacks, { ...data, question: questions[curQuestion], answer: curAnswer }])
       setCurQuestion(curQuestion + 1)
       setCurAnswer("")
+      setError("")
+      setLoading(false)
     } catch (error) {
       setError('Failed to submit answer. Please try again later.')
     }
@@ -127,11 +130,16 @@ const MockupInterview = () => {
           Start Interview
         </Button>
         {started ?
-          (loading ? 
-            (<p className='text-2xl text-vnblack1 text-center w-full'>Loading...</p>) : 
-            (questions.length > 0 ? 
+          (loading ?
+            (
+              <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4'>
+                <p className='text-2xl text-vnblack1 text-center w-full'>Loading...</p>
+                <Spinner className="h-16 w-16 text-primary" />
+              </div>
+            ) :
+            (questions.length > 0 ?
               (
-                <div className='w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
+                <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
                   <h2 className={`${questions.length === curQuestion ? "hidden" : "block"} w-full text-vnblack1 text-xl text-center`}>{questions[curQuestion]}</h2>
                   {answerError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-3'><MdError />{answerError}</p>}
                   <textarea
@@ -151,15 +159,15 @@ const MockupInterview = () => {
           ) :
           (<p className='text-2xl text-vnblack1 text-center w-full'>Click the button to start the interview.</p>)
         }
-        {feedbacks.length > 0 && 
-          <div className='w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
+        {feedbacks.length > 0 &&
+          <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
             <h2 className='w-full text-vnblack1 text-xl text-center'>Feedback</h2>
             {feedbacks.map((feedback, index) => (
               <div key={index} className='w-full flex flex-col items-start justify-start gap-2 p-4 border-vngrey4 border rounded-lg'>
-                <p className='text-success text-center w-full text-sm lg:text-lg'>Question: <span className='text-vnblack2'>{feedback.question}</span></p>
-                <p className='text-success text-center w-full text-sm lg:text-base'>Answer: <span className='text-vnblack2'>{feedback.answer}</span></p>
-                <p className='text-success text-center w-full text-sm lg:text-xl'>Feedback: <span className='text-vnblack2'>{feedback.feedback}</span></p>
-                <p className='text-success text-center w-full text-sm lg:text-xl'>Rate: <span className='text-vnblack2'>{feedback.rating}</span></p>
+                <p className='text-success w-full text-sm lg:text-lg'>Question: <span className='text-vnblack2'>{feedback.question}</span></p>
+                <p className='text-success w-full text-sm lg:text-base'>Answer: <span className='text-vnblack2'>{feedback.answer}</span></p>
+                <p className='text-success w-full text-sm lg:text-xl'>Feedback: <span className='text-vnblack2'>{feedback.feedback}</span></p>
+                <p className='text-success w-full text-sm lg:text-xl'>Rate: <span className='text-vnblack2'>{feedback.rating}</span></p>
               </div>
             ))}
           </div>

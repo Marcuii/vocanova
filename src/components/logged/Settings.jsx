@@ -97,26 +97,31 @@ const Settings = () => {
   } = useContext(Context);
 
   useEffect(() => {
-    if (userData.dateOfBirth === undefined) return;
-    setEditFullName(userData.fullName);
-    setEditEmail(userData.email);
-    setUpPhoneNumber(userData.phoneNumber);
-    setUpGender(userData.gender);
-    setUpDOB(userData.dateOfBirth.split("T")[0]);
-    setUpCountry(userData.country);
-    setUpCity(userData.city);
-    setUpDegree(userData.degree);
-    setUpUniversity(userData.university);
-    setUpGraduationDate(userData.graduationYear);
-    setUpJobTitle(userData.jobTitle);
-    setUpCompany(userData.company);
-    setUpExperienceYears(userData.experienceYears);
-    setUpExpectedSalary(userData.salaryExpectations);
-    setHardSkills(userData.hardSkills);
-    setSoftSkills(userData.softSkills);
+    if (userData.dateOfBirth === undefined) {
+      setLoading(true);
+    } else {
+      setEditFullName(userData.fullName);
+      setEditEmail(userData.email);
+      setUpPhoneNumber(userData.phoneNumber);
+      setUpGender(userData.gender);
+      setUpDOB(userData.dateOfBirth.split("T")[0]);
+      setUpCountry(userData.country);
+      setUpCity(userData.city);
+      setUpDegree(userData.degree);
+      setUpUniversity(userData.university);
+      setUpGraduationDate(userData.graduationYear);
+      setUpJobTitle(userData.jobTitle);
+      setUpCompany(userData.company);
+      setUpExperienceYears(userData.experienceYears);
+      setUpExpectedSalary(userData.salaryExpectations);
+      setHardSkills(userData.hardSkills);
+      setSoftSkills(userData.softSkills);
+      setLoading(false);
+    }
   }, [userData]);
 
   const [actButton, setActButton] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Country and city states
   const [countries, setCountries] = useState([]);
@@ -496,280 +501,289 @@ const Settings = () => {
     softSkills,
   ]);
 
-  return (
-    <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-8'>
-      <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
-      {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
-      <div className="relative w-40 h-40 lg:h-60 lg:w-60">
-        <img
-          src={
-            preview
-              ? preview
-              : userData.profilePictureUrl
-                ? userData.profilePictureUrl
-                : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"
-          }
-          alt="Profile Preview"
-          className="rounded-full object-cover w-full h-full border border-gray-300 shadow-sm"
+  if (loading) {
+    return (
+      <div className='w-full min-h-screen flex justify-center items-center'>
+        <h1 className='text-2xl font-semibold text-primary'>Loading...</h1>
+        <Spinner className="h-16 w-16 text-primary" />
+      </div>
+    )
+  } else {
+    return (
+      <div className='w-full min-h-screen flex flex-col justify-start items-center gap-5 p-8'>
+        <h2 className="text-xl font-semibold text-primary">Edit Personal Information</h2>
+        {submitProfileError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{submitProfileError}</p>}
+        <div className="relative w-40 h-40 lg:h-60 lg:w-60">
+          <img
+            src={
+              preview
+                ? preview
+                : userData.profilePictureUrl
+                  ? userData.profilePictureUrl
+                  : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"
+            }
+            alt="Profile Preview"
+            className="rounded-full object-cover w-full h-full border border-gray-300 shadow-sm"
+          />
+
+          {/* Upload Pencil Icon */}
+          <label className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+            <PencilIcon className="w-5 h-5 text-gray-700" />
+          </label>
+
+          {/* Optional: Remove Button */}
+          {preview && (
+            <button
+              onClick={() => {
+                setPreview(null);
+                setAvatar(null);
+              }}
+              className="absolute top-2 right-2 bg-error text-white p-1 rounded-full hover:bg-red-700 transition"
+            >
+              <CiCircleRemove className="w-5 h-5" />
+            </button>
+          )}
+        </div>
+        <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Personal</h1>
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Full Name</p>
+        <input name="fullName" value={editFullName} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Full Name" />
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Email</p>
+        <input name="email" value={editEmail} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Email" />
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Phone Number</p>
+        {upPhoneNumberError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPhoneNumberError}</p>}
+        <input
+          type="tel"
+          placeholder="Phone number"
+          value={upPhoneNumber}
+          className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          onChange={(e) => handlePhoneNumberChange(e.target.value)}
         />
 
-        {/* Upload Pencil Icon */}
-        <label className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md cursor-pointer hover:bg-gray-100 transition">
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleFileChange}
-            className="hidden"
-          />
-          <PencilIcon className="w-5 h-5 text-gray-700" />
-        </label>
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Gender</p>
+        {upGenderError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upGenderError}</p>}
+        <select value={upGender} onChange={(e) => handleGenderChange(e.target.value)} className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
 
-        {/* Optional: Remove Button */}
-        {preview && (
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Date of Birth</p>
+        {upDOBError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upDOBError}</p>}
+        <input
+          type="date"
+          value={upDOB}
+          min={"1930-01-01"}
+          max={maxDate}
+          onChange={(e) => handleDOBChange(e.target.value)}
+          className="h-fit w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+        />
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Country</p>
+        {upCountryError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upCountryError}</p>}
+        <select value={upCountry} onChange={(e) => handleCountryChange(e.target.value)} className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
+          <option value="">Select Country</option>
+          {countries.map((country, idx) => (
+            <option key={idx} value={country}>
+              {country}
+            </option>
+          ))}
+        </select>
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>City</p>
+        {upCityError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upCityError}</p>}
+        <select disabled={upCountry === ""} value={upCity} onChange={(e) => handleCityChange(e.target.value)} className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
+          <option value="">Select City</option>
+          {cities.map((city, idx) => (
+            <option key={idx} value={city}>
+              {city}
+            </option>
+          ))}
+        </select>
+        <hr className='w-full border-t-2 border-gray-300' />
+        <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Education</h1>
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Degree</p>
+        {upDegreeError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upDegreeError}</p>}
+        <select
+          className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          onChange={(e) => handleDegreeChange(e.target.value)}
+          value={upDegree}
+        >
+          <option value="">Select Degree</option>
+          {degreeOptions.map((degree, idx) => (
+            <option key={idx} value={degree}>
+              {degree}
+            </option>
+          ))}
+        </select>
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>University</p>
+        {upUniversityError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upUniversityError}</p>}
+        <select
+          className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          value={upUniversity}
+          disabled={upCountry === "" || upCountryError !== ""}
+          onChange={(e) => handleUniversityChange(e.target.value)}
+        >
+          <option value="">Select</option>
+          {universities.map((uni, idx) => (
+            <option key={idx} value={uni.name}>
+              {uni.name}
+            </option>
+          ))}
+        </select>
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Graduation Year</p>
+        {upGraduationDateError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upGraduationDateError}</p>}
+        <select
+          className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          value={upGraduationDate}
+          onChange={(e) => handleGraduationDateChange(e.target.value)}
+        >
+          <option value="">Select Graduation Year</option>
+          {Array.from({ length: 50 }, (_, i) => {
+            const year = (new Date().getFullYear() + 5) - i;
+            return (
+              <option key={year} value={year}>
+                {year}
+              </option>
+            );
+          })}
+        </select>
+
+        <hr className='w-full border-t-2 border-gray-300' />
+        <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Experience</h1>
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Job title</p>
+        {upJobTitleError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upJobTitleError}</p>}
+        <input
+          type="text"
+          placeholder="Enter your job title"
+          className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          value={upJobTitle}
+          onChange={(e) => handleJobTitleChange(e.target.value)}
+        />
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Company</p>
+        {upCompanyError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upCompanyError}</p>}
+        <input
+          type="text"
+          placeholder="Enter your company name"
+          className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          value={upCompany}
+          onChange={(e) => handleCompanyChange(e.target.value)}
+        />
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Years of Experience</p>
+        {upExperienceYearsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upExperienceYearsError}</p>}
+        <input
+          type="number"
+          placeholder="Enter your years of experience"
+          className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          value={upExperienceYears}
+          onChange={(e) => handleExperienceYearsChange(e.target.value)}
+        />
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Expected Salary</p>
+        {upExpectedSalaryError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upExpectedSalaryError}</p>}
+        <input
+          type="number"
+          placeholder="Enter your maximum salary"
+          className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          value={upExpectedSalary}
+          onChange={(e) => handleExpectedSalaryChange(e.target.value)}
+        />
+        <hr className='w-full border-t-2 border-gray-300' />
+        <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Skills</h1>
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Hard Skills</p>
+        {hardSkillsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{hardSkillsError}</p>}
+        <div className='flex flex-row relative items-center justify-between w-full'>
+          <input
+            onChange={(e) => { setCurHardSkill(e.target.value) }}
+            className="w-full p-4 border-2 z-0 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          />
+          <button
+            className="absolute h-full right-0 z-10 w-12 text-center p-4 bg-vngrey3 text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out"
+            onClick={() => handleAddHardSkill()}
+          >
+            <FaPlus />
+          </button>
+        </div>
+
+        <div className='w-11/12 flex flex-wrap items-center justify-start gap-4'>
+          {hardSkills.map((skill, idx) => (
+            <div key={idx} className='flex flex-row bg-primary rounded-xl p-2 items-center justify-center gap-2'>
+              <p className='text-vngrey5 text-lg'>{skill}</p>
+              <button
+                className="text-center p-2 bg-error text-vnwhite rounded-xl hover:bg-vnblack2 transition duration-300 ease-in-out"
+                onClick={() => handleRemoveHardSkill(idx)}
+              >
+                <MdRemove />
+              </button>
+            </div>
+          ))}
+        </div>
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Soft Skills</p>
+        {softSkillsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{softSkillsError}</p>}
+        <div className='flex flex-row relative items-center justify-between w-full'>
+          <input
+            onChange={(e) => { setCurSoftSkill(e.target.value) }}
+            className="w-full p-4 border-2 z-0 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
+          />
+          <button
+            className="absolute h-full right-0 z-10 w-12 text-center p-4 bg-vngrey3 text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out"
+            onClick={() => handleAddSoftSkill()}
+          >
+            <FaPlus />
+          </button>
+        </div>
+
+        <div className='w-11/12 flex flex-wrap items-center justify-start gap-4'>
+          {softSkills.map((skill, idx) => (
+            <div key={idx} className='flex flex-row bg-secondary rounded-xl p-2 items-center justify-center gap-2'>
+              <p className='text-vngrey2 text-lg'>{skill}</p>
+              <button
+                className="text-center p-2 bg-error text-vnwhite rounded-xl hover:bg-vnblack2 transition duration-300 ease-in-out"
+                onClick={() => handleRemoveSoftSkill(idx)}
+              >
+                <MdRemove />
+              </button>
+            </div>
+          ))}
+        </div>
+        <hr className='w-full border-t-2 border-gray-300' />
+
+        <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Resume</p>
+        <div className="w-full flex items-center justify-between relative">
           <button
             onClick={() => {
-              setPreview(null);
-              setAvatar(null);
+              setResume(null);
             }}
-            className="absolute top-2 right-2 bg-error text-white p-1 rounded-full hover:bg-red-700 transition"
-          >
-            <CiCircleRemove className="w-5 h-5" />
+            className="absolute right-0 top-0 z-10 text-center p-2 bg-error text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out">
+            <CiCircleRemove />
+
           </button>
-        )}
+          <input
+            className="w-full p-20 border border-gray-300 rounded-lg"
+            type="file"
+            accept=".doc, .docx, .pdf"
+            onChange={handleResFileChange} />
+        </div>
+
+
+        <Button onClick={() => handleProfileUpdate()} disabled={!actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
+          Save Changes
+        </Button>
       </div>
-      <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Personal</h1>
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Full Name</p>
-      <input name="fullName" value={editFullName} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Full Name" />
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Email</p>
-      <input name="email" value={editEmail} disabled className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out" placeholder="Email" />
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Phone Number</p>
-      {upPhoneNumberError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upPhoneNumberError}</p>}
-      <input
-        type="tel"
-        placeholder="Phone number"
-        value={upPhoneNumber}
-        className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        onChange={(e) => handlePhoneNumberChange(e.target.value)}
-      />
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Gender</p>
-      {upGenderError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upGenderError}</p>}
-      <select value={upGender} onChange={(e) => handleGenderChange(e.target.value)} className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
-        <option value="">Select Gender</option>
-        <option value="Male">Male</option>
-        <option value="Female">Female</option>
-      </select>
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Date of Birth</p>
-      {upDOBError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upDOBError}</p>}
-      <input
-        type="date"
-        value={upDOB}
-        min={"1930-01-01"}
-        max={maxDate}
-        onChange={(e) => handleDOBChange(e.target.value)}
-        className="h-fit w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-      />
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Country</p>
-      {upCountryError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upCountryError}</p>}
-      <select value={upCountry} onChange={(e) => handleCountryChange(e.target.value)} className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
-        <option value="">Select Country</option>
-        {countries.map((country, idx) => (
-          <option key={idx} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>City</p>
-      {upCityError != "" && <p className='flex flex-row gap-2 items-center text-start w-11/12 text-red-500 text-sm -mb-5'><MdError />{upCityError}</p>}
-      <select disabled={upCountry === ""} value={upCity} onChange={(e) => handleCityChange(e.target.value)} className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out">
-        <option value="">Select City</option>
-        {cities.map((city, idx) => (
-          <option key={idx} value={city}>
-            {city}
-          </option>
-        ))}
-      </select>
-      <hr className='w-full border-t-2 border-gray-300' />
-      <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Education</h1>
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Degree</p>
-      {upDegreeError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upDegreeError}</p>}
-      <select
-        className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        onChange={(e) => handleDegreeChange(e.target.value)}
-        value={upDegree}
-      >
-        <option value="">Select Degree</option>
-        {degreeOptions.map((degree, idx) => (
-          <option key={idx} value={degree}>
-            {degree}
-          </option>
-        ))}
-      </select>
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>University</p>
-      {upUniversityError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upUniversityError}</p>}
-      <select
-        className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upUniversity}
-        disabled={upCountry === "" || upCountryError !== ""}
-        onChange={(e) => handleUniversityChange(e.target.value)}
-      >
-        <option value="">Select</option>
-        {universities.map((uni, idx) => (
-          <option key={idx} value={uni.name}>
-            {uni.name}
-          </option>
-        ))}
-      </select>
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Graduation Year</p>
-      {upGraduationDateError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upGraduationDateError}</p>}
-      <select
-        className="w-full p-4 border-2 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upGraduationDate}
-        onChange={(e) => handleGraduationDateChange(e.target.value)}
-      >
-        <option value="">Select Graduation Year</option>
-        {Array.from({ length: 50 }, (_, i) => {
-          const year = (new Date().getFullYear() + 5) - i;
-          return (
-            <option key={year} value={year}>
-              {year}
-            </option>
-          );
-        })}
-      </select>
-
-      <hr className='w-full border-t-2 border-gray-300' />
-      <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Experience</h1>
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Job title</p>
-      {upJobTitleError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upJobTitleError}</p>}
-      <input
-        type="text"
-        placeholder="Enter your job title"
-        className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upJobTitle}
-        onChange={(e) => handleJobTitleChange(e.target.value)}
-      />
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Company</p>
-      {upCompanyError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upCompanyError}</p>}
-      <input
-        type="text"
-        placeholder="Enter your company name"
-        className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upCompany}
-        onChange={(e) => handleCompanyChange(e.target.value)}
-      />
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Years of Experience</p>
-      {upExperienceYearsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upExperienceYearsError}</p>}
-      <input
-        type="number"
-        placeholder="Enter your years of experience"
-        className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upExperienceYears}
-        onChange={(e) => handleExperienceYearsChange(e.target.value)}
-      />
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Expected Salary</p>
-      {upExpectedSalaryError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{upExpectedSalaryError}</p>}
-      <input
-        type="number"
-        placeholder="Enter your maximum salary"
-        className="w-full h-12 px-4 border-2 border-vngrey5 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        value={upExpectedSalary}
-        onChange={(e) => handleExpectedSalaryChange(e.target.value)}
-      />
-      <hr className='w-full border-t-2 border-gray-300' />
-      <h1 className='text-start w-full -ml-3 text-vngrey1 text-2xl'>Skills</h1>
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Hard Skills</p>
-      {hardSkillsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{hardSkillsError}</p>}
-      <div className='flex flex-row relative items-center justify-between w-full'>
-        <input
-          onChange={(e) => { setCurHardSkill(e.target.value) }}
-          className="w-full p-4 border-2 z-0 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        />
-        <button
-          className="absolute h-full right-0 z-10 w-12 text-center p-4 bg-vngrey3 text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out"
-          onClick={() => handleAddHardSkill()}
-        >
-          <FaPlus />
-        </button>
-      </div>
-
-      <div className='w-11/12 flex flex-wrap items-center justify-start gap-4'>
-        {hardSkills.map((skill, idx) => (
-          <div key={idx} className='flex flex-row bg-primary rounded-xl p-2 items-center justify-center gap-2'>
-            <p className='text-vngrey5 text-lg'>{skill}</p>
-            <button
-              className="text-center p-2 bg-error text-vnwhite rounded-xl hover:bg-vnblack2 transition duration-300 ease-in-out"
-              onClick={() => handleRemoveHardSkill(idx)}
-            >
-              <MdRemove />
-            </button>
-          </div>
-        ))}
-      </div>
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Soft Skills</p>
-      {softSkillsError != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-5'><MdError />{softSkillsError}</p>}
-      <div className='flex flex-row relative items-center justify-between w-full'>
-        <input
-          onChange={(e) => { setCurSoftSkill(e.target.value) }}
-          className="w-full p-4 border-2 z-0 border-vngrey3 rounded-lg focus:outline-none focus:border-primary transition duration-300 ease-in-out"
-        />
-        <button
-          className="absolute h-full right-0 z-10 w-12 text-center p-4 bg-vngrey3 text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out"
-          onClick={() => handleAddSoftSkill()}
-        >
-          <FaPlus />
-        </button>
-      </div>
-
-      <div className='w-11/12 flex flex-wrap items-center justify-start gap-4'>
-        {softSkills.map((skill, idx) => (
-          <div key={idx} className='flex flex-row bg-secondary rounded-xl p-2 items-center justify-center gap-2'>
-            <p className='text-vngrey2 text-lg'>{skill}</p>
-            <button
-              className="text-center p-2 bg-error text-vnwhite rounded-xl hover:bg-vnblack2 transition duration-300 ease-in-out"
-              onClick={() => handleRemoveSoftSkill(idx)}
-            >
-              <MdRemove />
-            </button>
-          </div>
-        ))}
-      </div>
-      <hr className='w-full border-t-2 border-gray-300' />
-
-      <p className='text-start w-full text-vngrey2 text-lg -mb-5'>Resume</p>
-      <div className="w-full flex items-center justify-between relative">
-        <button
-          onClick={() => {
-            setResume(null);
-          }}
-          className="absolute right-0 top-0 z-10 text-center p-2 bg-error text-vnwhite rounded-lg hover:bg-vnblack2 transition duration-300 ease-in-out">
-          <CiCircleRemove />
-
-        </button>
-        <input
-          className="w-full p-20 border border-gray-300 rounded-lg"
-          type="file"
-          accept=".doc, .docx, .pdf"
-          onChange={handleResFileChange} />
-      </div>
-
-
-      <Button onClick={() => handleProfileUpdate()} disabled={!actButton} className="w-11/12 font-medium normal-case flex flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out">
-        Save Changes
-      </Button>
-    </div>
-  );
+    )
+  };
 };
 
 export default Settings;

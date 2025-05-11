@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import Context from '../../Context';
 import { use } from 'react';
 import JobCard from './JobCard';
+import { Spinner } from '@material-tailwind/react';
 
 const JobRecommendation = () => {
   const [foundJobs, setFoundJobs] = useState([])
@@ -32,35 +33,38 @@ const JobRecommendation = () => {
     }
   }
 
-    useEffect(() => {
-      if (!userData.jobTitle) return;
-      const fetchData = async () => {
-        setJobsError("");
-        const jobs = await fetchJobs(userData);
-        setFoundJobs(jobs);
-        setLoading(false);
-      }
-      fetchData();
-    }, [userData]);
+  useEffect(() => {
+    if (!userData.jobTitle) return;
+    const fetchData = async () => {
+      setJobsError("");
+      const jobs = await fetchJobs(userData);
+      setFoundJobs(jobs);
+      setLoading(false);
+    }
+    fetchData();
+  }, [userData]);
 
 
-    return (
-      <div className='w-full min-h-screen flex flex-col lg:flex-row justify-start items-center lg:justify-center lg:items-start gap-5 p-4'>
-        <div className='w-11/12 flex flex-wrap items-center justify-center gap-4 p-4'>
-          <h1 className='w-full text-primary text-2xl text-center'>Recommended Jobs</h1>
-          {jobsError != "" && <p className='w-full text-center text-lg text-red-500'>{jobsError}</p>}
-          {loading ? (
+  return (
+    <div className='w-full min-h-screen flex flex-col lg:flex-row justify-start items-center lg:justify-center lg:items-start gap-5 p-4'>
+      <div className='w-11/12 flex flex-wrap items-center justify-center gap-4 p-4'>
+        <h1 className='w-full text-primary text-2xl text-center'>Recommended Jobs</h1>
+        {jobsError != "" && <p className='w-full text-center text-lg text-red-500'>{jobsError}</p>}
+        {loading ? (
+          <div className='flex flex-col items-center justify-center gap-4'>
             <p className='text-2xl text-vnblack1'>Loading...</p>
-          ) : ( foundJobs.length > 0 ? (
-            foundJobs.map((job, index) => (
-              <JobCard key={index} job={job} />
-            ))
-          ) : (
-            <p className='text-2xl text-vnblack1'>No recommended jobs found.</p>
-          ))}
-        </div>
+            <Spinner className="h-16 w-16 text-primary" />
+          </div>
+        ) : (foundJobs.length > 0 ? (
+          foundJobs.map((job, index) => (
+            <JobCard key={index} job={job} />
+          ))
+        ) : (
+          <p className='text-2xl text-vnblack1'>No recommended jobs found.</p>
+        ))}
       </div>
-    )
-  }
+    </div>
+  )
+}
 
-  export default JobRecommendation
+export default JobRecommendation

@@ -9,7 +9,7 @@ const Recovery = () => {
     const [actButton, setActButton] = useState(true)
     const [popUp, setPopUp] = useState(false)
 
-    const { 
+    const {
         //App states
         loggedIn,
         firstLogin,
@@ -28,6 +28,10 @@ const Recovery = () => {
 
     const navigate = useNavigate()
 
+    useEffect(() => {
+        document.title = "Vocanova | Forget Password"
+    }, [])
+
     // Redirect to home or profile-complete page if logged in
     useEffect(() => {
         if (loggedIn && !firstLogin) {
@@ -35,7 +39,7 @@ const Recovery = () => {
         } else if (loggedIn && firstLogin) {
             navigate("/profile-complete")
         }
-    }, [ loggedIn, firstLogin ])
+    }, [loggedIn, firstLogin])
 
     const handleEmailChange = (e) => {
         setInRecoveryEmail(e.target.value)
@@ -60,7 +64,7 @@ const Recovery = () => {
     useEffect(() => {
         setPopUp(inRecoveryEmailSuccess)
     }
-    , [inRecoveryEmailSuccess])
+        , [inRecoveryEmailSuccess])
 
     useEffect(() => {
         setActButton(true)
@@ -101,7 +105,7 @@ const Recovery = () => {
                 </DialogBody>
             </Dialog>
         </div>
-      )
-    }
+    )
+}
 
 export default Recovery

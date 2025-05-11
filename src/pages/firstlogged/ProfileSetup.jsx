@@ -16,6 +16,7 @@ import Context from '../../Context';
 import Resume from '../../components/firstlogged/Resume';
 import { useNavigate } from 'react-router';
 import { MdError } from 'react-icons/md';
+import Profile from './../../components/logged/Profile';
 
 
 const ProfileSetup = () => {
@@ -24,7 +25,7 @@ const ProfileSetup = () => {
     const [isLastStep, setIsLastStep] = useState(false);
     const [isFirstStep, setIsFirstStep] = useState(false);
 
-    
+
 
     const {
         //App states
@@ -54,6 +55,10 @@ const ProfileSetup = () => {
 
     const navigate = useNavigate()
 
+    useEffect(() => {
+        document.title = "Vocanova | Profile Setup"
+    }, []);
+
     // Redirect to home or profile-complete page if logged in
     useEffect(() => {
         if (!firstLogin || !loggedIn) {
@@ -65,11 +70,11 @@ const ProfileSetup = () => {
         if (activeStep === 0) {
             if (personalDone) {
                 setActiveStep((cur) => cur + 1);
-            } 
+            }
         } else if (activeStep === 1) {
             if (experienceDone) {
                 setActiveStep((cur) => cur + 1);
-            } 
+            }
         } else if (activeStep === 2) {
             if (skillsDone) {
                 setActiveStep((cur) => cur + 1);
@@ -80,14 +85,14 @@ const ProfileSetup = () => {
             }
         } else if (activeStep === 4) {
             if (resumeDone) {
-             handleProfileSetup()
+                handleProfileSetup()
             }
         }
-    
+
     }
     const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
-    
+
 
     useEffect(() => {
         if (activeStep === 0 && !personalDone) {
@@ -146,7 +151,7 @@ const ProfileSetup = () => {
                             </div>
                         </Step>
                         <Step>
-                            <CodeBracketIcon  className="h-5 w-5" />
+                            <CodeBracketIcon className="h-5 w-5" />
                             <div className="absolute -bottom-[3rem] w-max text-center hidden sm:block">
                                 <Typography
                                     variant="h6"
@@ -189,7 +194,7 @@ const ProfileSetup = () => {
                             Prev
                         </Button>
                         <Button onClick={handleNext} disabled={actButton} className={isLastStep ? "bg-primary" : "bg-black"} >
-                            {activeStep <3 && "Next"}
+                            {activeStep < 3 && "Next"}
                             {activeStep === 3 && !avatarDone && "Skip"}
                             {activeStep === 3 && avatarDone && "Next"}
                             {isLastStep && "Submit"}

@@ -27,6 +27,7 @@ const ResetPassword = () => {
 
     // Redirect to home or profile-complete page if logged in
     useEffect(() => {
+        document.title = "Vocanova | Reset Password"
         if (!email && !code) {
             navigate("/")
         }

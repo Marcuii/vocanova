@@ -38,13 +38,35 @@ const LoggedDB = () => {
   const path = location.pathname;
 
   const renderStep = () => {
-    if (path === "/job-recommendation") return <JobRecommendation />;
-    if (path === "/job-applications") return <JobApplications />;
-    if (path === "/resume-analysis") return <ResumeAnalysis />;
-    if (path === "/mockup-interview") return <MockupInterview />;
-    if (path === "/profile") return <Profile />;
-    if (path === "/settings") return <Settings />;
-    if (path === "/change-password") return <ChangePassword />;
+    if (path === "/job-recommendation") {
+      document.title = "Vocanova | Job Recommendations";
+      return <JobRecommendation />
+    };
+    if (path === "/job-applications") {
+      document.title = "Vocanova | Job Applications";
+      return <JobApplications />
+    };
+    if (path === "/resume-analysis") {
+      document.title = "Vocanova | Resume Analysis";
+      return <ResumeAnalysis />
+    };
+    if (path === "/mockup-interview") {
+      document.title = "Vocanova | Mockup Interview";
+      return <MockupInterview />
+    };
+    if (path === "/profile") {
+      document.title = "Vocanova | Profile";
+      return <Profile />
+    };
+    if (path === "/settings") {
+      document.title = "Vocanova | Settings";
+      return <Settings />
+    };
+    if (path === "/change-password") {
+      document.title = "Vocanova | Change Password";
+      return <ChangePassword />
+    };
+    document.title = "Vocanova | Job Recommendations";
     return <JobRecommendation />;
   }
 
@@ -68,7 +90,7 @@ const LoggedDB = () => {
     } else {
       setName("")
     }
-  } , [userData])
+  }, [userData])
 
   return (
     <div className="w-full min-h-screen flex flex-col justify-start gap-5">

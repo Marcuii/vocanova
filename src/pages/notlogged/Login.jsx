@@ -35,7 +35,7 @@ const Login = () => {
     } = useContext(Context)
 
     const navigate = useNavigate()
-    
+
     // Redirect to home or profile-complete page if logged in
     useEffect(() => {
         if (loggedIn && !firstLogin) {
@@ -43,7 +43,7 @@ const Login = () => {
         } else if (loggedIn && firstLogin) {
             navigate("/profile-complete")
         }
-    }, [ loggedIn, firstLogin ])
+    }, [loggedIn, firstLogin])
 
     const handleEmailChange = (e) => {
         setInEmail(e.target.value)
@@ -76,6 +76,7 @@ const Login = () => {
     }
 
     useEffect(() => {
+        document.title = "Vocanova | Login"
         setActButton(true)
         setInEmail("")
         setInEmailError("")
@@ -90,7 +91,7 @@ const Login = () => {
         if (inEmailError == "" && inPasswordError == "" && inEmail != "" && inPassword != "") {
             setActButton(false)
         }
-    }, [ inEmailError, inEmail, inPassword, inPasswordError ])
+    }, [inEmailError, inEmail, inPassword, inPasswordError])
 
     return (
         <div className='w-full flex flex-col items-center justify-center gap-5 p-4'>

@@ -14,6 +14,7 @@ const EmailConfirm = () => {
 
     // Redirect to home or profile-complete page if logged in
     useEffect(() => {
+        document.title = "Vocanova | Email Confirmation"
         if (!id && !code) {
             navigate("/")
         } else {
