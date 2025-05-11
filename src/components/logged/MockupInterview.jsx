@@ -50,6 +50,7 @@ const MockupInterview = () => {
   }, [curAnswer, answerError])
 
   const handleChangeAnswer = (val) => {
+    setCurAnswer(val)
     if (val === "") {
       setAnswerError("Please provide an answer.");
     } else if (val.trim().length < 30) {
@@ -64,7 +65,6 @@ const MockupInterview = () => {
       setAnswerError("Avoid writing in all caps.");
     } else {
       setAnswerError("");
-      setCurAnswer(val)
     }
   }
 
