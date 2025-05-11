@@ -11,7 +11,7 @@ const MockupInterview = () => {
   // Function to fetch mockup interview questions from the API
   const fetchQuestions = async () => {
     try {
-      const response = await fetch(import.meta.env.VITE_INTERVIEW_API + "/analyze", {
+      const response = await fetch(import.meta.env.VITE_INTERVIEW_API + "/start_interview", {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

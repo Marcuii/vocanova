@@ -96,7 +96,7 @@ const Sidebar = () => {
             </ListItemPrefix>
             Resume Analysis
           </ListItem>
-          <ListItem onClick={() => window.open(`${import.meta.env.VITE_INTERVIEW_API}`, '_blank', 'noopener,noreferrer')}>
+          <ListItem onClick={() => handleNavigation("/mockup-interview")}>
             <ListItemPrefix>
               <UsersIcon className="h-5 w-5 text-primary" />
             </ListItemPrefix>
