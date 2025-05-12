@@ -4,7 +4,7 @@ import { DocumentIcon } from '@heroicons/react/24/outline'
 import { Spinner } from '@material-tailwind/react'
 
 const Profile = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const {
     userData
   } = useContext(Context)
@@ -19,7 +19,7 @@ const Profile = () => {
 
   if (isLoading === false) {
     return (
-      <div className='w-full min-h-screen flex flex-col justify-center items-center'>
+      <div className='w-full min-h-screen flex flex-col gap-3 justify-center items-center'>
         <h1 className='text-2xl font-semibold text-primary'>Loading...</h1>
         <Spinner className="h-16 w-16 text-primary" />
       </div>

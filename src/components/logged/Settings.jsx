@@ -121,7 +121,7 @@ const Settings = () => {
   }, [userData]);
 
   const [actButton, setActButton] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Country and city states
   const [countries, setCountries] = useState([]);
@@ -503,7 +503,7 @@ const Settings = () => {
 
   if (loading) {
     return (
-      <div className='w-full min-h-screen flex flex-col justify-center items-center'>
+      <div className='w-full min-h-screen flex flex-col gap-3 justify-center items-center'>
         <h1 className='text-2xl font-semibold text-primary'>Loading...</h1>
         <Spinner className="h-16 w-16 text-primary" />
       </div>

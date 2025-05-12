@@ -6,7 +6,7 @@ import { MdError } from 'react-icons/md';
 const MockupInterview = () => {
   const [questions, setQuestions] = useState(0)
   const [actButton, setActButton] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   const [error, setError] = useState("")
   const [started, setStarted] = useState(false)
