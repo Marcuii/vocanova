@@ -4,7 +4,7 @@ import { DocumentIcon } from '@heroicons/react/24/outline'
 import { Spinner } from '@material-tailwind/react'
 
 const Profile = () => {
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const {
     userData
   } = useContext(Context)
