@@ -86,7 +86,6 @@ const MockupInterview = () => {
                 <Button onClick={() => analyzeResume()} disabled={!actButton} className={`flex w-11/12 font-medium normal-case flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out`}>
                   Analyze Resume
                 </Button>
-                {questions.length === curQuestion && <p className='text-2xl text-success text-center w-full'>You have completed the interview!</p>}
               </div>
             )
         }
