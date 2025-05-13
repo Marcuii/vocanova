@@ -79,7 +79,6 @@ const MockupInterview = () => {
                 <input
                   type='file'
                   accept='.pdf'
-                  value={curFile}
                   onChange={handleFileChange}
                   className={`w-full p-2 border text-vnblack1 rounded-md min-h-40`}
                 />
