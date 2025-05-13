@@ -74,7 +74,7 @@ const MockupInterview = () => {
             ) :
             (
               <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
-                <h2 className={`${questions.length === curQuestion ? "hidden" : "block"} w-full text-vnblack1 text-xl text-center`}>{questions[curQuestion]}</h2>
+                <h2 className={` w-full text-vnblack1 text-xl text-center`}>Upload your resume</h2>
                 {error != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-3'><MdError />{error}</p>}
                 <input
                   type='file'
