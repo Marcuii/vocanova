@@ -9,6 +9,8 @@ const MockupInterview = () => {
 
   const [error, setError] = useState("")
 
+  const [done, setDone] = useState(false)
+
   const [curFile, setCurFile] = useState([])
 
   const [feedback, setFeedback] = useState(null)
@@ -50,12 +52,12 @@ const MockupInterview = () => {
         throw new Error('Network response was not ok')
       }
       const data = await response.json()
-      console.log(data)
-      setFeedback(data)
+      setFeedback(response)
+      setDone(true)
       setError('')
 
     } catch (error) {
-      setError('Failed to get questions. Please try again later.')
+      setError('Failed to analyze resume. Please try again later.')
     }
     setLoading(false)
   }
@@ -65,38 +67,77 @@ const MockupInterview = () => {
       <div className='w-11/12 flex flex-wrap items-center justify-center gap-4 p-4'>
         <h1 className='w-full text-primary text-2xl text-center'>Resume Analyze</h1>
         {error != "" && <p className='w-full text-center text-lg text-red-500'>{error}</p>}
-        {loading ?
-            (
-              <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4'>
-                <p className='text-2xl text-vnblack1 text-center w-full'>Loading...</p>
-                <Spinner className="h-16 w-16 text-primary" />
-              </div>
-            ) :
-            (
-              <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
-                <h2 className={` w-full text-vnblack1 text-xl text-center`}>Upload your resume</h2>
-                {error != "" && <p className='flex flex-row gap-2 items-center text-start w-full text-red-500 text-sm -mb-3'><MdError />{error}</p>}
-                <input
-                  type='file'
-                  accept='.pdf'
-                  onChange={handleFileChange}
-                  className={`w-full p-2 border text-vnblack1 rounded-md min-h-40`}
-                />
-                <Button onClick={() => analyzeResume()} disabled={!actButton} className={`flex w-11/12 font-medium normal-case flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out`}>
-                  Analyze Resume
-                </Button>
-              </div>
-            )
+        { done ?
+        (loading ?
+          (
+            <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4'>
+              <p className='text-2xl text-vnblack1 text-center w-full'>Loading...</p>
+              <Spinner className="h-16 w-16 text-primary" />
+            </div>
+          ) :
+          (
+            <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
+              <h2 className={` w-full text-vnblack1 text-xl text-center`}>Upload your resume</h2>
+              <input
+                type='file'
+                accept='.pdf'
+                onChange={handleFileChange}
+                className={`w-full p-2 border text-vnblack1 rounded-md min-h-40`}
+              />
+              <Button onClick={() => analyzeResume()} disabled={!actButton} className={`flex w-11/12 font-medium normal-case flex-row items-center justify-center text-xl bg-primary text-vnwhite rounded-lg hover:bg-vngrey3 transition duration-300 ease-in-out`}>
+                Analyze Resume
+              </Button>
+            </div>
+          )
+        ) : null
         }
         {feedback &&
-          <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4 border-vngrey4 border rounded-lg'>
-            <h2 className='w-full text-vnblack1 text-xl text-center'>Feedback</h2>
-              <div className='w-full flex flex-col items-start justify-start gap-2 p-4 border-vngrey4 border rounded-lg'>
-                <p className='text-success w-full text-sm lg:text-lg'>Question: <span className='text-vnblack2'>1</span></p>
-                <p className='text-success w-full text-sm lg:text-base'>Answer: <span className='text-vnblack2'>2</span></p>
-                <p className='text-success w-full text-sm lg:text-xl'>Feedback: <span className='text-vnblack2'>3</span></p>
-                <p className='text-success w-full text-sm lg:text-xl'>Rate: <span className='text-vnblack2'>    4</span></p>
-              </div>
+          <div className="w-full flex flex-col items-start justify-start gap-2 p-4 border border-vngrey4 rounded-lg bg-white shadow-sm">
+            <p className="text-success w-full text-sm lg:text-xl">
+              Overall Rating: <span className="text-vnblack2 font-medium">{response["Overall Rating"]}</span>
+            </p>
+
+            <p className="text-success w-full text-sm lg:text-base">
+              Summary: <span className="text-vnblack2">{response["Summary"]}</span>
+            </p>
+
+            <p className="text-success w-full text-sm lg:text-base">
+              Strengths:
+              <ul className="list-disc list-inside text-vnblack2 mt-1 ml-3">
+                {response["Strengths"].map((point, idx) => (
+                  <li key={idx}>{point}</li>
+                ))}
+              </ul>
+            </p>
+
+            <p className="text-success w-full text-sm lg:text-base">
+              Weaknesses:
+              <ul className="list-disc list-inside text-vnblack2 mt-1 ml-3">
+                {response["Weaknesses"].map((point, idx) => (
+                  <li key={idx}>{point}</li>
+                ))}
+              </ul>
+            </p>
+
+            <p className="text-success w-full text-sm lg:text-base">
+              ATS Compatibility Analysis:{" "}
+              <span className="text-vnblack2">{response["ATS Compatibility Analysis"]}</span>
+            </p>
+
+            <p className="text-success w-full text-sm lg:text-base">
+              Formatting and Readability:{" "}
+              <span className="text-vnblack2">{response["Formatting and Readability"]}</span>
+            </p>
+
+            <p className="text-success w-full text-sm lg:text-base">
+              Content and Impact:{" "}
+              <span className="text-vnblack2">{response["Content and Impact"]}</span>
+            </p>
+
+            <p className="text-success w-full text-sm lg:text-base">
+              Grammar and Clarity:{" "}
+              <span className="text-vnblack2">{response["Grammar and Clarity"]}</span>
+            </p>
           </div>
         }
       </div>
