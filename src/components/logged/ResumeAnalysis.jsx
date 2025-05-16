@@ -42,7 +42,7 @@ const MockupInterview = () => {
   const analyzeResume = async () => {
     setLoading(true)
     const formData = new FormData();
-    formData.append('file', curFile);
+    formData.append('resume', curFile);
     try {
       const response = await fetch(import.meta.env.VITE_ANALYSIS_API + "/analyze_resume", {
         method: 'POST',
