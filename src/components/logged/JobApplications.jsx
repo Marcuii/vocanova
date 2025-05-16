@@ -51,10 +51,12 @@ const JobApplications = () => {
 
   // Calendar highlight dates
   useEffect(() => {
-    const dates = jobApplications.map((application) => {
-      return new Date(application.applicationDate).toLocaleDateString()
-    })
-    setDates(dates)
+    if (jobApplications !== null) {
+      const dates = jobApplications.map((application) => {
+        return new Date(application.applicationDate).toLocaleDateString()
+      })
+      setDates(dates)
+    }
   }, [jobApplications])
   // Calendar functions
 
