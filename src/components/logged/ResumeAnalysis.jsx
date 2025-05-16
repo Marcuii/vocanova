@@ -52,7 +52,8 @@ const MockupInterview = () => {
         throw new Error('Network response was not ok')
       }
       const data = await response.json()
-      setFeedback(response)
+      //setFeedback(response)
+      console.log(data)
       setDone(true)
       setError('')
 
