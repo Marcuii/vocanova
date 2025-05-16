@@ -41,12 +41,12 @@ const MockupInterview = () => {
   // Function to fetch mockup interview questions from the API
   const analyzeResume = async () => {
     setLoading(true)
+    const formData = new FormData();
+    formData.append('file', curFile);
     try {
       const response = await fetch(import.meta.env.VITE_ANALYSIS_API + "/analyze_resume", {
         method: 'POST',
-        body: JSON.stringify({
-          job_role: userData.jobTitle,
-        })
+        body: formData,
       })
       if (!response.ok) {
         throw new Error('Network response was not ok')
