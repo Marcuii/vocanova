@@ -53,7 +53,6 @@ const MockupInterview = () => {
       }
       const data = await response.json()
       setFeedback(data)
-      console.log(data)
       setDone(true)
       setError('')
 
