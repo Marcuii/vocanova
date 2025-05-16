@@ -67,8 +67,8 @@ const MockupInterview = () => {
       <div className='w-11/12 flex flex-wrap items-center justify-center gap-4 p-4'>
         <h1 className='w-full text-primary text-2xl text-center'>Resume Analyze</h1>
         {error != "" && <p className='w-full text-center text-lg text-red-500'>{error}</p>}
-        { done ?
-        (!loading ?
+        { !done ?
+        (loading ?
           (
             <div className='w-full lg:w-11/12 flex flex-col items-center justify-center gap-4 p-4'>
               <p className='text-2xl text-vnblack1 text-center w-full'>Loading...</p>
