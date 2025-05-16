@@ -52,7 +52,7 @@ const MockupInterview = () => {
         throw new Error('Network response was not ok')
       }
       const data = await response.json()
-      //setFeedback(response)
+      setFeedback(data)
       console.log(data)
       setDone(true)
       setError('')
@@ -95,17 +95,17 @@ const MockupInterview = () => {
         {feedback &&
           <div className="w-full flex flex-col items-start justify-start gap-2 p-4 border border-vngrey4 rounded-lg bg-white shadow-sm">
             <p className="text-success w-full text-sm lg:text-xl">
-              Overall Rating: <span className="text-vnblack2 font-medium">{response["Overall Rating"]}</span>
+              Overall Rating: <span className="text-vnblack2 font-medium">{feedback["Overall Rating"]}</span>
             </p>
 
             <p className="text-success w-full text-sm lg:text-base">
-              Summary: <span className="text-vnblack2">{response["Summary"]}</span>
+              Summary: <span className="text-vnblack2">{feedback["Summary"]}</span>
             </p>
 
             <p className="text-success w-full text-sm lg:text-base">
               Strengths:
               <ul className="list-disc list-inside text-vnblack2 mt-1 ml-3">
-                {response["Strengths"].map((point, idx) => (
+                {feedback["Strengths"].map((point, idx) => (
                   <li key={idx}>{point}</li>
                 ))}
               </ul>
@@ -114,7 +114,7 @@ const MockupInterview = () => {
             <p className="text-success w-full text-sm lg:text-base">
               Weaknesses:
               <ul className="list-disc list-inside text-vnblack2 mt-1 ml-3">
-                {response["Weaknesses"].map((point, idx) => (
+                {feedback["Weaknesses"].map((point, idx) => (
                   <li key={idx}>{point}</li>
                 ))}
               </ul>
@@ -122,22 +122,22 @@ const MockupInterview = () => {
 
             <p className="text-success w-full text-sm lg:text-base">
               ATS Compatibility Analysis:{" "}
-              <span className="text-vnblack2">{response["ATS Compatibility Analysis"]}</span>
+              <span className="text-vnblack2">{feedback["ATS Compatibility Analysis"]}</span>
             </p>
 
             <p className="text-success w-full text-sm lg:text-base">
               Formatting and Readability:{" "}
-              <span className="text-vnblack2">{response["Formatting and Readability"]}</span>
+              <span className="text-vnblack2">{feedback["Formatting and Readability"]}</span>
             </p>
 
             <p className="text-success w-full text-sm lg:text-base">
               Content and Impact:{" "}
-              <span className="text-vnblack2">{response["Content and Impact"]}</span>
+              <span className="text-vnblack2">{feedback["Content and Impact"]}</span>
             </p>
 
             <p className="text-success w-full text-sm lg:text-base">
               Grammar and Clarity:{" "}
-              <span className="text-vnblack2">{response["Grammar and Clarity"]}</span>
+              <span className="text-vnblack2">{feedback["Grammar and Clarity"]}</span>
             </p>
           </div>
         }
