@@ -42,10 +42,10 @@ const JobApplications = () => {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (jobApplications.length > 0) {
-      setLoading(false)
-    } else {
+    if (jobApplications === null) {
       setLoading(true)
+    } else {
+      setLoading(false)
     }
   }, [jobApplications])
 
@@ -295,10 +295,11 @@ const JobApplications = () => {
   }
 
   if (loading) {
+    return (
     <div className='w-full min-h-screen flex justify-center items-center'>
       <h1 className='text-2xl font-semibold text-primary'>Loading...</h1>
       <Spinner className="h-16 w-16 text-primary" />
-    </div>
+    </div>)
   } else {
     return (
       <div className='w-full min-h-screen flex flex-col lg:flex-row justify-start items-center lg:justify-center lg:items-start gap-5 p-4'>

@@ -21,7 +21,7 @@ function App() {
   const [firstLogin, setFirstLogin] = useState(false)
   const [token, setToken] = useState(null)
   const [userData, setUserData] = useState({})
-  const [jobApplications, setJobApplications] = useState([])
+  const [jobApplications, setJobApplications] = useState(null)
 
   //NotLogged Layout -----------------------------------
   //login states
