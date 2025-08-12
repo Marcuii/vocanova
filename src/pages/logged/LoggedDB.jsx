@@ -110,7 +110,7 @@ const LoggedDB = () => {
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
           >
             <Avatar
-              src={userData.profilePictureUrl ? userData.profilePictureUrl : "https://static-00.iconduck.com/assets.00/profile-major-icon-512x512-xosjbbdq.png"}
+              src={userData.profilePictureUrl ? userData.profilePictureUrl : "https://static.vecteezy.com/system/resources/thumbnails/020/765/399/small_2x/default-profile-account-unknown-icon-black-silhouette-free-vector.jpg"}
               alt="avatar"
               withBorder={true}
               className="p-0.5"
