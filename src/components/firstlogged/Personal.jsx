@@ -141,7 +141,7 @@ const Personal = () => {
     // Fetch country codes when the component mounts
     useEffect(() => {
         async function fetchCountries() {
-            const response = await fetch('https://restcountries.com/v3.1/all');
+            const response = await fetch('https://restcountries.com/v3.1/all?statues=true&fields=name,idd');
             const data = await response.json();
 
             const countryData = data.map((country) => {
